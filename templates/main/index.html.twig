@@ -1,0 +1,362 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<!-- Carousel -->
+	<div
+		id="demo" class="carousel slide" data-bs-ride="carousel">
+
+		<!-- Indicators/dots -->
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+			<button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+			<button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+		</div>
+
+		<!-- The slideshow/carousel -->
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="images\poster_header.jpg" alt="Los Angeles" class="d-block" style="width:100%">
+			</div>
+			<div class="carousel-item">
+				<img src="images\poster_2.png" alt="Chicago" class="d-block" style="width:100%">
+				<div class="carousel-caption">
+					<div class="btn-home btn-radius text-center">
+						<a href="{{path('showProduct')}}">Shop Now</a>
+					</div>
+
+				</div>
+			</div>
+			<div class="carousel-item">
+				<img src="images\poster_3.png" alt="New York" class="d-block" style="width:100%">
+				
+			</div>
+		</div>
+
+		<!-- Left and right controls/icons -->
+		<button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon"></span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+			<span class="carousel-control-next-icon"></span>
+		</button>
+	</div>
+
+	<hr/>
+	<section>
+		<h4 class="attentive ms-3 text-center">Best seller</h4>
+		<div class="container py-4">
+			<div class="row">
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<hr/>
+	<section>
+		<h4 class="attentive ms-3 text-center">Hot Products</h4>
+		<div class="container py-4">
+			<div class="row">
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-3">
+					<div class="product-grid">
+						<div class="product-image">
+							<a href="" class="image">
+								<img src="{{asset('images/Dresses.png')}}">
+							</a>
+							<ul class="product-links">
+								<li>
+									<a href="#">
+										<i class="fa fa-search"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-heart"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-random"></i>
+									</a>
+								</li>
+							</ul>
+							<form action="?page=shoppingcart" method="POST">
+								<input type="hidden" name="pro_id" value="<?= $row['id'] ?>">
+								<input type="hidden" name="pro_quantity" value="1"/>
+								<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+							</form>
+						</div>
+						<div class="product-content">
+							<h3 class="title">
+								<a href="">Dresses</a>
+							</h3>
+							<div class="price">$30.00</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<a href="?page=product" class="btn-home btn-radius text-center">
+				See More</a>
+		</div>
+	</section>
+{% endblock %}

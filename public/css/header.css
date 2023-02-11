@@ -1,0 +1,371 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&display=swap');
+
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&display=swap'); */
+
+
+/* ==========================================================================
+   #Home
+   ========================================================================== */
+
+.navbar-brand {
+    padding: 0px;
+    margin: auto;
+    display: block;
+    width: 300px;
+    height: 80px;
+    top: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.line {
+    margin: 0px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-nav {
+    font-family: 'Noto Serif Khojki', serif;
+    height: 50px;
+    width: 100px;
+}
+
+.navbar-nav:hover {
+    color: black;
+}
+
+.nav-link:hover {
+    color: black;
+    font-weight: bolder;
+}
+
+.imageCenter {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: -between;
+}
+
+.input-group-text {
+    margin-left: 5px;
+    width: 40px;
+    height: 37px;
+}
+
+.btn-outline-dark:hover {
+    /* background-color: grey; */
+    color: white;
+}
+
+.btn {
+    padding-left: 1.3rem;
+    padding-right: 1.3rem;
+}
+
+
+/* ==========================================================================
+   #Product
+   ========================================================================== */
+
+.attentive {
+    font-family: 'Playfair Display', serif;
+    /* font-size: 30px; */
+    text-align: center;
+}
+
+.product-content .ul-color {
+    margin: 0;
+    padding: 0;
+}
+
+.product-content .ul-color li {
+    list-style: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.product-content .ul-color li:first-child {
+    margin-left: 0;
+}
+
+.product-content .ul-color li:last-child {
+    margin-right: 0;
+}
+
+.product-content .ul-color li a {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+}
+
+.product-content .ul-color li a.green-active {
+    background-color: green;
+}
+
+.product-content .ul-color li a.blue {
+    background-color: blue;
+}
+
+.product-content .ul-color li a.yellow {
+    background-color: yellow;
+}
+
+
+/* ==========================================================================
+   #Card 
+   ========================================================================== */
+
+.product-grid {
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+}
+
+.product-grid .product-image {
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.product-grid .product-image a.image {
+    display: block;
+}
+
+.product-grid .product-image img {
+    width: 100%;
+    height: auto;
+}
+
+.product-grid .product-discount-label {
+    color: #fff;
+    background: black;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 25px;
+    padding: 0 20px;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.product-grid .product-links {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: absolute;
+    top: 10px;
+    right: -50px;
+    transition: all 0.5s ease 0s;
+}
+
+.product-grid:hover .product-links {
+    right: 10px;
+}
+
+.product-grid .product-links li a {
+    color: #333;
+    background: transparent;
+    font-size: 17px;
+    line-height: 38px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #333;
+    border-bottom: none;
+    display: block;
+    transition: all 0.3s;
+}
+
+.product-grid .product-links li:last-child a {
+    border-bottom: 1px solid #333;
+}
+
+.product-grid .product-links li a:hover {
+    color: #fff;
+    background: #333;
+}
+
+.product-grid .add-to-cart {
+    background: black;
+    color: #fff;
+    font-size: 80%;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 100%;
+    padding: 10px 26px;
+    position: absolute;
+    left: 0;
+    bottom: -60px;
+    transition: all 0.3s ease 0s;
+}
+
+.product-grid:hover .add-to-cart {
+    bottom: 0;
+}
+
+.product-grid .add-to-cart:hover {
+    background: rgb(186, 186, 186);
+    text-shadow: 4px 4px rgba(0, 0, 0, 0.2);
+    border: rgb(186, 186, 186);
+}
+
+.product-grid .product-content {
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1) inset;
+}
+
+.product-grid .title {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin: 0 0 7px;
+}
+
+.product-grid .title a {
+    color: #777;
+    transition: all 0.3s ease 0s;
+}
+
+.product-grid .title a:hover {
+    color: black;
+}
+
+.product-grid .price {
+    color: #0d0d0d;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-grid .price span {
+    color: #888;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+@media screen and (max-width: 990px) {
+    .product-grid {
+        margin-bottom: 30px;
+    }
+}
+
+.input-group {
+    padding-top: 5%;
+    border-bottom: 2px solid #ccc;
+    display: block;
+}
+
+
+/* ==========================================================================
+   #SELECT2
+   ========================================================================== */
+
+.select--no-search .select2-search {
+    display: none !important;
+}
+
+.rs-select2 .select2-container {
+    width: 100% !important;
+    outline: none;
+}
+
+.rs-select2 .select2-container .select2-selection--single {
+    outline: none;
+    border: none;
+    height: 34px;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 34px;
+    padding-left: 0;
+    color: #555;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow {
+    height: 32px;
+    right: 4px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow b {
+    display: none;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow:after {
+    font-family: "Material-Design-Iconic-Font";
+    /* font-family: 'Poppins', sans-serif; */
+    content: "\f2f9";
+    color: #ccc;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.rs-select2 .select2-container.select2-container--open .select2-selection--single .select2-selection__arrow::after {
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+
+.select2-container--open .select2-dropdown--below {
+    border: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+
+/* ==========================================================================
+   Button
+   ========================================================================== */
+
+.btn-home {
+    line-height: 40px;
+    display: inline-block;
+    padding: 0 25px;
+    color: black;
+    font-weight: bold;
+    background-color: silver;
+}
+
+.btn-radius {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.btn-home:hover {
+    background: black;
+    color: white;
+}
