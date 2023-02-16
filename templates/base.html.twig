@@ -26,17 +26,14 @@
 		<link
 		rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 		<!-- fontawesome -->
-		<link
-		rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
 		{#  #}
-		<link
-		rel="stylesheet" href="{{asset('css/header.css')}}">
 
 
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		{% block stylesheets %}
+			{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
+		<link rel="stylesheet" href="{{asset('css/header.css')}}"> {% endblock %}
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
@@ -45,34 +42,36 @@
 	<body>
 		{# Header #}
 		{% block header %}
-			<img class="navbar-brand" src="images/logo_store.png" onclick="window.location='/'"/>
+			<!-- Logo -->
+			<img class="navbar-brand" src="images/logo.png" onclick="window.location='/'"/>
+
 			<hr class="line"/>
-			<div
+
+			<nav
 				class="navbar navbar-expand-lg navbar-light bg-light">
+
 				<!-- Menu in mobile phone-->
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="collapse">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggerMobileMenu" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<!-- Left element -->
-				<form
-					action="?page=product" class="d-flex ms-4">
-					<!-- Search -->
-					<input type="text" class="form-control rounded" name="searchValue" placeholder="search..." aria-label="search" aria-describedby="search-addon"/>
+				<!-- Search -->
+				<form action="{{path('showProduct')}}" class="d-flex ms-4 mb-2">
+					<input type="text" class="form-control rounded search" name="searchValue" placeholder="Search..." aria-label="search" aria-describedby="search-addon"/>
 					<button type="submit" name="btnSearch" class="input-group-text border-0">
 						<i class="fas fa-search"></i>
 					</button>
 				</form>
 				<!-- collapse: thu ra thu vào -->
 				<div
-					class="collapse navbar-collapse header attentive" id="navbarMain">
+					class="collapse navbar-collapse header" id="toggerMobileMenu">
 					<!-- Menu bar -->
 					<div
 						class="container navbar-nav justify-content-center">
 						<!-- active: highline -->
-						<a class="nav-link" href="{{path('showProduct')}}">Home</a>
+						<a class="nav-link" href="{{path('home_page')}}">Home</a>
 						<a class="nav-link" href="{{path('showProduct')}}">Product</a>
 						<a class="nav-link" href="{{path('showProduct')}}">Sale</a>
-						<a class="nav-link" href="">About</a>
+						<a class="nav-link" href="{{path('showProduct')}}">About</a>
 
 					</div>
 					<!-- Right elements -->
@@ -90,38 +89,39 @@
 									<img src="images/account.png" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
 									<label for="account" class="ms-2 link-dark" style="font-size: 1rem;"></label>
 								</a>
-								<p class="mt-1">
+								<p class="mt-1 ">
 									<a href="">My account</a>
 								</p>
 							</div>
 							<ul class="dropdown-menu dropdown-menu-start" aria-labelledby="navbarDropdownMenuAccount">
 								<li>
-									<a href="?page=profile" class="dropdown-item">Profile</a>
+									<a href="{{path('cus_profile')}}" class="dropdown-item">Profile</a>
 								</li>
 
 								<li>
-									<a href="?page=order" class="dropdown-item">Administration</a>
+									<a href="{{path('order_page')}}" class="dropdown-item">Administration</a>
 								</li>
 								<li>
-									<a href="?page=logout" class="dropdown-item">Logout</a>
+									<a href="{{path('logout_page')}}" class="dropdown-item">Logout</a>
 								</li>
 							</ul>
 						</div>
 
 						{# <a href="?page=login" class="btn btn-outline-dark me-2 ms-5">Login</a>
-						    <a href="?page=register" class="btn btn-dark me-4">Register</a> #}
+																																																																														    <a href="?page=register" class="btn btn-dark me-4">Register</a> #}
 
 					</div>
 				</div>
-			</div>
+			</nav>
+
 		{% endblock %}
 		{% block body %}{% endblock %}
 		<footer>
 			{% block footer %}
 				<hr>
-				<footer class="text-center text-lg-start text-dark">
+				<footer class="text-center text-lg-start text-dark footer">
 					<div
-						style="text-align: justify; font-family: 'Poppins', sans-serif;" class="text-md-start">
+						class="text-md-start">
 						<!-- Grid row -->
 						<div
 							class="row mt-4 mx-2">
@@ -132,7 +132,9 @@
 								<h6 class="text-uppercase fw-bold">About us</h6>
 								<hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: grey; height: 2px"/>
 								<p class="mx-5">
-									Dana.ischg Store is a brand from Vietnam, born in 2022. Started off as a small thrift shop in CanTho, Vietnam. Through the lens of fashionary, Dana.ischg would like to share experiences and POV in music, movies, and art, connecting the community of youth with global lifestyle.
+									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">
+										Dana.ischg Store is a brand from Vietnam, born in 2022. Started off as a small thrift shop in CanTho, Vietnam. Through the lens of fashionary, Dana.ischg would like to share experiences and POV in music, movies, and art, connecting the community of youth with global lifestyle.
+									</a>
 								</p>
 							</div>
 
@@ -143,19 +145,16 @@
 								<h6 class="text-uppercase fw-bold">Products</h6>
 								<hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: grey; height: 2px"/>
 								<p>
-									<a href="index.php" class="text-dark text-decoration-none">Home</a>
+									<a href="{{path('home_page')}}" class="text-dark text-decoration-none">Home</a>
 								</p>
 								<p>
-									<a href="?page=product" class="text-dark text-decoration-none">Product</a>
+									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Product</a>
 								</p>
 								<p>
-									<a href="#!" class="text-dark text-decoration-none">Men</a>
+									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Sale</a>
 								</p>
 								<p>
-									<a href="#!" class="text-dark text-decoration-none">Delivery</a>
-								</p>
-								<p>
-									<a href="#!" class="text-dark text-decoration-none">Support</a>
+									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">About</a>
 								</p>
 							</div>
 
@@ -181,7 +180,7 @@
 						</div>
 					</div>
 					<!-- Copyright -->
-					<div class="text-center p-3 text-white" style="background-color: black">
+					<div class="text-footer p-3 text-white text-center">
 						2020 Copyright:
 						<a class="text-white" href="">Dana.ischgStore.com</a>
 					</div>
@@ -189,8 +188,8 @@
 				</footer>
 			{% endblock %}
 		</footer>
-		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous"></script>
+		{# <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+																		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+																		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js" integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA==" crossorigin="anonymous"></script> #}
 	</body>
 </html>

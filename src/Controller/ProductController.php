@@ -17,10 +17,10 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product", name="product")
+     * @Route("/detail", name="proDetail_page")
      */
-    public function productAction(): Response
+    public function productDetailAction(): Response
     {
-        return $this->render('admin/product.html.twig');
+        return $this->render('product/detail.html.twig');
     }
 }

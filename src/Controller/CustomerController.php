@@ -8,11 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
 {
-    #[Route('/users', name: 'app_users')]
-    public function index(): Response
+     /**
+     * @Route("/customer", name="cus_profile")
+     */
+    public function cusAction(): Response
     {
-        return $this->render('users/index.html.twig', [
-            'controller_name' => 'UsersController',
+        return $this->render('customer/index.html.twig', [
+            'username' => 'Your username',
+            'email' => 'Your email',
         ]);
     }
 }
