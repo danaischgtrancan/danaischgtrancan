@@ -8,11 +8,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistationController extends AbstractController
 {
-    #[Route('/registation', name: 'app_registation')]
-    public function index(): Response
+    /**
+     * @Route("/signIn", name="signIn_page")
+     */
+    public function signInAction(): Response
     {
-        return $this->render('registation/index.html.twig', [
+        return $this->render('registation/signIn.html.twig', [
             'controller_name' => 'RegistationController',
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="logout_page")
+     */
+    public function logOutAction(): Response
+    {
+        return $this->render('registation/login.html.twig');
     }
 }

@@ -1,32 +1,53 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+	<link href="{{asset('css/header.css')}}" rel="stylesheet" media="all">
+{% endblock %}
 {% block body %}
-	<link
-	href="{{asset('vendor/select2/select2.min.css')}}" rel="stylesheet" media="all">
 	<!-- Shop Start -->
-	<div class="container-fluid pt-5">
+	<div class="container-fluid">
 		<div
-			class="row px-xl-5">
+			class="row ">
 			<!-- Shop Sidebar Start -->
 			<div
-				class="col-lg-3 col-md-12">
-				<!-- Price Start -->
+				class="col-lg-3 col-sm-3 shadow-sm p-3 mb-5 bg-body rounde" >
+				<!-- Category Start -->
 				<div class="border-bottom mb-4 pb-4">
-					<h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+					<div class="row">
+						<h5 class="font-weight-semi-bold mb-4">Category</h5>
+						<a href="">Shirt</a>
+						<a href="">Pan</a>
+						<a href="">Jacket</a>
+						<a href="">Hoodie</a>
+						<a href="">Dress</a>
+					</div>
+				</div>
+				<!-- Category End -->
 
+				<!-- For Gender Start -->
+				<div class="border-bottom mb-4 pb-4 filter">
+					<div class="row">
+						<h5 class="font-weight-semi-bold mb-4">For Gender</h5>
+						<a href="">Men's Clothing</a>
+						<a href="">Women's Clothing</a>
+					</div>
+				</div>
+				<!-- For Gender End -->
+				<!-- Price Start -->
+				<div class="border-bottom mb-4 pb-4 filter">
+					<h5 class="font-weight-semi-bold mb-4">Filter by Price</h5>
+					<div class="product-count">
+						<form action="#" class="display-flex">
+							<div class="qtyminus">-</div>
+							<input type="text" name="price" value="0.01" class="qty" data-decimals="2" min="0" max="9" step="0.1">
+							<div class="qtyplus">+</div>
+						</form>
+					</div>
 				</div>
 				<!-- Price End -->
 
-				<!-- Color Start -->
-				<div class="border-bottom mb-4 pb-4">
-					<h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-
-				</div>
-				<!-- Color End -->
-
 				<!-- Size Start -->
 				<div class="mb-5">
-					<h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
+					<h5 class="font-weight-semi-bold mb-4 filter">Filter by Size</h5>
 
 				</div>
 				<!-- Size End -->
@@ -35,22 +56,21 @@
 
 
 			<!-- Shop Product Start -->
-			<div class="col-lg-9 col-md-12">
+			<div class="col-lg-9 col-sm-9">
 				<div class="row">
 					<div class="col-md-10">
-						<h2 style="padding-left: 2%">All product</h2>
+						<h2 style="padding-left: 2% title">All product</h2>
 					</div>
 					<div class="col-md-2">
-						<div class="input-group">
-							<div class="rs-select2 js-select-simple select--no-search">
-								<select name="sort_by" onchange="location = this.value;">
+						<div class="input-group mb-2 d-flex">
+							<div class="select">
+								<select name="sort_by" onchange="location = this.value;" class="form-control border-white">
 									<option disabled="disabled" value="2" selected>SORT BY</option>
-									<option value="?page=product&sort_by=name&order=ASC">A -> Z</option>
-									<option value="?page=product&sort_by=name&order=DESC">Z -> A</option>
-									<option value="?page=product&sort_by=price&order=ASC">Low to high</option>
-									<option value="?page=product&sort_by=price&order=DESC">High to low</option>
+									<option value="">A -> Z</option>
+									<option value="">Z -> A</option>
+									<option value="">Low to high</option>
+									<option value="">High to low</option>
 								</select>
-								<div class="select-dropdown"></div>
 							</div>
 						</div>
 					</div>

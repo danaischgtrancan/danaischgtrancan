@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{# {{ encore_entry_link_tags('app') }} #}
+	<link href="{{asset('css/header.css')}}" rel="stylesheet" media="all">
+{% endblock %}
+{% block body %}
+	<section>
+		<!--Start Image-->
+		<div class="img-bg">
+			<img src="images\LogIn.png" alt="">
+		</div>
+		<!--End Image-->
+		<!--Start Content-->
+		<div class="content">
+			<div class="form">
+				<h2>Login</h2>
+				<form action="">
+					<div class="input-form">
+						<span>UserName</span>
+						<input type="text" name="">
+					</div>
+					<div class="input-form">
+						<span>Password</span>
+						<input type="password" name="">
+					</div>
+					<div class="remember-login">
+						<label><input type="checkbox" name="" class="me-2">Remember Login</label>
+					</div>
+					<div class="input-form">
+						<input type="submit" value="Login">
+					</div>
+					<div class="input-form text-center">
+						<p>Do not have an account?
+							<a href="{{path("signIn_page")}}">Register</a>
+						</p>
+					</div>
+				</form>
+				{# <h3>Login With Social Network</h3>
+				<ul class="login-icon">
+					<li>
+						<i class="fa fa-facebook" aria-hidden="true"></i>
+					</li>
+					<li>
+						<i class="fa fa-google" aria-hidden="true"></i>
+					</li>
+					<li>
+						<i class="fa fa-twitter" aria-hidden="true"></i>
+					</li>
+				</ul> #}
+			</div>
+		</div>
+		<!--End Content-->
+	</section>
+{% endblock %}

@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap");
 
 /* @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&display=swap'); */
 
@@ -8,17 +8,32 @@
    #Home
    ========================================================================== */
 
+.navbar-logo {
+    padding: 0px;
+    margin: auto;
+    display: block;
+    width: 100px;
+    height: 100px;
+    top: 20px;
+}
+
 .navbar-brand {
     padding: 0px;
     margin: auto;
     display: block;
-    width: 300px;
-    height: 80px;
+    width: 330px;
+    height: 85px;
     top: 20px;
 }
 
 a {
     text-decoration: none;
+    color: #0d0d0d;
+    font-family: "Noto Serif", serif;
+}
+
+a:hover {
+    color: rgb(110, 107, 107);
 }
 
 .line {
@@ -29,8 +44,17 @@ a {
     display: block;
 }
 
+ul li a {
+    font-size: 90%;
+    color: #0d0d0d;
+}
+
+ul li a:hover {
+    font-size: 100%;
+}
+
 .navbar-nav {
-    font-family: 'Noto Serif Khojki', serif;
+    font-family: "Noto Serif", serif;
     height: 50px;
     width: 100px;
 }
@@ -41,7 +65,7 @@ a {
 
 .nav-link:hover {
     color: black;
-    font-weight: bolder;
+    /* font-weight: bolder; */
 }
 
 .imageCenter {
@@ -70,18 +94,36 @@ a {
     padding-right: 1.3rem;
 }
 
+.search {
+    font-family: "Playfair Display", serif;
+}
+
+.fa-shopping-cart:hover {
+    color: rgb(54, 53, 53);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400&display=swap");
 
 /* ==========================================================================
    #Product
    ========================================================================== */
 
 .attentive {
-    font-family: 'Playfair Display', serif;
-    /* font-size: 30px; */
+    font-family: "Merriweather", serif;
     text-align: center;
 }
 
+h5 {
+    font-family: "Playfair Display", serif;
+    font-weight: bold;
+}
+
+h2 {
+    font-family: "Noto Serif", serif;
+}
+
 .product-content .ul-color {
+    font-family: "Playfair Display", serif;
     margin: 0;
     padding: 0;
 }
@@ -119,13 +161,27 @@ a {
     background-color: yellow;
 }
 
+select option {
+    font-family: "Noto Serif", serif;
+}
+
+.form-control {
+    appearance: revert;
+    width: 120%;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil&display=swap");
 
 /* ==========================================================================
-   #Card 
+   Card 
    ========================================================================== */
 
-.product-grid {
-    font-family: "Poppins", sans-serif;
+.filter {
+    padding-right: 50px;
+}
+
+.product-grid .title-cart {
+    font-family: "Noto Serif Tamil", serif;
     text-align: center;
 }
 
@@ -162,12 +218,12 @@ a {
     list-style: none;
     position: absolute;
     top: 10px;
-    right: -50px;
+    right: -50%;
     transition: all 0.5s ease 0s;
 }
 
 .product-grid:hover .product-links {
-    right: 10px;
+    right: 5px;
 }
 
 .product-grid .product-links li a {
@@ -181,6 +237,7 @@ a {
     border-bottom: none;
     display: block;
     transition: all 0.3s;
+    text-align: center;
 }
 
 .product-grid .product-links li:last-child a {
@@ -204,6 +261,7 @@ a {
     left: 0;
     bottom: -60px;
     transition: all 0.3s ease 0s;
+    font-family: "Merriweather", serif;
 }
 
 .product-grid:hover .add-to-cart {
@@ -265,88 +323,6 @@ a {
 
 
 /* ==========================================================================
-   #SELECT2
-   ========================================================================== */
-
-.select--no-search .select2-search {
-    display: none !important;
-}
-
-.rs-select2 .select2-container {
-    width: 100% !important;
-    outline: none;
-}
-
-.rs-select2 .select2-container .select2-selection--single {
-    outline: none;
-    border: none;
-    height: 34px;
-}
-
-.rs-select2 .select2-container .select2-selection--single .select2-selection__rendered {
-    line-height: 34px;
-    padding-left: 0;
-    color: #555;
-}
-
-.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow {
-    height: 32px;
-    right: 4px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-
-.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow b {
-    display: none;
-}
-
-.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow:after {
-    font-family: "Material-Design-Iconic-Font";
-    /* font-family: 'Poppins', sans-serif; */
-    content: "\f2f9";
-    color: #ccc;
-    -webkit-transition: all 0.4s ease;
-    -o-transition: all 0.4s ease;
-    -moz-transition: all 0.4s ease;
-    transition: all 0.4s ease;
-}
-
-.rs-select2 .select2-container.select2-container--open .select2-selection--single .select2-selection__arrow::after {
-    -webkit-transform: rotate(-180deg);
-    -moz-transform: rotate(-180deg);
-    -ms-transform: rotate(-180deg);
-    -o-transform: rotate(-180deg);
-    transform: rotate(-180deg);
-}
-
-.select2-container--open .select2-dropdown--below {
-    border: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e0e0e0;
-    margin-top: 5px;
-    overflow: hidden;
-}
-
-
-/* ==========================================================================
    Button
    ========================================================================== */
 
@@ -356,7 +332,8 @@ a {
     padding: 0 25px;
     color: black;
     font-weight: bold;
-    background-color: silver;
+    background-color: white;
+    border: 1px solid #dbdbdb;
 }
 
 .btn-radius {
@@ -368,4 +345,874 @@ a {
 .btn-home:hover {
     background: black;
     color: white;
+}
+
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.text-footer {
+    background-color: black;
+}
+
+.footer {
+    font-family: "Noto Serif", serif;
+}
+
+
+/* ==========================================================================
+   Sign-In
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap");
+.page-content {
+    width: 100%;
+    margin: 0 auto;
+    /* background-image: -moz-linear-gradient( 136deg, rgb(0, 0, 70) 0%, rgb(28, 181, 224) 100%);
+    background-image: -webkit-linear-gradient( 136deg, rgb(0, 0, 70) 0%, rgb(28, 181, 224) 100%);
+    background-image: -ms-linear-gradient( 136deg, rgb(0, 0, 70) 0%, rgb(28, 181, 224) 100%); */
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -o-justify-content: center;
+    -ms-justify-content: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -o-align-items: center;
+    -ms-align-items: center;
+    -moz-align-items: center;
+    -webkit-align-items: center;
+}
+
+.form-v6-content {
+    background: #fff;
+    width: 1100px;
+    border-radius: 8px;
+    -o-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    margin-top: 1%;
+    margin-bottom: 3%;
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-weight: 700;
+    position: relative;
+    display: flex;
+    display: -webkit-flex;
+    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -o-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -ms-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
+.form-v6-content .form-left {
+    margin-bottom: -6px;
+}
+
+.form-v6-content .form-left img {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    height: 600px;
+}
+
+.form-v6-content .form-detail {
+    padding: 30px 60px;
+    position: relative;
+    width: 100%;
+}
+
+.form-v6-content .form-detail h2 {
+    color: #333;
+    font-size: 35px;
+    text-align: center;
+    position: relative;
+    padding: 6px 0 0;
+    margin-bottom: 47px;
+}
+
+.form-v6-content .form-row {
+    width: 100%;
+}
+
+.form-v6-content .form-detail .form-row-last {
+    text-align: center;
+}
+
+.form-v6-content .form-detail .input-text {
+    margin-bottom: 35px;
+}
+
+.form-v6-content .form-detail input {
+    width: 100%;
+    padding: 0px 15px 10px 15px;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #e5e5e5;
+    appearance: unset;
+    -moz-appearance: unset;
+    -webkit-appearance: unset;
+    -o-appearance: unset;
+    -ms-appearance: unset;
+    outline: none;
+    -moz-outline: none;
+    -webkit-outline: none;
+    -o-outline: none;
+    -ms-outline: none;
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.form-v6-content .form-detail .form-row input:focus {
+    border-bottom: 2px solid #fe892a;
+}
+
+.form-v6-content .form-detail .register {
+    background: black;
+    border-radius: 6px;
+    -o-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    width: 160px;
+    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -o-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -ms-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+    border: none;
+    margin: 11px 0 50px 0px;
+    cursor: pointer;
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.form-v6-content .form-detail .register:hover {
+    background: white;
+    color: black;
+}
+
+.form-v6-content .form-detail .form-row-last input {
+    padding: 13px;
+}
+
+input::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #666;
+    font-size: 16px;
+}
+
+input::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #666;
+    font-size: 16px;
+}
+
+input:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #666;
+    font-size: 16px;
+}
+
+input:-moz-placeholder {
+    /* Firefox 18- */
+    color: #666;
+    font-size: 16px;
+}
+
+
+/* Responsive */
+
+@media screen and (max-width: 991px) {
+    .form-v6-content .form-left {
+        width: 100%;
+    }
+    .form-v6-content .form-left img {
+        width: 100%;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 8px;
+    }
+    .form-v6-content .form-detail {
+        padding: 30px 20px 30px 20px;
+        width: auto;
+    }
+    .form-v6-content .form-detail .form-row input {
+        width: 96%;
+    }
+    .form-v6-content .form-detail .register {
+        margin-bottom: 80px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .form-v6-content .form-detail .form-row input {
+        width: 94%;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .form-v6-content .form-detail .form-row input {
+        width: 89%;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+section .img-bg {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+section .img-bg img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+section .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+section .content .form {
+    width: 50%;
+}
+
+section .content .form h2 {
+    color: #000000;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 4px solid #974141;
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+section .content .form .input-form {
+    margin-bottom: 20px;
+}
+
+section .content .form .input-form span {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #000000;
+    letter-spacing: 1px;
+}
+
+section .content .form .input-form input {
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid #974141;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #974141;
+    background: transparent;
+    border-radius: 30px;
+}
+
+section .content .form .input-form input[type="submit"] {
+    background: #974141;
+    color: rgb(30, 27, 27);
+    outline: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 1px rgba(107, 51, 51, 0.12), 0 2px 2px rgba(74, 3, 3, 0.12), 0 4px 4px rgba(50, 27, 27, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12), 0 16px 16px rgba(0, 0, 0, 0.12);
+}
+
+section .content .form .input-form input[type="submit"]:hover {
+    background: #c44f4f;
+}
+
+section .content .form .remember-login {
+    margin-bottom: 10px;
+    color: #000000;
+    font-size: 14px;
+}
+
+section .content .form .input-form p {
+    color: #4cafdd;
+}
+
+section .content .form .input-form p a {
+    color: #974141;
+}
+
+section .content .form h3 {
+    color: #4cafdd;
+    text-align: center;
+    margin: 80px 0 10px;
+    font-weight: 500;
+}
+
+section .content .form .login-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section .content .form .login-icon li {
+    list-style: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section .content .form .login-icon li:nth-child(1) {
+    color: #3b5999;
+}
+
+section .content .form .login-icon li:nth-child(2) {
+    color: #dd4b39;
+}
+
+section .content .form .login-icon li:nth-child(3) {
+    color: #55acee;
+}
+
+section .content .form .login-icon li i {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    section .img-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    section .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    section .content .form {
+        width: 100%;
+        padding: 40px;
+        background: rgba(255 255 255 / 0.9);
+        margin: 50px;
+    }
+    section .content .form h3 {
+        color: #607d8b;
+        text-align: center;
+        margin: 30px 0 10px;
+        font-weight: 500;
+    }
+}
+
+
+/* ==========================================================================
+   Login
+   ========================================================================== */
+
+section {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+}
+
+section .img-bg {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+section .img-bg img {
+    position: absolute;
+    margin-left: 20%;
+    width: 70%;
+    height: 100%;
+    object-fit: cover;
+}
+
+section .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 8%;
+    width: 50%;
+    height: 100%;
+}
+
+section .content .form {
+    width: 50%;
+}
+
+section .content .form h2 {
+    color: #000000;
+    font-weight: 500;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 4px solid #dd4b39;
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+section .content .form .input-form {
+    margin-bottom: 20px;
+}
+
+section .content .form .input-form span {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #000000;
+    letter-spacing: 1px;
+}
+
+section .content .form .input-form input {
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid #dd4b39;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: black;
+    background: transparent;
+    border-radius: 30px;
+}
+
+section .content .form .input-form input[type="submit"] {
+    background: dd4b39;
+    color: white;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    /* box-shadow: 0 1px 1px rgba(107, 51, 51, 0.12), 0 2px 2px rgba(74, 3, 3, 0.12), 0 4px 4px rgba(50, 27, 27, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12), 0 16px 16px rgba(0, 0, 0, 0.12); */
+}
+
+section .content .form .input-form input[type="submit"]:hover {
+    background: white;
+    color: #dd4b39;
+}
+
+section .content .form .remember-login {
+    margin-bottom: 10px;
+    color: #000000;
+    font-size: 14px;
+}
+
+section .content .form .input-form p {
+    color: #4cafdd;
+}
+
+section .content .form .input-form p a {
+    color: #dd4b39;
+    font-weight: bold;
+}
+
+section .content .form h3 {
+    color: #4cafdd;
+    text-align: center;
+    margin: 80px 0 10px;
+    font-weight: 500;
+}
+
+section .content .form .login-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section .content .form .login-icon li {
+    list-style: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section .content .form .login-icon li:nth-child(1) {
+    color: #3b5999;
+}
+
+section .content .form .login-icon li:nth-child(2) {
+    color: #dd4b39;
+}
+
+section .content .form .login-icon li:nth-child(3) {
+    color: #55acee;
+}
+
+section .content .form .login-icon li i {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    section .img-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    section .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    section .content .form {
+        width: 100%;
+        padding: 40px;
+        background: rgba(255 255 255 / 0.9);
+        margin: 50px;
+    }
+    section .content .form h3 {
+        color: #607d8b;
+        text-align: center;
+        margin: 30px 0 10px;
+        font-weight: 500;
+    }
+}
+
+
+/* ==========================================================================
+   Cart
+   ========================================================================== */
+
+@media (min-width: 1025px) {
+    .h-custom {
+        height: 100vh !important;
+    }
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+}
+
+.card-registration .select-arrow {
+    top: 13px;
+}
+
+.bg-grey {
+    background-color: #eae8e8;
+}
+
+section .form-control {
+    width: 300%;
+}
+
+.back:hover {
+    font-weight: 501;
+}
+
+.button-60 {
+    align-items: center;
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.375em;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #363636;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    height: 2.5em;
+    justify-content: center;
+    line-height: 1.5;
+    padding: calc(0.5em - 1px) 1em;
+    position: relative;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.btnCheckout:hover {
+    color: black;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+}
+
+
+/* ==========================================================================
+   Detail Page
+   ========================================================================== */
+
+.name {
+    font-family: "Noto Serif", serif;
+    margin-bottom: 0;
+    line-height: 14px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.product-price-discount {
+    font-size: 22px;
+    font-weight: 400;
+    padding: 10px 0;
+    clear: both;
+}
+
+.product-price-discount span.line-through {
+    text-decoration: line-through;
+    margin-left: 10px;
+    font-size: 14px;
+    vertical-align: middle;
+    color: #a5a5a5;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.product-info {
+    width: 100%;
+}
+
+.reviews-counter {
+    font-size: 13px;
+}
+
+.reviews-counter span {
+    vertical-align: -2px;
+}
+
+.rate {
+    float: left;
+    padding: 0 10px 0 0;
+}
+
+.rate:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
+}
+
+.rate:not(:checked)>label {
+    float: right;
+    width: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 21px;
+    color: #ccc;
+    margin-bottom: 0;
+    line-height: 21px;
+}
+
+.rate:not(:checked)>label:before {
+    content: "\2605";
+}
+
+.rate>input:checked~label {
+    color: #ffc700;
+}
+
+.rate:not(:checked)>label:hover,
+.rate:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.rate>input:checked+label:hover,
+.rate>input:checked+label:hover~label,
+.rate>input:checked~label:hover,
+.rate>input:checked~label:hover~label,
+.rate>label:hover~input:checked~label {
+    color: #c59b08;
+}
+
+.product-dtl {
+    font-family: "Playfair Display", serif;
+    font-size: 14px;
+    line-height: 24px;
+    color: #7a7a7a;
+}
+
+.product-dtl .form-control {
+    font-size: 15px;
+}
+
+.product-dtl label {
+    line-height: 16px;
+    font-size: 15px;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.product-count {
+    margin-top: 15px;
+}
+
+.product-count .qtyminus,
+.product-count .qtyplus {
+    width: 34px;
+    height: 34px;
+    background: #212529;
+    text-align: center;
+    font-size: 19px;
+    line-height: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.product-count .qtyminus {
+    border-radius: 3px 0 0 3px;
+}
+
+.product-count .qtyplus {
+    border-radius: 0 3px 3px 0;
+}
+
+.product-count .qty {
+    width: 60px;
+    text-align: center;
+}
+
+.round-black-btn {
+    border-radius: 4px;
+    background: #212529;
+    color: #fff;
+    padding: 7px 45px;
+    display: inline-block;
+    margin-top: 20px;
+    border: solid 2px #212529;
+    transition: all 0.5s ease-in-out 0s;
+}
+
+.round-black-btn:hover,
+.round-black-btn:focus {
+    background: transparent;
+    color: #212529;
+    text-decoration: none;
+}
+
+.product-info-tabs {
+    margin-top: 25px;
+}
+
+.product-info-tabs .nav-tabs {
+    border-bottom: 2px solid #d8d8d8;
+}
+
+.product-info-tabs .nav-tabs .nav-item {
+    margin-bottom: 0;
+}
+
+.product-info-tabs .nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #323232;
+}
+
+.product-info-tabs .nav-tabs .nav-item .nav-link:hover {
+    border: none;
+}
+
+.product-info-tabs .nav-tabs .nav-item.show .nav-link,
+.product-info-tabs .nav-tabs .nav-link.active,
+.product-info-tabs .nav-tabs .nav-link.active:hover {
+    border: none;
+    border-bottom: 2px solid #d8d8d8;
+    font-weight: bold;
+}
+
+.product-info-tabs .tab-content .tab-pane {
+    padding: 30px 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #7a7a7a;
+}
+
+.review-form .form-group {
+    clear: both;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.review-form .rate {
+    float: none;
+    display: inline-block;
+}
+
+.review-heading {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.review-form .form-control {
+    font-size: 14px;
+}
+
+.review-form input.form-control {
+    height: 40px;
+}
+
+.review-form textarea.form-control {
+    resize: none;
+}
+
+.review-form .round-black-btn {
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.form-size {
+    width: 19%;
+}
+
+.show {
+    font-family: "Noto Serif", serif;
 }
