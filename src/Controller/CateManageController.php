@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrderController extends AbstractController
+class CateManageController extends AbstractController
 {
-    #[Route('/order', name: 'app_order')]
+    #[Route('/cate/manage', name: 'app_cate_manage')]
     public function index(): Response
     {
-        return $this->render('order/index.html.twig', [
-            'controller_name' => 'OrderController',
+        return $this->render('cate_manage/index.html.twig', [
+            'controller_name' => 'CateManageController',
         ]);
     }
 }

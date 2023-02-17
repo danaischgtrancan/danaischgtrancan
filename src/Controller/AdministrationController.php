@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Entity\ProSup;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdministrationController extends AbstractController
 {
@@ -14,16 +19,16 @@ class AdministrationController extends AbstractController
     {
         $this->repo = $repo;
     }
-    /**
-     * @Route("/product", name="proManage_show")
-     */
-    public function readAllAction(): Response
-    {
-        $products = $this->repo->findAll();
-        return $this->render('product/index.html.twig', [
-            'products' => $products
-        ]);
-    }
+    // /**
+    //  * @Route("/product", name="product_show")
+    //  */
+    // public function readAllAction(): Response
+    // {
+    //     $products = $this->repo->findAll();
+    //     return $this->render('product/index.html.twig', [
+    //         'products' => $products
+    //     ]);
+    // }
 
 
     /**
@@ -50,11 +55,5 @@ class AdministrationController extends AbstractController
         return $this->render('admin/supplier.html.twig');
     }
 
-    /**
-     * @Route("/productManagement", name="pro_page")
-     */
-    public function productAction(): Response
-    {
-        return $this->render('admin/product.html.twig');
-    }
+    
 }

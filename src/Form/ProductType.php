@@ -2,13 +2,16 @@
 
 namespace App\Form;
 
-use Symfony\Component\Form\AbstractType;
+use App\Entity\Size;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
-
 
 class ProductType extends AbstractType
 {
@@ -16,6 +19,7 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('descriptions', TextType::class)
             ->add(
                 'status',
                 ChoiceType::class,
@@ -31,16 +35,15 @@ class ProductType extends AbstractType
                     'expanded' => true
                 )
             )
-            ->add('descriptions', TextType::class)
-            ->add('price', TextType::class)
+            ->add('price', NumberType::class)
             ->add(
                 'for_gender',
                 ChoiceType::class,
                 array(
                     'choices' => array(
                         // So nut radio button
-                        ' Mens Clothing' => '0',
-                        'Womens Clothing' => '1'
+                        ' Mens Clothing' => 0,
+                        'Womens Clothing' => 1
                     ),
 
                     // Cho chon nhieu hay khong
@@ -59,18 +62,6 @@ class ProductType extends AbstractType
             //     ),
             // ])
             ->add('image', FileType::class)
-            ->add('size', ChoiceType::class,
-            array(
-                'choices' => array(
-                    // So nut radio button
-                    'S' => 's',
-                    'M' => 'm',
-                    'L' => 'l'
-                ),
-
-                // Cho chon nhieu hay khong
-                'multiple' => false
-            ))
             ->add('save', SubmitType::class, [
                 'label' => "Add"
             ]);

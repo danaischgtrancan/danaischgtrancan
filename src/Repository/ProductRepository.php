@@ -49,7 +49,7 @@ class ProductRepository extends ServiceEntityRepository
 //            ->setParameter('val', $value)
 //            ->orderBy('p.id', 'ASC')
 //            ->setMaxResults(10)
-//            ->getQuery()
+//            ->getQuery()  
 //            ->getResult()
 //        ;
 //    }
