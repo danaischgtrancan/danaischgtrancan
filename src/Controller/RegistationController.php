@@ -16,38 +16,37 @@ class RegistationController extends AbstractController
     /**
      * @Route("/register", name="signIn_page")
      */
-    public function register(Request $req, UserPasswordHasherInterface $userPasswordHasher,
-     EntityManagerInterface $entityManager): Response
-    {
+    public function register(
+        Request $req,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager
+    ): Response {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($req);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
-                    $user, $form->get('password')->getData()
+                    $user,
+                    $form->get('password')->getData()
                 )
-                );
-                $user->setRoles(['ROLE_USER']);
+            );
+            $user->setRoles(['ROLE_USER']);
 
-                $entityManager->persist($user);
-                $entityManager->flush();
-                //  do anything eslse you nedd here, like send and email
 
-                return $this->redirectToRoute('logout_page');
+            $entityManager->persist($user);
+            $entityManager->flush();
+            //  do anything eslse you nedd here, like send and email
+
+            return $this->redirectToRoute('logIn_page')  ;
         }
-            return $this->render('registation/index.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('registation/index.html.twig', [
+            'registrationForm' => $form->createView()
         ]);
-    }
+        // return $this->redirectToRoute('signIn_page');
 
-    /**
-     * @Route("/logout", name="logout_page")
-     */
-    public function logOutAction(): Response
-    {
-        return $this->render('registation/login.html.twig');
     }
+   
 }

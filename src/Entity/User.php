@@ -17,7 +17,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -29,33 +29,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dayOfBirth = null;
-
-    #[ORM\Column]
-    private ?int $phoneNumber = null;
-
-    #[ORM\Column]
-    private ?bool $gender = null;
+    private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $FullName = null;
+    private ?string $phone = null;
+
+    #[ORM\Column]
+    private ?bool $gender = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $fullname = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -113,38 +113,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getDayOfBirth(): ?\DateTimeInterface
+    public function getBirthday(): ?\DateTimeInterface
     {
-        return $this->dayOfBirth;
+        return $this->birthday;
     }
 
-    public function setDayOfBirth(\DateTimeInterface $dayOfBirth): self
+    public function setBirthday(\DateTimeInterface $birthday): self
     {
-        $this->dayOfBirth = $dayOfBirth;
-
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?int
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(int $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function isGender(): ?bool
-    {
-        return $this->gender;
-    }
-
-    public function setGender(bool $gender): self
-    {
-        $this->gender = $gender;
+        $this->birthday = $birthday;
 
         return $this;
     }
@@ -161,14 +137,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFullName(): ?string
+    public function getPhone(): ?string
     {
-        return $this->FullName;
+        return $this->phone;
     }
 
-    public function setFullName(string $FullName): self
+    public function setPhone(string $phone): self
     {
-        $this->FullName = $FullName;
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function isGender(): ?bool
+    {
+        return $this->gender;
+    }
+
+    public function setGender(bool $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getFullname(): ?string
+    {
+        return $this->fullname;
+    }
+
+    public function setFullname(string $fullname): self
+    {
+        $this->fullname = $fullname;
 
         return $this;
     }

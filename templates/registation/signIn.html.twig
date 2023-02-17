@@ -11,13 +11,20 @@
 			<div class="form-left">
 				<img src="images/Signin.png" alt="form">
 			</div>
+			 {{ form_start(registrationForm) }}
+
 			<form class="form-detail" action="#" method="post">
 				<h2>Register</h2>
 				<div class="form-row d-flex">
-					<input type="text" name="full-name" id="full-name" class="input-text me-2" placeholder="First Name" required autocomplete="off">
-					<input type="text" name="full-name" id="full-name" class="input-text ms-2" placeholder="Last Name" required autocomplete="off">
+								{{ form_label(registrationForm.FullName) }}
+
+				{{ form_widget(registrationForm.FullName, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="text" name="full-name" id="full-name" class="input-text me-2" placeholder="Full Name" required autocomplete="off"> #}
 				</div><div class="form-row">
-					<input type="text" name="your-email" id="your-email" class="input-text" placeholder="Username" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off">
+								{{ form_widget(registrationForm.email, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Username" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
 				</div>
                 <div class="form-row">
 					<input type="password" name="password" id="password" class="input-text" placeholder="Password" required autocomplete="off">
@@ -26,22 +33,38 @@
 					<input type="password" name="comfirm-password" id="comfirm-password" class="input-text" placeholder="Comfirm Password" required autocomplete="off">
 				</div>
                 <div class="form-row">
-					<input type="date" name="your-email" id="your-email" class="input-text" placeholder="Birthday" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off">
+				{{ form_widget(registrationForm.dayOfBirth, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="date" name="your-email" id="your-email" class="input-text" placeholder="Birthday" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
 				</div>
 				<div class="form-row">
-					<input type="text" name="your-email" id="your-email" class="input-text" placeholder="Telephone" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off">
+				{{ form_widget(registrationForm.phoneNumber, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Telephone" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
 				</div>
                 <div class="form-row">
-					<input type="text" name="your-email" id="your-email" class="input-text" placeholder="Email" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off">
+				{# {{ form_row(registrationForm.email, {'attr': {'class': 'input-text me-2'}}) }} #}
+
+					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Email" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
 				</div>
                 <div class="form-row">
-					<input type="text" name="your-email" id="your-email" class="input-text" placeholder="Address" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off">
+				{{ form_widget(registrationForm.address, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Address" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
 				</div>
-				
+				<div class="input-form text-center">
+						<p>You already have an account
+							<a href="{{path("logIn_page")}}">Log In</a>
+						</p>
+					</div>
 				<div class="form-row-last">
-					<input type="submit" name="register" class="register" value="Register">
+						{{ form_row(registrationForm.save, {'attr': {'class': 'input-text me-2'}}) }}
+
+					{# <input type="submit" name="register" class="register" value="Register"> #}
 				</div>
-			</form>
+				    {{ form_end(registrationForm) }}
+
+			{# </form> #}
 		</div>
 	</div>
 
