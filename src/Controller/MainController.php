@@ -17,7 +17,7 @@ class MainController extends AbstractController
     }
     
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="home_page")
      */
     public function homeAction(): Response
     {
