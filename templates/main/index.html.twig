@@ -71,17 +71,19 @@
 										</a>
 									</li>
 								</ul>
-								{# <form action="{{path('proDetail_page')}}">
-									<input type="hidden" name="pro_id" value="">
+								<form action="{{path('shoppingCart')}}" method="POST">
+									<input type="hidden" name="pro_id" value="{{p.name}}">
 									<input type="hidden" name="pro_quantity" value="1"/>
 									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
-								</form> #}
+								</form>
 							</div>
 							<div class="product-content">
 								<h3 class="title">
 									<a href="{{path('proDetail_page', {'id': p.id})}}">{{p.name}}</a>
 								</h3>
-								<div class="price"><a href="{{path('proDetail_page', {'id': p.id})}}">${{p.price}}</a></div>
+								<div class="price">
+									<a href="{{path('proDetail_page', {'id': p.id})}}">${{p.price}}</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -121,11 +123,11 @@
 										</a>
 									</li>
 								</ul>
-								{# <form action="{{path('proDetail_page')}}">
-									<input type="hidden" name="pro_id" value="">
+								<form action="{{path('shoppingCart')}}" method="POST">
+									<input type="hidden" name="pro_id" value="{{p.id}}">
 									<input type="hidden" name="pro_quantity" value="1"/>
 									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
-								</form> #}
+								</form>
 							</div>
 							<div class="product-content">
 								<h3 class="title">

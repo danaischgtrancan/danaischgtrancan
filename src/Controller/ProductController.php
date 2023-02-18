@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/product")
+ */
 class ProductController extends AbstractController
 {
     private ProductRepository $repo;
@@ -17,7 +20,7 @@ class ProductController extends AbstractController
         $this->repo = $repo;
     }
     /**
-     * @Route("/product", name="showProduct")
+     * @Route("/", name="showProduct")
      */
     public function showProductAction(): Response
     {
@@ -35,9 +38,21 @@ class ProductController extends AbstractController
     {
         $product = $this->repo->find($id);
         // return $this->json(['product' => $product]);
-        
+
         return $this->render('product/detail.html.twig', [
             'product' => $product
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="searchPro_page")
+     */
+    public function searchProductAction(string $search): Response
+    {
+        $products = $this->repo->findByName($search);
+
+        return $this->render('product/show.html.twig', [
+            'products' => $products
         ]);
     }
 }

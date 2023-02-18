@@ -55,11 +55,9 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<!-- Search -->
-				<form action="{{path('showProduct')}}" class="d-flex ms-4 mb-2">
+				<form action="{{path('searchPro_page')}}" class="d-flex ms-4 mb-2">
 					<input type="text" class="form-control rounded search" name="searchValue" placeholder="Search..." aria-label="search" aria-describedby="search-addon"/>
-					<button type="submit" name="btnSearch" class="input-group-text border-0">
-						<i class="fas fa-search"></i>
-					</button>
+					<button type="submit" name="btnSearch" class="input-group-text border-0 fas fa-search"></button>
 				</form>
 				<!-- collapse: thu ra thu vào -->
 				<div
@@ -98,11 +96,11 @@
 									<a href="{{path('cus_profile')}}" class="dropdown-item">Profile</a>
 								</li>
 
-								<li>
+								{# <li>
 									<a href="{{path('order_page')}}" class="dropdown-item">Administration</a>
-								</li>
+								</li> #}
 								<li>
-									<a href="{{path('logout_page')}}" class="dropdown-item">Logout</a>
+									<a href="{{path('logIn_page')}}" class="dropdown-item">Logout</a>
 								</li>
 							</ul>
 						</div>

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/product")
+ * @Route("/admin/product")
  */
 
 class ProManageController extends AbstractController
@@ -24,12 +24,12 @@ class ProManageController extends AbstractController
         $this->repo = $repo;
     }
     /**
-     * @Route("/list", name="pro_page")
+     * @Route("/", name="pro_page")
      */
     public function productMangeAction(): Response
     {
         $p = new Product();
-        $productForm = $this->createForm(ProductType::class, $p);
+        // $productForm = $this->createForm(ProductType::class, $p);
 
         $products = $this->repo->findBy([], [
             'id' => 'DESC'
@@ -56,13 +56,12 @@ class ProManageController extends AbstractController
         // return $this->json($data);
 
         return $this->render('pro_manage/index.html.twig', [
-            'products' => $data, 
-            'productForm' => $productForm->createView()
+            'products' => $data
         ]);
     }
 
     /**
-     * @Route("/add", name="addPro")
+     * @Route("/new", name="addPro_page")
      */
     public function createAction(Request $req, SluggerInterface $slugger): Response
     {
@@ -72,19 +71,46 @@ class ProManageController extends AbstractController
 
         $productForm->handleRequest($req);
         if ($productForm->isSubmitted() && $productForm->isValid()) {
-            $imgFile = $productForm->get('file')->getData();
-            if ($imgFile) {
-                $newFilename = $this->uploadImage($imgFile, $slugger);
-                $p->setImage($newFilename);
-            }
-            $this->repo->save($p, true);
-            // return $this->json($form);
-            return $this->redirectToRoute('pro_show', [], Response::HTTP_SEE_OTHER);
-        }
-        // return $this->json($form);
+            $data = $productForm->getData($req);
+            $p->setName($data->getName());
+            $p->setDescriptions($data->getDescriptions());
+            $p->setPrice($data->getPrice());
+            $p->setStatus($data->isStatus());
+            $p->setImage($data->getImage());   
+            $p->setForGender($data->isForGender());
+            $p->setCategory($data->getCategory());
+            $p->setSupplier($data->getSupplier());
 
-        return $this->render("pro_manage/index.html.twig", [
-            'productForm' => $productForm->createView()
+            $imgFile = $productForm->get('image')->getData();
+
+            if ($imgFile && $imgFile != "") :
+                // Rename File Imange
+                $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
+                //  SluggerInterface $slugger
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imgFile->guessExtension();
+            endif;
+
+            // Services: thiết lập biến mt
+            try {
+                $imgFile->move(
+                    $this->getParameter('image_dir'),
+                    $newFilename
+                );
+            } catch (FileException $th) {
+                echo $th;
+            }
+            $p->setImage($newFilename);
+
+            $this->addFlash(
+                'success',
+                'New products have been added'
+            );
+        }
+        // return $this->json($p);
+
+        return $this->render("pro_manage/new.html.twig", [
+            'product' => $p
         ]);
     }
 
@@ -102,5 +128,25 @@ class ProManageController extends AbstractController
             echo $e;
         }
         return $newFilename;
+    }
+
+    // Update 
+    /**
+     * @Route("/edit/{id}", name="editPro_page")
+     */
+
+    public function editAction(Request $req, Product $pro): Response
+    {
+        $productForm = $this->createForm(ProductType::class, $pro);
+
+        $productForm->handleRequest($req);
+        if ($productForm->isSubmitted() && $productForm->isValid()) :
+            //  $repo->save($pro, true);
+            return new Response("Added id" . $pro->getId());
+
+        endif;
+        return $this->render('pro_manage/index.html.twig', [
+            'productForm' => $productForm->createView()
+        ]);
     }
 }

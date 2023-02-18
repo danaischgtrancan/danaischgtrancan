@@ -9,6 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+/**
+ * @Route("/admin/order")
+ */
 class OrderManageController extends AbstractController
 {
     private OrderRepository $repo;
@@ -18,7 +22,7 @@ class OrderManageController extends AbstractController
     }
 
     /**
-     * @Route("/order", name="order_page")
+     * @Route("/list", name="order_page")
      */    
     public function orderAction(): Response
     {

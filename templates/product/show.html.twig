@@ -105,8 +105,8 @@
 													</a>
 												</li>
 											</ul>
-											<form action="?page=shoppingcart" method="POST">
-												<input type="hidden" name="pro_id" value="SP01">
+											<form action="{{path('shoppingCart')}}" method="POST">
+												<input type="hidden" name="pro_id" value="{{p.id}}">
 												<input type="hidden" name="pro_quantity" value="1"/>
 												<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
 											</form>
