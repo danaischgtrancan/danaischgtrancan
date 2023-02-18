@@ -24,12 +24,12 @@ class ProManageController extends AbstractController
         $this->repo = $repo;
     }
     /**
-     * @Route("/list", name="pro_show")
+     * @Route("/list", name="pro_page")
      */
     public function productMangeAction(): Response
     {
         $p = new Product();
-        $form = $this->createForm(ProductType::class, $p);
+        $productForm = $this->createForm(ProductType::class, $p);
 
         $products = $this->repo->findBy([], [
             'id' => 'DESC'
@@ -46,35 +46,33 @@ class ProManageController extends AbstractController
                 'descriptions' => $p->getDescriptions(),
                 'price' => $p->getPrice(),
                 'forGender' => $p->isForGender(),
-                'quantity' => $p->getQuantity(),
                 'category' => $p->getCategory(),
-                'proSups' => $p->getProSups(),
-                // 'proSizes' => $p->getProSizes(),
+                'supplier' => $p->getSupplier(),
                 'image' => $p->getImage(),
 
             ];
         endforeach;
 
-        return $this->json($data);
+        // return $this->json($data);
 
-        // return $this->render('admin/product.html.twig', [
-        //     'products' => $data, 
-        //     'form' => $form->createView()
-        // ]);
+        return $this->render('pro_manage/index.html.twig', [
+            'products' => $data, 
+            'productForm' => $productForm->createView()
+        ]);
     }
 
     /**
-     * @Route("/add", name="pro_page", methods="POST")
+     * @Route("/add", name="addPro")
      */
     public function createAction(Request $req, SluggerInterface $slugger): Response
     {
 
         $p = new Product();
-        $form = $this->createForm(ProductType::class, $p);
+        $productForm = $this->createForm(ProductType::class, $p);
 
-        $form->handleRequest($req);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imgFile = $form->get('file')->getData();
+        $productForm->handleRequest($req);
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $imgFile = $productForm->get('file')->getData();
             if ($imgFile) {
                 $newFilename = $this->uploadImage($imgFile, $slugger);
                 $p->setImage($newFilename);
@@ -85,8 +83,8 @@ class ProManageController extends AbstractController
         }
         // return $this->json($form);
 
-        return $this->render("admin/product.html.twig", [
-            'form' => $form->createView()
+        return $this->render("pro_manage/index.html.twig", [
+            'productForm' => $productForm->createView()
         ]);
     }
 

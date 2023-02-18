@@ -15,53 +15,53 @@
 			</div>
 		</div>
 		<div class="container-boder">
-			{{ form_start(form) }}
+			{{ form_start(productForm) }}
 			<div class="col-md-12">
 				<div class="row">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="forms-inputs mt-3">
-								{{ form_label(form.name) }}
-								{{ form_widget(form.name, {'attr':{'autocomplete': 'off'}}) }}
+								{{ form_label(productForm.name) }}
+								{{ form_widget(productForm.name, {'attr':{'autocomplete': 'off'}}) }}
 								{# <div class="invalid-feedback">A valid email is required!</div> #}
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="forms-inputs mt-3">
-								{{ form_label(form.descriptions) }}
-								{{ form_widget(form.descriptions, {'attr':{'autocomplete': 'off'}}) }}
+								{{ form_label(productForm.descriptions) }}
+								{{ form_widget(productForm.descriptions, {'attr':{'autocomplete': 'off'}}) }}
 								{# <div class="invalid-feedback">A valid email is required!</div> #}
 							</div>
 						</div>
 
 						<div class="col-md-3">
 							<div class="forms-inputs mt-3">
-								{{ form_label(form.price) }}
-								{{ form_widget(form.price, {'attr':{'autocomplete': 'off'}}) }}
-								{{ form_errors(form.price) }}
+								{{ form_label(productForm.price) }}
+								{{ form_widget(productForm.price, {'attr':{'autocomplete': 'off'}}) }}
+								{{ form_errors(productForm.price) }}
 							</div>
 						</div>
 
 						<div class="col-md-3">
 							<div class="forms-inputs mt-3">
-								{{ form_label(form.quantity) }}
-								{{ form_widget(form.quantity, {'attr':{'autocomplete': 'off'}}) }}
-								{{ form_errors(form.quantity) }}
+								{{ form_label(productForm.quantity) }}
+								{{ form_widget(productForm.quantity, {'attr':{'autocomplete': 'off'}}) }}
+								{{ form_errors(productForm.quantity) }}
 							</div>
 						</div>
 
 						<div class="col-md-3 mb-3">
 							<div class="ms-3 mt-3">
-								{{ form_label(form.for_gender) }}
-								{{ form_widget(form.for_gender) }}
+								{{ form_label(productForm.for_gender) }}
+								{{ form_widget(productForm.for_gender) }}
 							</div>
 						</div>
 
 						<div class="col-md-3 mb-3">
 							<div class="ms-3 mt-3">
-								{{ form_label(form.status) }}
-								{{ form_widget(form.status) }}
+								{{ form_label(productForm.status) }}
+								{{ form_widget(productForm.status) }}
 							</div>
 						</div>
 
@@ -69,103 +69,97 @@
 							<div class="forms-inputs mt-2 d-flex">
 								<div class="row">
 									<div class="col-lg-4">
-										{{ form_label(form.image, 'Choose Image:', {
+										{{ form_label(productForm.image, 'Choose Image:', {
 									'label_attr': {'class': 'me-3 ms-3'}
 									}) 
 									}}
 									</div>
 									<div class="col-lg-8">
-										{{ form_widget(form.image) }}
+										{{ form_widget(productForm.image) }}
 									</div>
 
 								</div>
-								{# <label class="me-3 ms-3">Choose Image:</label>
-																																																																																																																																																																																																																																																											<input type="file" name="file_image" id="Image" class="form-control img"/> #}
 							</div>
 						</div>
-
 					</div>
-
-					{# <div class="col-md-6">
-																																																																																					<div class="dropdown">
-																																																																																						<div class="forms-inputs mt-3">
-																																																																																							<input class="btn dropdown-toggle" type="button" id="dropdownForm" data-toggle="dropdown" aria-expanded="false">
-																																																																																							<span>Size</span>
-																																																																																						</input>
-																																																																																						<ul class="dropdown-menu" aria-labelledby="dropdownForm">
-																																																																																							<li>
-																																																																																								<a class="dropdown-item" href="#">S</a>
-																																																																																							</li>
-																																																																																							<li>
-																																																																																								<a class="dropdown-item" href="#">M</a>
-																																																																																							</li>
-																																																																																							<li>
-																																																																																								<a class="dropdown-item" href="#">L</a>
-																																																																																							</li>
-																																																																																						</ul>
-																																																																																					</div>
-																																																																																				</div> #}
-
+					<div class="col-md-6">
+						<div class="dropdown">
+							<div class="forms-inputs mt-3">
+								{{ form_label(productForm.category)
+								}}
+								<div class="col-lg-12">
+									{{ form_widget(productForm.category) }}
+								</div>
+								{# <ul class="dropdown-menu" aria-labelledby="dropdownForm">
+									<li>
+										<a class="dropdown-item" href="#">S</a>
+									</li>
+								</ul> #}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="add mt-3">
+							{{form_row(productForm.save, {'attr':{'class': 'btn btn-dark me-4'}})}}
+						</div>
+					</div>
+					{{ form_end(productForm) }}
 				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="add mt-3">{# {{form_row(form.save, {'attr':{'class': 'btn btn-dark me-4'}})}} #}
-					{# <button type="button" class="btn btn-dark me-4">Add</button> #}
-				</div>
-			</div>
-			{{ form_end(form) }}
+
+				<table class="mt-2 table table-bordered">
+					<div>
+						<h5>
+							Product List</h5>
+					</div>
+					<thead class="bg-dark text-white text-center">
+						<tr>
+							<th scope="col">Product ID</th>
+							<th scope="col">Product Name</th>
+							<th scope="col">Status</th>
+							<th scope="col">Descriptions</th>
+							<th scope="col">Price</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Category</th>
+							<th scope="col">Image</th>
+							{# <th scope="col">Supplier</th> #}
+
+							{# Edit, Delete #}
+							<th scope="col">Edit</th>
+							<th scope="col">Delete</th>
+							{# Edit, Delete #}
+
+						</tr>
+					</thead>
+					{% for p in products %}
+						<tr class="text-center align-middle">
+							<th scope="row">{{p.id}}</th>
+							<td>{{p.name}}</td>
+							<td>{{p.status}}</td>
+							<td>{{p.descriptions}}</td>
+							<td>{{p.price}}</td>
+							<td>{{p.quantity}}</td>
+							<td>{{p.category.name}}</td>
+							{# <td>{{p.proSups.supplier.name}}</td> #}
+							<td>
+								<img src="{{asset('images/Dresses.png')}}" width="100" height="auto" alt="" class="mx-3">
+							</td>
+
+							{# Edit, Delete #}
+							<td>
+								<a href="">
+									<i class="bi bi-pencil-square" style="color: black;"></i>
+								</a>
+							</td>
+							<td>
+								<a href="">
+									<i class="bi bi-trash3" style="color: black;"></i>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
 		</div>
-
-		<table class="mt-2 table table-bordered">
-			<div>
-				<h5>
-					Product List</h5>
-			</div>
-			<thead class="bg-dark text-white text-center">
-				<tr>
-					<th scope="col">Product ID</th>
-					<th scope="col">Product Name</th>
-					<th scope="col">Image</th>
-					<th scope="col">Descriptions</th>
-					<th scope="col">Price</th>
-					<th scope="col">Quantity</th>
-					<th scope="col">Status</th>
-					<th scope="col">Category</th>
-					<th scope="col">Supplier</th>
-
-					{# Edit, Delete #}
-					<th scope="col">Edit</th>
-					<th scope="col">Delete</th>
-					{# Edit, Delete #}
-
-				</tr>
-			</thead>
-			{% for p in products %}
-				<tr>
-					<th scope="row">{{p.id}}</th>
-					<td>{{p.name}}</td>
-					<td>{{p.status}}</td>
-					<td>{{p.descriptions}}</td>
-					<td>{{p.price}}</td>
-					<td>{{p.quantity}}</td>
-					<td>{{p.category.name}}</td>
-					<td>{{p.proSups.supplier.name}}</td>
-					<td>{{p.image}}</td>
-
-					{# Edit, Delete #}
-					<td class="text-center align-middle">
-						<a href="">s
-							<i class="bi bi-pencil-square" style="color: black;"></i>
-						</a>
-					</td>
-					<td class="text-center align-middle">
-						<a href="">
-							<i class="bi bi-trash3" style="color: black;"></i>
-						</a>
-					</td>
-				</tr>
-			{% endfor %}
-
-		</tbody>
-	</table>
-</div></div></div></section>{% endblock %}
+	</div>
+</div></section>{% endblock %}

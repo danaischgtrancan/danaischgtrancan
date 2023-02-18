@@ -32,14 +32,6 @@ class AdministrationController extends AbstractController
 
 
     /**
-     * @Route("/order", name="order_page")
-     */
-    public function orderAction(): Response
-    {
-        return $this->render('admin/order.html.twig');
-    }
-
-    /**
      * @Route("/category", name="cate_page")
      */
     public function categoryAction(): Response

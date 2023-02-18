@@ -20,7 +20,7 @@ class MainController extends AbstractController
      */
     public function homeAction(): Response
     {
-        $products = $this->repo->findAll();
+        $products = $this->repo->findBestSeller();
         return $this->render(
             'main/index.html.twig',
             [
@@ -34,8 +34,13 @@ class MainController extends AbstractController
      */
     public function showProductAction(): Response
     {
-        return $this->render('product/show.html.twig');
-    }
+        $products = $this->repo->findAll();
+        return $this->render(
+            'main/index.html.twig',
+            [
+                'products' => $products
+            ]
+        );    }
 
     /**
      * @Route("/danaischgStore", name="aboutUs")

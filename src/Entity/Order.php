@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,10 +21,27 @@ class Order
     private ?string $voucher = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateDiscount = null;
+    private ?\DateTimeInterface $date = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $deliveryLocal = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $priceDicount = null;
+    private ?string $total = null;
+
+    #[ORM\Column]
+    private ?bool $status = null;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderDetail::class)]
+    private Collection $orderDetails;
+
+    #[ORM\Column]
+    private ?int $percentDiscount = null;
+
+    public function __construct()
+    {
+        $this->orderDetails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -41,26 +60,93 @@ class Order
         return $this;
     }
 
-    public function getDateDiscount(): ?\DateTimeInterface
+
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->dateDiscount;
+        return $this->date;
     }
 
-    public function setDateDiscount(\DateTimeInterface $dateDiscount): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->dateDiscount = $dateDiscount;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getPriceDicount(): ?string
+    public function getDeliveryLocal(): ?string
     {
-        return $this->priceDicount;
+        return $this->deliveryLocal;
     }
 
-    public function setPriceDicount(string $priceDicount): self
+    public function setDeliveryLocal(string $deliveryLocal): self
     {
-        $this->priceDicount = $priceDicount;
+        $this->deliveryLocal = $deliveryLocal;
+
+        return $this;
+    }
+
+    public function getTotal(): ?string
+    {
+        return $this->total;
+    }
+
+    public function setTotal(string $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetail $orderDetail): self
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): self
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getOrders() === $this) {
+                $orderDetail->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPercentDiscount(): ?int
+    {
+        return $this->percentDiscount;
+    }
+
+    public function setPercentDiscount(int $percentDiscount): self
+    {
+        $this->percentDiscount = $percentDiscount;
 
         return $this;
     }

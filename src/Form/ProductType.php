@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use App\Entity\ProSup;
 use App\Entity\Size;
+use App\Entity\Supplier;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,12 +29,9 @@ class ProductType extends AbstractType
                 ChoiceType::class,
                 array(
                     'choices' => array(
-                        // So nut radio button
                         'On Sale' => '0',
                         'Sold Out' => '1'
                     ),
-
-                    // Cho chon nhieu hay khong
                     'multiple' => false,
                     'expanded' => true
                 )
@@ -41,27 +42,24 @@ class ProductType extends AbstractType
                 ChoiceType::class,
                 array(
                     'choices' => array(
-                        // So nut radio button
                         ' Mens Clothing' => 0,
                         'Womens Clothing' => 1
                     ),
-
-                    // Cho chon nhieu hay khong
                     'multiple' => false,
                     'expanded' => true
                 )
             )
-            ->add('quantity', NumberType::class)
-
-            // ->add('quantity', NumberType::class, [
-            //     'scale'    => 2,
-            //     'attr'     => array(
-            //         'min'  => 0,
-            //         'max'  => 9999.99,
-            //         'step' => 0.01,
-            //     ),
-            // ])
             ->add('image', FileType::class)
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choose an option'
+            ])
+            ->add('supplier', EntityType::class, [
+                'class' => Supplier::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choose an option'
+            ])
             ->add('save', SubmitType::class, [
                 'label' => "Add"
             ]);

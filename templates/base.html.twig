@@ -6,8 +6,8 @@
 			{% block title %}Danaischg
 			{% endblock %}
 		</title>
-		<link
-		rel="icon" href="data: \public\images\logo_store.png">
+		{# <link
+		rel="icon" href="data: \public\images\logo_store.png"> #}
 
 		<!-- Writing by Vietnamese -->
 		<meta charset="UTF-8"/>
@@ -17,7 +17,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Dana.ischg Store</title>
 		<link
-		rel="icon" href="images/logo_store.png"/>
+		rel="icon" href="{{asset('images\logo_store.png')}}"/>
 		<!-- bootstrap 5 cdn -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -43,7 +43,7 @@
 		{# Header #}
 		{% block header %}
 			<!-- Logo -->
-			<img class="navbar-brand" src="images/logo.png" onclick="window.location='/'"/>
+			<img class="navbar-brand" src="{{asset('images/logo.png')}}" onclick="window.location='/'"/>
 
 			<hr class="line"/>
 
@@ -86,7 +86,7 @@
 						<div class="dropdown">
 							<div class="d-flex">
 								<a class="hidden-arrow" href="#" id="navbarDropdownMenuAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<img src="images/account.png" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
+									<img src="{{asset('images/account.png')}}" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
 									<label for="account" class="ms-2 link-dark" style="font-size: 1rem;"></label>
 								</a>
 								<p class="mt-1 ">

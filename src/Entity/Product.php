@@ -31,14 +31,8 @@ class Product
     #[ORM\Column]
     private ?bool $forGender = null;
 
-    #[ORM\Column]
-    private ?int $quantity = null;
-
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Category $category = null;
-
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProSup::class)]
-    private Collection $proSups;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProSize::class)]
     private Collection $proSizes;
@@ -46,10 +40,16 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Supplier $supplier = null;
+
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: OrderDetail::class)]
+    private Collection $orderDetails;
+
     public function __construct()
     {
-        $this->proSups = new ArrayCollection();
         $this->proSizes = new ArrayCollection();
+        $this->orderDetails = new ArrayCollection();
 
     }
 
@@ -118,18 +118,6 @@ class Product
         return $this;
     }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -142,35 +130,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection<int, ProSup>
-     */
-    public function getProSups(): Collection
-    {
-        return $this->proSups;
-    }
-
-    public function addProSup(ProSup $proSup): self
-    {
-        if (!$this->proSups->contains($proSup)) {
-            $this->proSups->add($proSup);
-            $proSup->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProSup(ProSup $proSup): self
-    {
-        if ($this->proSups->removeElement($proSup)) {
-            // set the owning side to null (unless already changed)
-            if ($proSup->getProduct() === $this) {
-                $proSup->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, ProSize>
@@ -211,6 +170,47 @@ class Product
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): self
+    {
+        $this->supplier = $supplier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetail $orderDetail): self
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): self
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getProducts() === $this) {
+                $orderDetail->setProducts(null);
+            }
+        }
         return $this;
     }
 
