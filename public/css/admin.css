@@ -57,33 +57,54 @@
     position: relative;
 }
 
+<<<<<<< HEAD
 .forms-inputs span {
+=======
+
+/* 
+.forms-inputs lapel {
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
     position: absolute;
     top: -18px;
     left: 10px;
     background-color: #fff;
     /* padding: 5px 10px; */
+<<<<<<< HEAD
     font-size: 15px;
 }
 
 .forms-inputs input {
+=======
+
+font-size: 15px;
+
+}
+*/ .forms-inputs input {
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
     height: 40px;
     width: 100%;
     border: 2px solid #eee;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
 .img {
     margin-top: 8px;
     height: 40px;
     width: 100%;
     border: 2px solid #eee;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
 .forms-inputs input:focus {
     box-shadow: none;
     outline: none;
     border: 2px solid #000;
 }
+<<<<<<< HEAD
 
 .add {
     text-align: right;
@@ -93,6 +114,14 @@ i {
     color: white;
 }
 
+=======
+.add {
+    text-align: right;
+}
+i {
+    color: white;
+}
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
 .btn-rd {
     appearance: none;
     border-radius: 50%;
@@ -106,6 +135,7 @@ i {
     margin-left: 5%;
 }
 
+<<<<<<< HEAD
 
 /* Dropdown */
 
@@ -117,11 +147,23 @@ i {
     display: block;
 }
 
+=======
+/* Dropdown */
+.btn-rd:checked {
+    border: 6px solid black;
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
 ul li a {
     font-size: 90%;
     color: #0d0d0d;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fb012c7e4a1a99ca4eb006c79c812e1c3cffa007
 ul li a:hover {
     font-size: 100%;
 }

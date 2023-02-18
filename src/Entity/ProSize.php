@@ -19,6 +19,9 @@ class ProSize
     #[ORM\ManyToOne(inversedBy: 'proSizes')]
     private ?Size $size = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class ProSize
     public function setSize(?Size $size): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
