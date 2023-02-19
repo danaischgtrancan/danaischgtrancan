@@ -4,7 +4,9 @@
 
 {% endblock %}
 
-{% block body %}<link href="{{asset('css\header.css')}}" rel="stylesheet" media="all">
+{% block body %}
+
+	<link href="{{asset('css\header.css')}}" rel="stylesheet" media="all">
 
 	<script>
 		// Function to check if the user wants to delete or not.
@@ -17,20 +19,29 @@ return false;
 }
 	</script>
 	<section class="py-2 h-100">
-		<div class="container d-flex justify-content-center align-items-center">
+		<div class="me-5 d-flex justify-content-center align-items-center">
 			<div class="card card-registration card-registration-2" style="border: none;">
 				<div class="card-body p-0">
 					<div class="row g-0">
 						<div class="col-lg-8">
 							<div class="p-5">
-								<div class="d-flex justify-content-between align-items-center mb-5">
+								{% for message in app.flashes('success') %}
+									<div class="alert alert-success mt-5 text-center">
+										{{ message }}
+									</div>
+								{% endfor %}
+								<div class="d-flex justify-content-between align-items-center pb-5">
 									<h1 class="title-cart fw-bold mb-0 text-black">Shopping Cart</h1>
 								</div>
+								{% set count = 0 %}
+								{% set total = 0 %}
+
 								{% for c in carts %}
 									<hr class="my-2">
 									<div class="row mb-4 d-flex justify-content-between align-items-center">
 										<div class="col-md-2 col-lg-2 col-xl-2">
-											<img src="images/Dresses.png" class="img-fluid rounded-3" alt="">
+											{% set img = c.image %}
+											<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
 										</div>
 										<div class="col-md-3 col-lg-3 col-xl-3">
 											<h6 class="text-muted">{{c.cate_name}}</h6>
@@ -38,29 +49,30 @@ return false;
 											{{c.p_name}}</h6>
 									</div>
 									<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-										<button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-											<i class="fas fa-minus"></i>
-										</button>
-
-										<div>
-											<input id="form1" min="0" name="quantity" value="{{c.count}}" type="number" class="w-500 form-control form-control-sm"/>
+										<div class="product-count">
+											<form action="#" class="display-flex">
+												<div class="qtyminus">-</div>
+												<input type="text" name="quantity" value="{{c.count}}" class="qty">
+												<div class="qtyplus">+</div>
+											</form>
 										</div>
-
-										<button class="btn btn-link" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-											<i class="fas fa-plus"></i>
-										</button>
 									</div>
-									<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-										<h6 class="mb-0">{{c.total}}</h6>
+									<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
+										<h6 class="mb-0">{{c.unitTotal}}</h6>
 									</div>
 									<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-										<a href="{{path('shoppingCart')}}" onclick="return deleteConfirm()" class="text-muted">
+										<a href="{{path('deleteCart')}}" onclick="return deleteConfirm()" class="text-muted">
 											<i class="fas fa-times"></i>
 										</a>
 									</div>
 								</div>
-							{% endfor %}
 
+								{# Count unit total #}
+								{% set count = loop.length %}
+								{# Total #}
+								{% set total = total + c.unitTotal %}
+
+							{% endfor %}
 							<hr class="my-4">
 
 						</div>
@@ -71,7 +83,9 @@ return false;
 							<h3 class="title-cart fw-bold mb-5 mt-2 pt-1">Summary</h3>
 							<hr class="my-4">
 							<div class="d-flex justify-content-between mb-4">
-								<h5 class="text-uppercase">items 3</h5>
+								<h5 class="text-uppercase">items
+									{{count}}
+								</h5>
 							</div>
 
 							<h5 class="text-uppercase mb-3">Shipping</h5>
@@ -86,7 +100,7 @@ return false;
 
 							<div class="d-flex justify-content-between mb-5">
 								<h5 class="text-uppercase">Total price</h5>
-								<h5>$</h5>
+								<h5>${{total + 5}}.00</h5>
 							</div>
 
 							<form action="?page=payment" method="post">
@@ -94,8 +108,6 @@ return false;
 							</form>
 						</div>
 					</div>
-
-
 					<div class="pt-5">
 						<h6 class="mb-0 back">
 							<a href="?page=product" class="text-body">
@@ -106,4 +118,8 @@ return false;
 			</div>
 		</div>
 	</div>
-</section>{% endblock %}
+</section>
+<script>
+
+</script>
+{% endblock %}

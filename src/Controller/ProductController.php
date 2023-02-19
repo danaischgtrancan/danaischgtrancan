@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,15 +23,52 @@ class ProductController extends AbstractController
     /**
      * @Route("/", name="showProduct")
      */
-    public function showProductAction(): Response
+    public function showProductAction(Request $req): Response
     {
-        $products = $this->repo->findAll();
+        $title = "Not Found";
+
+        $sort_by = $req->query->get('sort_by');
+        $order = $req->query->get('order');
+        if (isset($sort_by)) :
+            if ($sort_by == 'name') :
+                $products = $this->repo->findByName($order);
+                $title = "Sort by name";
+            endif;
+            if ($sort_by == 'price') :
+                $products = $this->repo->findByPrice($order);
+                $title = "Sort by price";
+            endif;
+            if ($sort_by == 'category') :
+                $products = $this->repo->findByCate($order);
+                $title = "Sort by categpory";
+            endif;
+            if ($sort_by == 'supplier') :
+                $products = $this->repo->findBySupp($order);
+                $title = "Sort by supplier";
+            endif;
+            if ($sort_by == 'gender') :
+                if ($order == "men") :
+                    $products = $this->repo->findByGender(0);
+                    $title = "Sort by Men's clothing";
+                else :
+                    $products = $this->repo->findByGender(1);
+                    $title = "Sort by Women's clothing";
+                endif;
+            endif;
+        else :
+            $products = $this->repo->findAll();
+            $title = "All product";
+        endif;
+
         $catefories = $this->repo->findCategory();
+        $suppliers = $this->repo->findSupplier();
 
         // return $this->json(['products' => $products]);
         return $this->render('product/show.html.twig', [
             'products' => $products,
-            'catefories' => $catefories
+            'catefories' => $catefories,
+            'suppliers' => $suppliers,
+            'title' => $title
         ]);
     }
 
@@ -56,20 +94,6 @@ class ProductController extends AbstractController
 
         return $this->render('product/show.html.twig', [
             'products' => $products
-        ]);
-    }
-
-    /**
-     * @Route("/{value}", name="sortByName_page")
-     */
-    public function sortByNameAction(string $value): Response
-    {
-        $products = $this->repo->sortByName($value);
-        $catefories = $this->repo->findCategory();
-
-        return $this->render('product/show.html.twig', [
-            'products' => $products,
-            'catefories' => $catefories
         ]);
     }
 }

@@ -115,7 +115,7 @@ class ProManageController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'New products have been added'
+                'A products was updated'
             );
             return $this->redirectToRoute("pro_page");
         }
@@ -146,12 +146,12 @@ class ProManageController extends AbstractController
      * @Route("/edit/{id}", name="editPro_page")
      */
 
-    public function editAction(Request $req, SluggerInterface $slugger, ManagerRegistry $reg, Product $p): Response
+    public function editAction(Request $req, SluggerInterface $slugger, ManagerRegistry $reg, int $id): Response
     {
-        $entityManager = $reg->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($p);
+        $p = $this->repo->find($id);
+        $entity = $reg->getManager();
 
-        $productForm = $this->createForm(ProductType::class);
+        $productForm = $this->createForm(ProductType::class, $p);
         $productForm->handleRequest($req);
         // $entity = $reg->getManager();
 
@@ -185,8 +185,9 @@ class ProManageController extends AbstractController
                 echo $th;
             }
             $p->setImage($newFilename);
-            // $entity->persist($p);
-            // $entity->flush();
+            
+            $entity->persist($p);
+            $entity->flush();
 
             $this->addFlash(
                 'success',
@@ -195,7 +196,7 @@ class ProManageController extends AbstractController
             return $this->redirectToRoute("pro_page");
         }
 
-        return $this->render('pro_manage/new.html.twig', [
+        return $this->render('pro_manage/edit.html.twig', [
             'productForm' => $productForm->createView()
         ]);
     }

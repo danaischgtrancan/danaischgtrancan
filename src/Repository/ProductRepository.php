@@ -61,6 +61,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+
     /**
      * @return Product[] Returns an array of Product objects
      */
@@ -69,18 +70,82 @@ class ProductRepository extends ServiceEntityRepository
         // SELECT DISTINCT category.name FROM `product` JOIN category ON category_id = category.id
 
         return $this->createQueryBuilder('p')
-            ->select('DISTINCT c.name as cate_name', 'c.id as cate_id')
+            ->select('DISTINCT c.name as cate_name')
             ->innerJoin('p.category', 'c')
             ->getQuery()
             ->getArrayResult();
     }
+
     /**
      * @return Product[] Returns an array of Product objects
      */
-    public function sortByName($value): array
+    public function findSupplier(): array
+    {
+        // SELECT DISTINCT category.name FROM `product` JOIN category ON category_id = category.id
+
+        return $this->createQueryBuilder('p')
+            ->select('DISTINCT s.name as supp_name')
+            ->innerJoin('p.supplier', 's')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByName($value): array
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.name', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByPrice($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.price', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByCate($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.category', 'c')
+            ->andWhere('c.name = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findBySupp($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.supplier', 's')
+            ->andWhere('s.name = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByGender($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.forGender = :val')
+            ->setParameter('val', $value)
             ->getQuery()
             ->getArrayResult();
     }

@@ -16,14 +16,19 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('descriptions', TextType::class)
+            ->add('name', TextType::class, array(
+                'constraints' => new Length(array('min' => 3))
+            ))
+            ->add('descriptions', TextType::class, array(
+                // 'constraints' => new Length(array('min' => 30))
+            ))
             ->add(
                 'status',
                 ChoiceType::class,
@@ -49,7 +54,7 @@ class ProductType extends AbstractType
                     'expanded' => true
                 )
             )
-            ->add('image', FileType::class)
+            ->add('image', FileType::class, array('data_class' => null))
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',

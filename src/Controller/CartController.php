@@ -5,19 +5,22 @@ namespace App\Controller;
 use App\Entity\Cart;
 use App\Form\CartType;
 use App\Repository\CartRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 class CartController extends AbstractController
 {
     private CartRepository $repo;
     public function __construct(CartRepository $repo)
-   {
-      $this->repo = $repo;
-   }
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * @Route("/cart", name="shoppingCart")
      */
@@ -25,25 +28,43 @@ class CartController extends AbstractController
     {
         $c = $this->repo->showCart();
 
+        // return $this->json(['cart' => $c]);
         return $this->render('cart/index.html.twig', [
-            'carts'=> $c
+            'carts' => $c
         ]);
     }
 
-
-     /**
-     * @Route("/cart/{id}", name="cart")
+    /**
+     * @Route("/cart/delete",name="deleteCart")
      */
-    public function carstAction(Request $req, SluggerInterface $slugger, int $id): Response
-    {
-        return $this->render("cart/index.html.twig",[
-            // 'form' => $form->createView() 
-            $id
-        ]);
 
+    public function deleteCartAction(Cart $c, ManagerRegistry $reg): Response
+    {
+        $entityManager = $reg->getManager();
+
+        $user = $this->getUser();
+        $cart = $entityManager->getRepository(Cart::class)->removeCart($c, $user);
+
+        // $entityManager->remove($cart);
+        // $entityManager->flush();
+
+        // $this->addFlash(
+        //     'success',
+        //     'A product was deleted'
+        // );
+
+        // $c = $this->repo->showCart();
+
+        return $this->json($cart);
+        return $this->render('cart/index.html.twig', [
+            'carts' => $c
+        ]);
     }
 
-         /**
+
+
+
+    /**
      * @Route("/edit", name="category_edit",requirements={"id"="\d+"})
      */
     // public function editAction(Request $req, SluggerInterface $slugger): Response
@@ -62,14 +83,4 @@ class CartController extends AbstractController
     //     ]);
     // }
 
-    /**
-     * @Route("/delete",name="category_delete",requirements={"id"="\d+"})
-     */
-    
-    //  public function deleteAction(Request $req, Category $c): Response
-    //  {
-    //     $c = new Category();
-    //      $this->repo->remove($c,true);
-    //      return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
-    //  }
 }

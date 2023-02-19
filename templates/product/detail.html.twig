@@ -83,7 +83,9 @@
 								<option>XL</option>
 							</select>
 						</div>
-						<a href="#" class="round-black-btn text-left">Add to Cart</a>
+						<form action="{{path('shoppingCart', {'id': product.id})}}" method="POST"><input type="hidden" name="pro_id" value="{{product.id}}">
+							<input type="hidden" name="pro_quantity" value="1"/><input type="submit" class="round-black-btn text-left" name="btn_AddtoCart" value="Add to Cart"/>
+						</form>
 					</div>
 
 					{# Detail #}
@@ -143,7 +145,7 @@
 						</div>
 					</div>
 
-					
+
 				</div>
 				{# end Detail #}
 			</div>

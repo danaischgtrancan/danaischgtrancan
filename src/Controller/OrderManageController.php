@@ -22,7 +22,7 @@ class OrderManageController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="order_page")
+     * @Route("/", name="order_page")
      */
     public function orderAction(): Response
     {
@@ -56,19 +56,21 @@ class OrderManageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/changeConfirm", name="change_page")
-     */
-    public function changeAction(): Response
-    {
+    // /**
+    //  * @Route("/changeConfirm", name="change_page")
+    //  */
+    // public function changeAction(): Response
+    // {
         
 
-        $orders = $this->repo->findBy([], [
-            'id' => 'DESC'
-        ]);
+    //     $orders = $this->repo->findBy([], [
+    //         'id' => 'DESC'
+    //     ]);
         
-        return $this->render('order_manage/index.html.twig', [
-            'orders' => $orders,
-        ]);
-    }
+    //     return $this->render('order_manage/index.html.twig', [
+    //         'orders' => $orders,
+    //     ]);
+    // }
+
+    
 }
