@@ -23,19 +23,19 @@ class OrderManageController extends AbstractController
 
     /**
      * @Route("/list", name="order_page")
-     */    
+     */
     public function orderAction(): Response
     {
         $p = new Order();
         // $productForm = $this->createForm(ProductType::class, $p);
 
-        $products = $this->repo->findBy([], [
+        $orders = $this->repo->findBy([], [
             'id' => 'DESC'
         ]);
 
         // Return many element
         $data = [];
-        foreach ($products as $p) :
+        foreach ($orders as $p) :
             // Chỉ định cụ thể supplier để tránh liên kết vòng trong bản CarSup (PK)
             $data[] = [
                 'id' => $p->getId(),
@@ -51,9 +51,24 @@ class OrderManageController extends AbstractController
         // return $this->json($data);
 
         return $this->render('order_manage/index.html.twig', [
-            'orders' => $data, 
+            'orders' => $data,
             // 'productForm' => $productForm->createView()
         ]);
     }
 
+    /**
+     * @Route("/changeConfirm", name="change_page")
+     */
+    public function changeAction(): Response
+    {
+        
+
+        $orders = $this->repo->findBy([], [
+            'id' => 'DESC'
+        ]);
+        
+        return $this->render('order_manage/index.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
 }

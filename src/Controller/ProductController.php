@@ -25,9 +25,12 @@ class ProductController extends AbstractController
     public function showProductAction(): Response
     {
         $products = $this->repo->findAll();
+        $catefories = $this->repo->findCategory();
+
         // return $this->json(['products' => $products]);
         return $this->render('product/show.html.twig', [
-            'products' => $products
+            'products' => $products,
+            'catefories' => $catefories
         ]);
     }
 
@@ -53,6 +56,20 @@ class ProductController extends AbstractController
 
         return $this->render('product/show.html.twig', [
             'products' => $products
+        ]);
+    }
+
+    /**
+     * @Route("/{value}", name="sortByName_page")
+     */
+    public function sortByNameAction(string $value): Response
+    {
+        $products = $this->repo->sortByName($value);
+        $catefories = $this->repo->findCategory();
+
+        return $this->render('product/show.html.twig', [
+            'products' => $products,
+            'catefories' => $catefories
         ]);
     }
 }

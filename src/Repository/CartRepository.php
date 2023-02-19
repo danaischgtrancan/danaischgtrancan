@@ -39,28 +39,48 @@ class CartRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Cart[] Returns an array of Cart objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function showCart(): array
+    {
+        // SELECT p.id, p.name, c.name 'cate_name', cart.count, SUM(cart.count) * p.price 'total' FROM `product` p
+        // JOIN `cart` ON p.id = cart.product_id
+        // JOIN `category` c ON p.category_id = c.id
+        // GROUP BY p.name, p.id
+        return $this->createQueryBuilder('cart')
+            ->select('p.id', 'p.name as p_name', 'p.price', 'cart.count', 'SUM(cart.count) * p.price as total', 'c.name as cate_name')
+            //    ->andWhere('c.exampleField = :val')
+            //    ->setParameter('val', $value)
+            ->join('cart.product','p')
+            ->join('p.category','c')
+            ->groupBy('p.name')
+            ->getQuery()
+            ->getArrayResult();
+    }
 
-//    public function findOneBySomeField($value): ?Cart
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Cart[] Returns an array of Cart objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Cart
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

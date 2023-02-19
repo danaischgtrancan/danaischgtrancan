@@ -50,20 +50,40 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
-           /**
-        * @return Product[] Returns an array of Product objects
-        */
-       public function findByName($value): array
-       {
-           return $this->createQueryBuilder('p')
-               ->andWhere('p.exampleField = :val')
-               ->setParameter('val', $value)
-               ->orderBy('p.id', 'ASC')
-               ->setMaxResults(10)
-               ->getQuery()  
-               ->getResult()
-           ;
-       }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findNewItem(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.name', 'ASC')
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findCategory(): array
+    {
+        // SELECT DISTINCT category.name FROM `product` JOIN category ON category_id = category.id
+
+        return $this->createQueryBuilder('p')
+            ->select('DISTINCT c.name as cate_name', 'c.id as cate_id')
+            ->innerJoin('p.category', 'c')
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function sortByName($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.name', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */

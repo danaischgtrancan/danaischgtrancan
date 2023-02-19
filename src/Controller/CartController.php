@@ -21,34 +21,26 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name="shoppingCart")
      */
-    public function readAllAction(): Response
+    public function cartAction(): Response
     {
-        $c = $this->repo->findAll();
+        $c = $this->repo->showCart();
+
         return $this->render('cart/index.html.twig', [
-            // 'category'=>$c   
+            'carts'=> $c
         ]);
     }
 
 
      /**
-     * @Route("/cart", name="shoppingCart")
+     * @Route("/cart/{id}", name="cart")
      */
-    public function createAction(Request $req, SluggerInterface $slugger): Response
+    public function carstAction(Request $req, SluggerInterface $slugger, int $id): Response
     {
-        
-        $c = new Cart();
-        $form = $this->createForm(CartType::class, $c);
-
-        $form->handleRequest($req);
-        if($form->isSubmitted() && $form->isValid()){
-
-            
-            $this->repo->save($c,true);
-            return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
-        }
-        return $this->render("admin/category.html.twig",[
-            'form' => $form->createView()
+        return $this->render("cart/index.html.twig",[
+            // 'form' => $form->createView() 
+            $id
         ]);
+
     }
 
          /**

@@ -46,12 +46,12 @@
 		<h4 class="attentive ms-3 text-center">Best Seller</h4>
 		<div class="container py-4">
 			<div class="row">
-				{% for p in products %}
+				{% for b in bestseller %}
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div class="product-grid">
 							<div class="product-image">
-								<a href="{{path('proDetail_page', {'id': p.id})}}" class="image">
-									{% set img = p.image %}
+								<a href="{{path('proDetail_page', {'id': b.id})}}" class="image">
+									{% set img = b.image %}
 									<img src="{{asset('images/'~img)}}">
 								</a>
 								<ul class="product-links">
@@ -71,18 +71,18 @@
 										</a>
 									</li>
 								</ul>
-								<form action="{{path('shoppingCart')}}" method="POST">
-									<input type="hidden" name="pro_id" value="{{p.name}}">
+								<form action="{{path('shoppingCart', {'id': b.id})}}" method="POST">
+									<input type="hidden" name="pro_id" value="{{b.name}}">
 									<input type="hidden" name="pro_quantity" value="1"/>
 									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
 								</form>
 							</div>
 							<div class="product-content">
 								<h3 class="title">
-									<a href="{{path('proDetail_page', {'id': p.id})}}">{{p.name}}</a>
+									<a href="{{path('proDetail_page', {'id': b.id})}}">{{b.name}}</a>
 								</h3>
 								<div class="price">
-									<a href="{{path('proDetail_page', {'id': p.id})}}">${{p.price}}</a>
+									<a href="{{path('proDetail_page', {'id': b.id})}}">${{b.price}}</a>
 								</div>
 							</div>
 						</div>
@@ -95,15 +95,15 @@
 
 	<hr/>
 	<div>
-		<h4 class="attentive ms-3 text-center">Hot Products</h4>
+		<h4 class="attentive ms-3 text-center">New Items</h4>
 		<div class="container py-4">
 			<div class="row">
-				{% for p in products %}
+				{% for n in newItems %}
 					<div class="col-md-6 col-lg-4 col-xl-3">
 						<div class="product-grid">
 							<div class="product-image">
-								<a href="{{path('proDetail_page', {'id': p.id})}}" class="image">
-									{% set img = p.image %}
+								<a href="{{path('proDetail_page', {'id': n.id})}}" class="image">
+									{% set img = n.image %}
 									<img src="{{asset('images/'~img)}}">
 								</a>
 								<ul class="product-links">
@@ -123,17 +123,19 @@
 										</a>
 									</li>
 								</ul>
-								<form action="{{path('shoppingCart')}}" method="POST">
-									<input type="hidden" name="pro_id" value="{{p.id}}">
+								<form action="{{path('shoppingCart', {'id': n.id})}}" method="POST">
+									<input type="hidden" name="pro_id" value="{{n.id}}">
 									<input type="hidden" name="pro_quantity" value="1"/>
 									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
 								</form>
 							</div>
 							<div class="product-content">
 								<h3 class="title">
-									<a href="">{{p.name}}</a>
+									<a href="{{path('proDetail_page', {'id': n.id})}}">{{n.name}}</a>
 								</h3>
-								<div class="price">${{p.price}}</div>
+								<div class="price">
+									<a href="{{path('proDetail_page', {'id': n.id})}}">${{n.price}}</a>
+								</div>
 							</div>
 						</div>
 					</div>

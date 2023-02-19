@@ -14,143 +14,141 @@
 				<div class="border-bottom mb-4 pb-4">
 					<div class="row">
 						<h5 class="font-weight-semi-bold mb-4">Category</h5>
-						<a href="">Shirt</a>
-						<a href="">Pan</a>
-						<a href="">Jacket</a>
-						<a href="">Hoodie</a>
-						<a href="">Dress</a>
-					</div>
+						{% for c in catefories %}
+							<a href="{{path('shoppingCart', {'id': c.cate_id})}}">{{c.cate_name}}</a>
+					{% endfor %}
 				</div>
-				<!-- Category End -->
-
-				<!-- For Gender Start -->
-				<div class="border-bottom mb-4 pb-4 filter">
-					<div class="row">
-						<h5 class="font-weight-semi-bold mb-4">For Gender</h5>
-						<a href="">Men's Clothing</a>
-						<a href="">Women's Clothing</a>
-					</div>
-				</div>
-				<!-- For Gender End -->
-				<!-- Price Start -->
-				<div class="border-bottom mb-4 pb-4 filter">
-					<h5 class="font-weight-semi-bold mb-4">Filter by Price</h5>
-					<div class="product-count">
-						<form action="#" class="display-flex">
-							<div class="qtyminus">-</div>
-							<input type="text" name="price" value="0.01" class="qty" data-decimals="2" min="0" max="9" step="0.1">
-							<div class="qtyplus">+</div>
-						</form>
-					</div>
-				</div>
-				<!-- Price End -->
-
-				<!-- Size Start -->
-				<div class="mb-5">
-					<h5 class="font-weight-semi-bold mb-4 filter">Filter by Size</h5>
-
-				</div>
-				<!-- Size End -->
 			</div>
-			<!-- Shop Sidebar End -->
+			<!-- Category End -->
 
-
-			<!-- Shop Product Start -->
-			<div class="col-lg-9 col-sm-9">
+			<!-- For Gender Start -->
+			<div class="border-bottom mb-4 pb-4 filter">
 				<div class="row">
-					<div class="col-md-10">
-						<h2 style="padding-left: 2% title">All product</h2>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group mb-2 d-flex">
-							<div class="select">
-								<select name="sort_by" onchange="location = this.value;" class="form-control border-white">
-									<option disabled="disabled" value="2" selected>SORT BY</option>
-									<option value="">A -> Z</option>
-									<option value="">Z -> A</option>
-									<option value="">Low to high</option>
-									<option value="">High to low</option>
-								</select>
-							</div>
+					<h5 class="font-weight-semi-bold mb-4">For Gender</h5>
+					<a href="{{path('shoppingCart', {'id': 0})}}">Men's Clothing</a>
+					<a href="{{path('shoppingCart', {'id': 1})}}">Women's Clothing</a>
+				</div>
+			</div>
+			<!-- For Gender End -->
+			<!-- Price Start -->
+			{# <div class="border-bottom mb-4 pb-4 filter">
+				<h5 class="font-weight-semi-bold mb-4">Filter by Price</h5>
+				<div class="product-count">
+					<form action="#" class="display-flex">
+						<div class="qtyminus">-</div>
+						<input type="text" name="price" value="0.01" class="qty" data-decimals="2" min="0" max="9" step="0.1">
+						<div class="qtyplus">+</div>
+					</form>
+				</div>
+			</div> #}
+			<!-- Price End -->
+
+			<!-- Size Start -->
+			<div class="mb-5">
+				<h5 class="font-weight-semi-bold mb-4 filter">Filter by Size</h5>
+
+			</div>
+			<!-- Size End -->
+		</div>
+		<!-- Shop Sidebar End -->
+
+
+		<!-- Shop Product Start -->
+		<div class="col-lg-9 col-sm-9">
+			<div class="row">
+				<div class="col-md-10">
+					<h2 style="padding-left: 2% title">All product</h2>
+				</div>
+				<div class="col-md-2">
+					<div class="input-group mb-2 d-flex">
+						<div class="select">
+							<select name="sort_by" onchange="location = this.value;" class="form-control border-white">
+								<option disabled="disabled" value="2" selected>SORT BY</option>
+								<a value="{{path('sortByName_page', {'value': 'asc'})}}"> <option>A -> Z</option> </a>
+								<option value="desc">Z -> A</option>
+								<option value="asc">Low to high</option>
+								<option value="desc">High to low</option>
+							</select>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<!-- Product -->
-				<div class="col-12 pb-1">
-					<nav aria-label="Page navigation">
-						<div class="row">
-							{% for p in products %}
-								<div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-									<div class="product-grid">
-										<div class="product-image">
-											<a href="{{path('proDetail_page', {'id': p.id})}}" class="image">
-												{% set img = p.image %}
-												<img src="{{asset('images/'~img)}}" class="card-img-top" alt="<?= $row['name'] ?>"/>
-											</a>
-											<ul class="product-links">
-												<li>
-													<a href="#">
-														<i class="fa fa-search"></i>
-													</a>
-												</li>
-												<li>
-													<a href="#">
-														<i class="fa fa-heart"></i>
-													</a>
-												</li>
-												<li>
-													<a href="#">
-														<i class="fa fa-random"></i>
-													</a>
-												</li>
-											</ul>
-											<form action="{{path('shoppingCart')}}" method="POST">
-												<input type="hidden" name="pro_id" value="{{p.id}}">
-												<input type="hidden" name="pro_quantity" value="1"/>
-												<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
-											</form>
+			<!-- Product -->
+			<div class="col-12 pb-1">
+				<nav aria-label="Page navigation">
+					<div class="row">
+						{% for p in products %}
+							<div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+								<div class="product-grid">
+									<div class="product-image">
+										<a href="{{path('proDetail_page', {'id': p.id})}}" class="image">
+											{% set img = p.image %}
+											<img src="{{asset('images/'~img)}}" class="card-img-top" alt=""/>
+										</a>
+										<ul class="product-links">
+											<li>
+												<a href="#">
+													<i class="fa fa-search"></i>
+												</a>
+											</li>
+											<li>
+												<a href="#">
+													<i class="fa fa-heart"></i>
+												</a>
+											</li>
+											<li>
+												<a href="#">
+													<i class="fa fa-random"></i>
+												</a>
+											</li>
+										</ul>
+										<form action="{{path('shoppingCart', {'id': p.id})}}" method="POST">
+											<input type="hidden" name="pro_id" value="{{p.id}}">
+											<input type="hidden" name="pro_quantity" value="1"/>
+											<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
+										</form>
 
-										</div>
-										<div class="product-content">
-											<h3 class="title">
-												<a href="{{path('proDetail_page', {'id': p.id})}}">{{p.name}}</a>
-											</h3>
-											<div class="price"><a href="{{path('proDetail_page', {'id': p.id})}}">${{p.price}}</a></div>
+									</div>
+									<div class="product-content">
+										<h3 class="title">
+											<a href="{{path('proDetail_page', {'id': p.id})}}">{{p.name}}</a>
+										</h3>
+										<div class="price">
+											<a href="{{path('proDetail_page', {'id': p.id})}}">${{p.price}}</a>
 										</div>
 									</div>
 								</div>
-							{% endfor %}				
+							</div>
+						{% endfor %}
 
-						</div>
-						<ul class="pagination justify-content-center mb-3">
-							<li class="page-item disabled">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item active">
-								<a class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">2</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">3</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
+					</div>
+					<ul class="pagination justify-content-center mb-3">
+						<li class="page-item disabled">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+								<span class="sr-only">Previous</span>
+							</a>
+						</li>
+						<li class="page-item active">
+							<a class="page-link" href="#">1</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">3</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 		</div>
-		<!-- Shop Product End -->
 	</div>
-</div>
-<!-- Shop End -->{% endblock %}
+	<!-- Shop Product End -->
+</div></div><!-- Shop End -->{% endblock %}

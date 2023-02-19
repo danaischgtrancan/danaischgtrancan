@@ -20,27 +20,33 @@ class MainController extends AbstractController
      */
     public function homeAction(): Response
     {
-        $products = $this->repo->findBestSeller();
+        $bestseller = $this->repo->findBestSeller();
+
+        $newItems = $this->repo->findNewItem();
         return $this->render(
             'main/index.html.twig',
             [
-                'products' => $products
+                'newItems' => $newItems,
+                'bestseller' => $bestseller
             ]
         );
     }
 
-    /**
-     * @Route("/product", name="showProduct")
-     */
-    public function showProductAction(): Response
-    {
-        $products = $this->repo->findAll();
-        return $this->render(
-            'main/index.html.twig',
-            [
-                'products' => $products
-            ]
-        );    }
+    // /**
+    //  * @Route("/product", name="showProduct")
+    //  */
+    // public function sortByProductAction(): Response
+    // {
+    //     $products = $this->repo->findAll();
+    //     return $this->render(
+    //         'main/index.html.twig',
+    //         [
+    //             'products' => $products
+    //         ]
+    //     );
+    // }
+
+
 
     /**
      * @Route("/danaischgStore", name="aboutUs")

@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Proxy\Proxy;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,8 @@ class ProManageController extends AbstractController
     {
         $this->repo = $repo;
     }
+
+    // Show 
     /**
      * @Route("/", name="pro_page")
      */
@@ -60,23 +64,25 @@ class ProManageController extends AbstractController
         ]);
     }
 
+    // Add 
     /**
-     * @Route("/new", name="addPro_page")
+     * @Route("/create", name="addPro_page")
      */
-    public function createAction(Request $req, SluggerInterface $slugger): Response
+    public function createAction(Request $req, SluggerInterface $slugger, ManagerRegistry $reg): Response
     {
-
         $p = new Product();
         $productForm = $this->createForm(ProductType::class, $p);
 
         $productForm->handleRequest($req);
+        $entity = $reg->getManager();
+
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $data = $productForm->getData($req);
             $p->setName($data->getName());
             $p->setDescriptions($data->getDescriptions());
             $p->setPrice($data->getPrice());
             $p->setStatus($data->isStatus());
-            $p->setImage($data->getImage());   
+            $p->setImage($data->getImage());
             $p->setForGender($data->isForGender());
             $p->setCategory($data->getCategory());
             $p->setSupplier($data->getSupplier());
@@ -100,17 +106,22 @@ class ProManageController extends AbstractController
             } catch (FileException $th) {
                 echo $th;
             }
+
             $p->setImage($newFilename);
+            // tell Doctrine you want to (eventually) save the Product (no queries yet)
+            $entity->persist($p);
+            // actually executes the queries (i.e. the INSERT query)
+            $entity->flush();
 
             $this->addFlash(
                 'success',
                 'New products have been added'
             );
+            return $this->redirectToRoute("pro_page");
         }
-        // return $this->json($p);
 
-        return $this->render("pro_manage/new.html.twig", [
-            'product' => $p
+        return $this->render('pro_manage/new.html.twig', [
+            'productForm' => $productForm->createView()
         ]);
     }
 
@@ -135,18 +146,83 @@ class ProManageController extends AbstractController
      * @Route("/edit/{id}", name="editPro_page")
      */
 
-    public function editAction(Request $req, Product $pro): Response
+    public function editAction(Request $req, SluggerInterface $slugger, ManagerRegistry $reg, Product $p): Response
     {
-        $productForm = $this->createForm(ProductType::class, $pro);
+        $entityManager = $reg->getManager();
+        $product = $entityManager->getRepository(Product::class)->find($p);
 
+        $productForm = $this->createForm(ProductType::class);
         $productForm->handleRequest($req);
-        if ($productForm->isSubmitted() && $productForm->isValid()) :
-            //  $repo->save($pro, true);
-            return new Response("Added id" . $pro->getId());
+        // $entity = $reg->getManager();
 
-        endif;
-        return $this->render('pro_manage/index.html.twig', [
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $data = $productForm->getData($req);
+            $p->setName($data->getName());
+            $p->setDescriptions($data->getDescriptions());
+            $p->setPrice($data->getPrice());
+            $p->setStatus($data->isStatus());
+            $p->setImage($data->getImage());
+            $p->setForGender($data->isForGender());
+            $p->setCategory($data->getCategory());
+            $p->setSupplier($data->getSupplier());
+
+            $imgFile = $productForm->get('image')->getData();
+
+            if ($imgFile && $imgFile != "") :
+                // Rename File Imange
+                $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
+                //  SluggerInterface $slugger
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imgFile->guessExtension();
+            endif;
+
+            try {
+                $imgFile->move(
+                    $this->getParameter('image_dir'),
+                    $newFilename
+                );
+            } catch (FileException $th) {
+                echo $th;
+            }
+            $p->setImage($newFilename);
+            // $entity->persist($p);
+            // $entity->flush();
+
+            $this->addFlash(
+                'success',
+                'New products was added'
+            );
+            return $this->redirectToRoute("pro_page");
+        }
+
+        return $this->render('pro_manage/new.html.twig', [
             'productForm' => $productForm->createView()
+        ]);
+    }
+
+    // Delete
+    /**
+     * @Route("/delete/{id}", name="deletePro_page")
+     */
+    public function deleteAction(Product $p, ManagerRegistry $reg)
+    {
+        $entityManager = $reg->getManager();
+        $product = $entityManager->getRepository(Product::class)->find($p);
+
+        $entityManager->remove($product);
+        $entityManager->flush();
+
+        $products = $this->repo->findBy([], [
+            'id' => 'DESC'
+        ]);
+
+        $this->addFlash(
+            'success',
+            'A products was deleted'
+        );
+
+        return $this->render('pro_manage/index.html.twig', [
+            'products' => $products
         ]);
     }
 }
