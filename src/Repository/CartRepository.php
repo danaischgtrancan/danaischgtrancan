@@ -42,18 +42,20 @@ class CartRepository extends ServiceEntityRepository
     /**
      * @return Cart[] Returns an array of Cart objects
      */
-    public function showCart(): array
+    public function showCart($value): array
     {
-        // SELECT p.id, p.name, c.name 'cate_name', cart.count, SUM(cart.count) * p.price 'total' FROM `product` p
+        // SELECT p.id, p.name, c.name 'cate_name', SUM(cart.count), SUM(cart.count) * p.price 'total' FROM `product` p
         // JOIN `cart` ON p.id = cart.product_id
         // JOIN `category` c ON p.category_id = c.id
+        // JOIN `user` u ON u.id = cart.user_id
         // GROUP BY p.name, p.id
         return $this->createQueryBuilder('cart')
-            ->select('p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'cart.count', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
-            //    ->andWhere('c.exampleField = :val')
-            //    ->setParameter('val', $value)
+            ->select('p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
+            ->andWhere('cart.user = :val')
+            ->setParameter('val', $value)
             ->join('cart.product', 'p')
             ->join('p.category', 'c')
+            // ->join('cart.user', 'u')
             ->groupBy('p.name', 'p.id')
             ->getQuery()
             ->getArrayResult();

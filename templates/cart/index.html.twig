@@ -6,13 +6,11 @@
 
 {% block body %}
 
-	<link href="{{asset('css\header.css')}}" rel="stylesheet" media="all">
-
 	<script>
 		// Function to check if the user wants to delete or not.
-function deleteConfirm() {
+function deleteConfirm($id) {
 if (confirm("Are you sure to delete!")) {
-return true;
+delete_row($id);
 } else {
 return false;
 }
@@ -22,57 +20,66 @@ return false;
 		<div class="me-5 d-flex justify-content-center align-items-center">
 			<div class="card card-registration card-registration-2" style="border: none;">
 				<div class="card-body p-0">
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success mt-2 text-center">
+							{{ message }}
+						</div>
+					{% endfor %}
 					<div class="row g-0">
 						<div class="col-lg-8">
 							<div class="p-5">
-								{% for message in app.flashes('success') %}
-									<div class="alert alert-success mt-5 text-center">
-										{{ message }}
-									</div>
-								{% endfor %}
-								<div class="d-flex justify-content-between align-items-center pb-5">
+								<div id="class=" d-flex justify-content-between align-items-center pb-5"">
 									<h1 class="title-cart fw-bold mb-0 text-black">Shopping Cart</h1>
 								</div>
-								{% set count = 0 %}
-								{% set total = 0 %}
+								<div
+									id="row_cart">
+									{# Create local parameter to show unit price and total #}
+									{% set count = 0 %}
+									{% set total = 0 %}
 
-								{% for c in carts %}
-									<hr class="my-2">
-									<div class="row mb-4 d-flex justify-content-between align-items-center">
-										<div class="col-md-2 col-lg-2 col-xl-2">
-											{% set img = c.image %}
-											<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
+									{# Display cart start #}
+									{% for c in carts %}
+										<div id="row{{c.p_id}}">
+											<hr class="my-2">
+											<div class="row mb-4 d-flex justify-content-between align-items-center">
+												<div class="col-md-2 col-lg-2 col-xl-2">
+													{% set img = c.image %}
+													<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
+												</div>
+												<div class="col-md-3 col-lg-3 col-xl-3">
+													<h6 class="text-muted">{{c.cate_name}}</h6>
+													<h6 class="text-black mb-0"></h6>
+													{{c.p_name}}</h6>
+											</div>
+											<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+												<div class="product-count">
+													<form action="#" class="display-flex">
+														<div class="qtyminus">-</div>
+														<input type="text" name="quantity" value="{{c.num}}" class="qty">
+														<div class="qtyplus">+</div>
+													</form>
+												</div>
+											</div>
+											<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
+												<h6 class="mb-0">{{c.unitTotal}}</h6>
+											</div>
+											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+												<button onclick="delete_row('{{c.p_id}}')"; class="text-muted">
+													<i class="fas fa-times"></i>
+												</button>
+											</div>
 										</div>
-										<div class="col-md-3 col-lg-3 col-xl-3">
-											<h6 class="text-muted">{{c.cate_name}}</h6>
-											<h6 class="text-black mb-0"></h6>
-											{{c.p_name}}</h6>
 									</div>
-									<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-										<div class="product-count">
-											<form action="#" class="display-flex">
-												<div class="qtyminus">-</div>
-												<input type="text" name="quantity" value="{{c.count}}" class="qty">
-												<div class="qtyplus">+</div>
-											</form>
-										</div>
-									</div>
-									<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
-										<h6 class="mb-0">{{c.unitTotal}}</h6>
-									</div>
-									<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-										<a href="{{path('deleteCart')}}" onclick="return deleteConfirm()" class="text-muted">
-											<i class="fas fa-times"></i>
-										</a>
-									</div>
-								</div>
 
-								{# Count unit total #}
-								{% set count = loop.length %}
-								{# Total #}
-								{% set total = total + c.unitTotal %}
+									{# Count unit total #}
+									{% set count = loop.length %}
+									{# Total #}
+									{% set total = total + c.unitTotal %}
 
-							{% endfor %}
+								{% endfor %}
+								{# Display cart end #}
+							</div>
+
 							<hr class="my-4">
 
 						</div>
@@ -110,8 +117,10 @@ return false;
 					</div>
 					<div class="pt-5">
 						<h6 class="mb-0 back">
-							<a href="?page=product" class="text-body">
-								<i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
+							<a href="{{path('showProduct')}}" class="text-body">
+								<i class="fas fa-long-arrow-alt-left ms-5 me-2"></i>
+								Back to shop
+							</a>
 						</h6>
 					</div>
 				</div>
@@ -119,7 +128,25 @@ return false;
 		</div>
 	</div>
 </section>
-<script>
 
-</script>
-{% endblock %}
+<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+<script>
+	function delete_row(id) {
+$.ajax({
+type: 'delete',
+url: '/cart/delete/' + id,
+data: {
+id: id
+},
+success: function () {
+var row = document.getElementById("row" + id);
+row.parentNode.removeChild(row);
+
+// $this -> addFlash('success', 'A product was deleted');
+
+}
+});
+}
+</script>{% endblock %}

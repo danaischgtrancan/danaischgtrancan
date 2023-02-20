@@ -34,7 +34,7 @@ class ProductController extends AbstractController
                 $products = $this->repo->findByName($order);
                 $title = "Sort by name";
             endif;
-            if ($sort_by == 'price') :
+            if ($sort_by == 'price') :  
                 $products = $this->repo->findByPrice($order);
                 $title = "Sort by price";
             endif;

@@ -6,7 +6,7 @@
 	<!-- Shop Start -->
 	<div class="container-fluid">
 		<div
-			class="row ">
+			class="row ms-3">
 			<!-- Shop Sidebar Start -->
 			<div
 				class="col-lg-3 col-sm-3 shadow-sm p-3 mb-5 bg-body rounde">
@@ -111,9 +111,9 @@
 													</a>
 												</li>
 											</ul>
-											<form action="{{path('shoppingCart', {'id': p.id})}}" method="POST">
-												<input type="hidden" name="pro_id" value="{{p.id}}">
-												<input type="hidden" name="pro_quantity" value="1"/>
+											<form action="{{path('addCart')}}" method="POST">
+												<input type="hidden" name="id" value="{{p.id}}">
+												<input type="hidden" name="count" value="1"/>
 												<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
 											</form>
 
@@ -132,28 +132,28 @@
 
 						</div>
 						{# <ul class="pagination justify-content-center mb-3">
-							<li class="page-item disabled">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item active">
-								<a class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">2</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">3</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul> #}
+																									<li class="page-item disabled">
+																										<a class="page-link" href="#" aria-label="Previous">
+																											<span aria-hidden="true">&laquo;</span>
+																											<span class="sr-only">Previous</span>
+																										</a>
+																									</li>
+																									<li class="page-item active">
+																										<a class="page-link" href="#">1</a>
+																									</li>
+																									<li class="page-item">
+																										<a class="page-link" href="#">2</a>
+																									</li>
+																									<li class="page-item">
+																										<a class="page-link" href="#">3</a>
+																									</li>
+																									<li class="page-item">
+																										<a class="page-link" href="#" aria-label="Next">
+																											<span aria-hidden="true">&raquo;</span>
+																											<span class="sr-only">Next</span>
+																										</a>
+																									</li>
+																								</ul> #}
 					</nav>
 				</div>
 			</div>
@@ -161,4 +161,35 @@
 		<!-- Shop Product End -->
 	</div>
 </div>
+
+<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+<script>
+function insert_row() {
+var id = document.getElementById("id").value;
+var count = document.getElementById("count").value;
+var user = document.getElementById("user").value;
+
+$.ajax({
+type: 'post',
+url: '/cart/add',
+data: {
+id: id,
+count: count
+},
+success: function (response) {
+// var id = response;
+// var table = document.getElementById("row_cart");
+// var table_len = (table.rows.length) - 1;
+// var row = table.insertRow(table_len).outerHTML = "";
+
+// document.getElementById("new_name").value = "";
+// document.getElementById("new_importer").value = "";
+alertify.success('The product has been added to cart');
+// window.location.href = '/cart';
+}
+});
+}
+</script>
 <!-- Shop End -->{% endblock %}

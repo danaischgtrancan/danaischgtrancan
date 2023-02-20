@@ -5,14 +5,19 @@ namespace App\Controller;
 use App\Entity\Cart;
 use App\Form\CartType;
 use App\Repository\CartRepository;
+use App\Repository\ProductRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints\Json;
 
+/**
+ * @Route("/cart")
+ */
 class CartController extends AbstractController
 {
     private CartRepository $repo;
@@ -20,45 +25,83 @@ class CartController extends AbstractController
     {
         $this->repo = $repo;
     }
+    // Create a new one
+    /**
+     * @Route("/add", name="addCart", methods={"POST"})
+     */
+    public function addAction(Request $req, ProductRepository $repoPro): Response
+    {
+        // Khi up hinh len khong phai la kieu chuoi, do do minh can dung k  ieu mix
+        $s = new Cart();
+        // Call function above
+        $req = $this->transformJsonBody($req);
+
+        // Defination name and importer
+        // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
+        $id = $req->get('id');
+        $product = $repoPro->find($id);
+        $s->setProduct($product);
+        $user = $this->getUser();
+        //$userId = $this->repo->findOneBy(['user'=> $user]);
+        $s->setUser($user);
+        $count = $req->get('count');
+        $s->setCount($count);
+
+        $this->repo->save($s, true);
+
+        $this->addFlash(
+            'success',
+            'A product was added'
+        );
+
+        $carts = $this->repo->showCart($user);
+        return $this->render('cart/index.html.twig', [
+            'carts' => $carts
+        ]);
+    }
+
+    public function transformJsonBody(Request $re)
+    {
+        $data = json_decode($re->getContent(), true);
+        if ($data === null) {
+            return $re;
+        }
+        $re->request->replace($data);
+        return $re;
+    }
 
     /**
-     * @Route("/cart", name="shoppingCart")
+     * @Route("/", name="shoppingCart")
      */
     public function cartAction(): Response
     {
-        $c = $this->repo->showCart();
-
-        // return $this->json(['cart' => $c]);
+        $user = $this->getUser();
+        $carts = $this->repo->showCart($user);
         return $this->render('cart/index.html.twig', [
-            'carts' => $c
+            'carts' => $carts
         ]);
     }
 
     /**
-     * @Route("/cart/delete",name="deleteCart")
+     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
      */
 
-    public function deleteCartAction(Cart $c, ManagerRegistry $reg): Response
+    public function deleteCartAction(Cart $c): Response
     {
-        $entityManager = $reg->getManager();
 
-        $user = $this->getUser();
-        $cart = $entityManager->getRepository(Cart::class)->removeCart($c, $user);
+        // $entityManager = $reg->getManager();
 
-        // $entityManager->remove($cart);
+        // $user = $this->getUser();
+
+        $$this->repo->remove($c, true);
         // $entityManager->flush();
-
-        // $this->addFlash(
-        //     'success',
-        //     'A product was deleted'
-        // );
 
         // $c = $this->repo->showCart();
 
-        return $this->json($cart);
-        return $this->render('cart/index.html.twig', [
-            'carts' => $c
-        ]);
+        return $this->json($c);
+        // return $this->render('cart/index.html.twig', [
+        //     'carts' => $c
+        // ]);
     }
 
 
