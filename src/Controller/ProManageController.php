@@ -31,7 +31,10 @@ class ProManageController extends AbstractController
         $this->repo = $repo;
     }
 
-    // Show 
+    /* ==========================================================================
+   Show Admin Product Page
+   ========================================================================== */
+
     /**
      * @Route("/", name="pro_page")
      */
@@ -49,7 +52,10 @@ class ProManageController extends AbstractController
         ]);
     }
 
-    // Add 
+    /* ==========================================================================
+   Add Admin Product Page
+   ========================================================================== */
+
     /**
      * @Route("/create", name="addPro_page")
      */
@@ -125,7 +131,10 @@ class ProManageController extends AbstractController
         }
         return $newFilename;
     }
-    // Add size
+    /* ==========================================================================
+   Add Admin Product Size Page
+   ========================================================================== */
+
     /**
      * @Route("/size", name="addSize_page")
      */
@@ -160,7 +169,10 @@ class ProManageController extends AbstractController
         ]);
     }
 
-    // Update 
+    /* ==========================================================================
+   Update Admin Product Page
+   ========================================================================== */
+
     /**
      * @Route("/edit/{id}", name="editPro_page")
      */
@@ -219,7 +231,11 @@ class ProManageController extends AbstractController
             'productForm' => $productForm->createView()
         ]);
     }
-    // Update 
+
+    /* ==========================================================================
+   Update Admin Product Size Page
+   ========================================================================== */
+
     /**
      * @Route("/edit/size/{id}", name="editPro_page")
      */
@@ -235,11 +251,11 @@ class ProManageController extends AbstractController
 
         if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
             $data = $proSizeForm->getData($req);
-            $pz->setProduct($data->getProduct());
-            $pz->setSize($data->getSize());
-            $pz->setQuantity($data->getQuantity());
+            // $pz->setProduct($data->getProduct());
+            // $pz->setSize($data->getSize());
+            // $pz->setQuantity($data->getQuantity());
 
-            
+
 
             $entity->persist($pz);
             $entity->flush();
@@ -257,7 +273,11 @@ class ProManageController extends AbstractController
             'productForm' => $proSizeForm->createView()
         ]);
     }
-    // Delete
+
+    /* ==========================================================================
+   Delete Admin Product Page
+   ========================================================================== */
+
     /**
      * @Route("/delete/{id}", name="deletePro_page", methods={"delete"})
      */

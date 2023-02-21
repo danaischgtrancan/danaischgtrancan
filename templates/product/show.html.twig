@@ -111,9 +111,8 @@
 													</a>
 												</li>
 											</ul>
-											<input type="hidden" id="id" value="{{p.id}}">
 											<input type="hidden" id="count" value="1"/>
-											<button class="add-to-cart fw-bold" name="insert_button{{p.id}}" onclick="insert_row()">Add to Cart</button>
+											<button class="add-to-cart fw-bold" name="insert_button{{p.id}}" onclick="insert_row({{p.id}})">Add to Cart</button>
 										</div>
 										<div class="product-content">
 											<h3 class="title">
@@ -164,15 +163,13 @@
 
 {# Insert into Cart #}
 <script>
-function insert_row() {
-var id = document.getElementById("id").value;
+function insert_row(pro_id) {
 var count = document.getElementById("count").value;
-
 $.ajax({
 type: 'post',
 url: '/cart/add',
 data: {
-id: id,
+id: pro_id,
 count: count
 },
 success: function (response) {

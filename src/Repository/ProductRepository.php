@@ -38,6 +38,24 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findOnePro($value): array
+    {
+
+        return $this->createQueryBuilder('p')
+            ->select('p.id', 'p.name', 'p.status', 'p.descriptions', 'p.image', 'p.price', 'c.name as category', 's.name as supplier', 'sz.name as sizeName', 'sz.id as sizeId')
+            ->join('p.category', 'c')
+            ->join('p.supplier', 's')
+            ->join('p.proSizes', 'pz')
+            ->join('pz.size', 'sz')
+            ->Where('p.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
     /**
      * @return Product[] Returns an array of Product objects
      */

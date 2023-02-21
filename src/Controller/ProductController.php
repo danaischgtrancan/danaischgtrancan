@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Repository\SizeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,13 +76,17 @@ class ProductController extends AbstractController
     /**
      * @Route("/detail/{id}", name="proDetail_page")
      */
-    public function productDetailAction(int $id): Response
+    public function productDetailAction(int $id, SizeRepository $repoSize): Response
     {
-        $product = $this->repo->find($id);
-        // return $this->json(['product' => $product]);
+        $product = $this->repo->findOnePro($id);
+        $size = $repoSize->findSize();
+
+
+        // return $this->json(['size' => $size]);
 
         return $this->render('product/detail.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'size' => $size
         ]);
     }
 

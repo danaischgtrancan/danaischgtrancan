@@ -61,6 +61,22 @@ class CartRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function removeCart($id, $user): array
+    {
+        //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
+
+        return $this->createQueryBuilder('cart')
+            ->join('cart.product', 'p')
+            ->andWhere('cart.product_id = :val')
+            ->setParameter('val', $id)
+            ->andWhere('cart.user_id = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getArrayResult();
+    }
     // /**
     //  * @return Cart[] Returns an array of Cart objects
     //  */

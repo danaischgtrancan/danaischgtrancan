@@ -41,10 +41,20 @@ class CartController extends AbstractController
         // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
         $id = $req->get('id');
         $product = $repoPro->find($id);
-        $carts->setProduct($product);
-
+        
+        
         $count = $req->get('count');
         $carts->setCount($count);
+
+        
+        // Check quantity of Stock
+        foreach($product as $p):
+            if($count - $p->getq() < 0):
+                
+            endif;
+        endforeach;
+        $carts->setProduct($product);
+
 
         $carts->setUser($user);
 
@@ -67,17 +77,17 @@ class CartController extends AbstractController
     /**
      * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
      */
-
-    public function deleteCartAction(Cart $cart): Response
+    public function deleteCartAction(int $pro_id): Response
     {
         $user = $this->getUser();
-        $c = new Cart($cart->getId());
-        $c->setUser($user);
+        $cart = $this->repo->removeCart($pro_id, $user);
 
-        // $this->repo->remove($c, true);
+        foreach ($cart as $c) :
+            $this->repo->remove($c, true);
+        endforeach;
 
-        return $this->json($c);
-        // return new JsonResponse();
+        // return $this->json($c);
+        return new JsonResponse();
         // return $this->redirectToRoute('shoppingCart');
     }
 
