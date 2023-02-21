@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegistationController extends AbstractController
 {
     /**
-     * @Route("/register", name="signIn_page")
+     * @Route("/register", name="signin_page")
      */
     public function register(
         Request $req,
@@ -35,18 +35,18 @@ class RegistationController extends AbstractController
             );
             $user->setRoles(['ROLE_USER']);
 
-
+            // THe purposr use insert and update
             $entityManager->persist($user);
             $entityManager->flush();
+
             //  do anything eslse you nedd here, like send and email
 
-            return $this->redirectToRoute('logIn_page')  ;
+            return $this->redirectToRoute('logIn_page');
         }
-        return $this->render('registation/index.html.twig', [
+        return $this->render('registation/signin.html.twig', [
             'registrationForm' => $form->createView()
         ]);
         // return $this->redirectToRoute('signIn_page');
 
     }
-   
 }

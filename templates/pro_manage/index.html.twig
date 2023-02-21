@@ -4,6 +4,17 @@
 {% endblock %}
 
 {% block body %}
+	<script>
+		// Function to check if the user wants to delete or not.
+function deleteConfirm($id) {
+if (confirm("Are you sure to delete!")) {
+delete_row($id)
+} else {
+return false;
+}
+}
+	</script>
+
 	<section class="header mx-5">
 		<div class="container mt-4 mb-3">
 			<div class="text-center lh-1 mb-2">
@@ -13,108 +24,28 @@
 				<span>Branch: DANA_ISCHG</span>
 			</div>
 		</div>
-		<div class="container-boder">
-			{{ form_start(productForm) }}
-			<div class="col-md-12">
-				<div class="row">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="forms-inputs mt-3">
-								{{ form_label(productForm.name) }}
-								{{ form_widget(productForm.name, {'attr':{'autocomplete': 'off'}}) }}
-							</div>
-						</div>
 
-						<div class="col-md-6">
-							<div class="forms-inputs mt-3">
-								{{ form_label(productForm.descriptions) }}
-								{{ form_widget(productForm.descriptions, {'attr':{'autocomplete': 'off'}}) }}
-							</div>
-						</div>
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success mt-5 text-center">
+				{{ message }}
+			</div>
+		{% endfor %}
 
-						<div class="col-md-1">
-							<div class="forms-inputs mt-3">
-								<div class="row">
-									{{ form_label(productForm.price) }}
-									<div class="col-lg-12">
-										{{ form_widget(productForm.price, {'attr':{'autocomplete': 'off'}}) }}
-										{{ form_errors(productForm.price) }}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="forms-inputs mt-2 d-flex">
-								<div class="row mt-2">
-									{{ form_label(productForm.image, 'Choose Image:', {
-									        'label_attr': {'class': 'me-3'}
-									    }) }}
-									<div class="col-lg-12">
-										{{ form_widget(productForm.image, {
-									        'attr': {'class': 'me-3'}
-                                    }) 
-                                    }}
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-2">
-							<div class="dropdown">
-								<div class="forms-inputs mt-3">
-									{{ form_label(productForm.category)}}
-									<div class="col-lg-12">
-										{{ form_widget(productForm.category) }}
-									</div>
-								</div>
-							</div>
-						</div>
-
-                        <div class="col-md-2">
-							<div class="dropdown">
-								<div class="forms-inputs mt-3">
-									{{ form_label(productForm.supplier)}}
-									<div class="col-lg-12">
-										{{ form_widget(productForm.supplier) }}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-2 mb-3">
-							<div class="ms-3 mt-3 ">
-								{{ form_label(productForm.for_gender) }}
-								{{ form_widget(productForm.for_gender) }}
-							</div>
-						</div>
-
-						<div class="col-md-2 mb-3">
-							<div class="ms-3 mt-3">
-								{{ form_label(productForm.status) }}
-								{{ form_widget(productForm.status) }}
-							</div>
-						</div>
-
-						<div class="col-md-12">
-							<div class="add mt-3">
-								{{form_row(productForm.save, {'attr':{'class': 'btn btn-dark me-4'}})}}
-							</div>
-						</div>
-
-						{{ form_end(productForm) }}
+		<table class="mt-2 table table-bordered">
+			<div class="row">
+				<div class="col-lg-6">
+					<h5>
+						Product List</h5>
+				</div>
+				<div class="col-lg-6 mx-auto">
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button class="btn btn-dark me-4" type="button">
+							<a href="{{path('addPro_page')}}" class="text-decoration-none text-reset">Add new Product</a>
+						</button>
 					</div>
 				</div>
 			</div>
-		</div>
 
-
-		<table class="mt-2 table table-bordered">
-			<div>
-				<h5>
-					Product List</h5>
-			</div>
 			<thead class="bg-dark text-white text-center">
 				<tr>
 					<th scope="col">Product ID</th>
@@ -122,9 +53,12 @@
 					<th scope="col">Status</th>
 					<th scope="col">Descriptions</th>
 					<th scope="col">Price</th>
+					<th scope="col">For Gender</th>
 					<th scope="col">Category</th>
-					{# <th scope="col">Supplier</th> #}
+					<th scope="col">Supplier</th>
 					<th scope="col">Image</th>
+					<th scope="col">Size Detail</th>
+					<th scope="col">Sum total</th>
 
 					{# Edit, Delete #}
 					<th scope="col">Edit</th>
@@ -134,31 +68,74 @@
 				</tr>
 			</thead>
 			{% for p in products %}
-				<tr class="text-center align-middle">
+				<tr id="row_pro{{p.id}}" class="text-center align-middle">
 					<th scope="row">{{p.id}}</th>
 					<td>{{p.name}}</td>
-					<td>{{p.status}}</td>
+					<td>
+						{% if p.status == 1 %}
+							On Sale
+						{% else %}
+							Sold Out
+						{% endif %}
+					</td>
 					<td>{{p.descriptions}}</td>
 					<td>{{p.price}}</td>
-					<td>{{p.category.name}}</td>
-					{# <td>{{p.proSups.supplier.name}}</td> #}
+					<td>{% if p.gender == 0 %}
+							Men's Clothing
+						{% else %}
+							Women's Clothing
+						{% endif %}</td>
+					<td>{{p.name}}</td>
+					<td>{{p.supplier}}</td>
 					<td>
-						<img src="{{asset('images/Dresses.png')}}" width="100" height="auto" alt="" class="mx-3">
+						{% set img = p.image %}
+						<img src="{{asset('images/'~img)}}" width="100" height="auto" alt="" class="mx-3">
 					</td>
+					<td>
+					{% for s in size %}
+						{% if s.proId ==  p.id %}
+							Size: {{s.sizeName}} - {{s.quantitySize}} items
+							<br>
+						{% endif %}
+					{% endfor %}
+					
+					</td>
+					<td>{{p.quantity}}</td>
 
 					{# Edit, Delete #}
 					<td>
-						<a href="">
-							<i class="bi bi-pencil-square" style="color: black;"></i>
+						<a href="{{path('editPro_page', {'id':p.id})}}">
+							<button class="bi bi-pencil-square border-0 bg-white"></button>
 						</a>
 					</td>
 					<td>
-						<a href="">
-							<i class="bi bi-trash3" style="color: black;"></i>
+						<a>
+							<button class="bi bi-trash3 border-0 bg-white" onclick="deleteConfirm('{{p.id}}');"></button>
 						</a>
 					</td>
 				</tr>
 			{% endfor %}
 		</table>
 	</tbody>
-</section>{% endblock %}
+</section>
+<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+<script>
+	function delete_row(id) {
+$.ajax({
+type: 'delete',
+url: '/admin/product/delete/' + id,
+data: {
+id: id
+},
+success: function () {
+var row = document.getElementById("row_pro" + id);
+row.parentNode.removeChild(row);
+
+window.location.href = '/admin/product/';
+
+}
+});
+}
+</script>{% endblock %}

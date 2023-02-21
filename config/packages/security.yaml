@@ -22,7 +22,7 @@ security:
             logout:
                 path: logout_page
                 # where to redirect after logout
-                target: logIn_page 
+                target: logIn_page
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

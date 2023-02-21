@@ -9,10 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-
-class SuppManageController extends AbstractController
+/**
+ * @Route("/admin/supplier")
+ */
+class SupplierController extends AbstractController
 {
-     
-    
+    /**
+     * @Route("/list", name="supp_page")
+     */
+     public function index(): Response
+    {
+        return $this->render('supplier/index.html.twig', [
+            'controller_name' => 'SupplierController',
+        ]);
+    }
 }

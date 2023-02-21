@@ -24,12 +24,13 @@ class UserType extends AbstractType
         ->add('fullname', TextType::class)
             ->add('password', RepeatedType::class,[
                 'type'=> PasswordType::class,
-                'first_options'=> ['label'=>'Password'],
-                'second_options'=> ['label'=> 'Confirm Password']])
+                'first_options'=> ['label'=>'Password', 'attr' => ['placeholder' => 'Password']],
+                'second_options'=> ['label'=> 'Confirm Password', 'attr' => ['placeholder' => 'Confirm Password']]])
             ->add('birthday',DateType::class,[
                 'widget'=>'single_text'
             ])
-            ->add('gender', ChoiceType::class, array(
+            ->add('gender', ChoiceType::class, 
+                array(
                     'choices' => array(
                     'Male' => 0,
                     'Female' => 1
@@ -37,9 +38,11 @@ class UserType extends AbstractType
                 'multiple' => false,
                 'expanded' => true
             ))
+
+            
             ->add('phone', NumberType::class)
             ->add('address', TextType::class)
-            ->add('save', SubmitType::class)
+            // ->add('save', SubmitType::class)
 
         ;
     }

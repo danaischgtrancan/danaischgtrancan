@@ -4,6 +4,17 @@
 {% endblock %}
 
 {% block body %}
+	<script>
+		// Function to check if the user wants to delete or not.
+function changeConfirm($id) {
+if (confirm("Are you sure to confirm this order?")) {
+window.location.href = '/admin/order/changeConfirm/'+ $id;
+} else {
+return false;
+}
+}
+	</script>
+
 	<section class="header">
 		<div class="container mt-4 mb-3">
 			<div class="text-center lh-1 mb-2">
@@ -57,7 +68,7 @@
 									<td>{{o.deliveryLocal}}</td>
 									{% if (o.status == 0)%}
 										<td>
-											<button type="button" class="btn btn-danger fa fa-times"></button>
+											<button name="no" type="button" class="btn btn-danger fa fa-times" onclick="changeConfirm('{{o.id}}')"></button>
 										</td>
 									{% else %}
 										<td>

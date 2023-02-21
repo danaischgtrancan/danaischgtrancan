@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-	{# {{ encore_entry_link_tags('app') }} #}
 	<link href="{{asset('css/header.css')}}" rel="stylesheet" media="all">
 {% endblock %}
 
@@ -11,60 +10,44 @@
 			<div class="form-left">
 				<img src="images/Signin.png" alt="form">
 			</div>
-			 {{ form_start(registrationForm) }}
+			{{ form_start(registrationForm, {'attr': {'class': 'form-detail'}}) }}
+			<h2>Register</h2>
+			<div
+				class="form-row">
+				{{ form_widget(registrationForm.fullname, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Full name'}}) }}
+			</div>
+			<div
+				class="form-row">
+				{{ form_widget(registrationForm.username, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Username'}}) }}
+			</div>
+			<div class="form-row">
+				{{ form_widget(registrationForm.password, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Password'}}) }}
+			</div>
+			<div class="form-row">
+				{{ form_widget(registrationForm.gender, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Phone'}}) }}
+			</div>
+			<div class="form-row">
+				{{ form_widget(registrationForm.birthday, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Birthday'}}) }}
+			</div>
+			<div class="form-row">
+				{{ form_widget(registrationForm.phone, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Phone'}}) }}
+			</div>
 
-			<form class="form-detail" action="#" method="post">
-				<h2>Register</h2>
-				<div class="form-row d-flex">
-								{{ form_label(registrationForm.FullName) }}
+			<div class="form-row">
+				{{ form_widget(registrationForm.address, {'attr': {'class': 'input-text me-2 input-form', 'placeholder':'Address'}}) }}
+			</div>
+			{# <div class="input-form text-center">
+				<p>You already have an account
+					<a href="{{path("logIn_page")}}">Log In</a>
+				</p>
+			</div> #}
+			<div
+				class="form-row-last">
+				{# {{ form_row(registrationForm.save, {'attr': {'class': 'input-text me-2'}}) }} #}
 
-				{{ form_widget(registrationForm.FullName, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="text" name="full-name" id="full-name" class="input-text me-2" placeholder="Full Name" required autocomplete="off"> #}
-				</div><div class="form-row">
-								{{ form_widget(registrationForm.email, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Username" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
-				</div>
-                <div class="form-row">
-					<input type="password" name="password" id="password" class="input-text" placeholder="Password" required autocomplete="off">
-				</div>
-				<div class="form-row">
-					<input type="password" name="comfirm-password" id="comfirm-password" class="input-text" placeholder="Comfirm Password" required autocomplete="off">
-				</div>
-                <div class="form-row">
-				{{ form_widget(registrationForm.dayOfBirth, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="date" name="your-email" id="your-email" class="input-text" placeholder="Birthday" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
-				</div>
-				<div class="form-row">
-				{{ form_widget(registrationForm.phoneNumber, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Telephone" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
-				</div>
-                <div class="form-row">
-				{# {{ form_row(registrationForm.email, {'attr': {'class': 'input-text me-2'}}) }} #}
-
-					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Email" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
-				</div>
-                <div class="form-row">
-				{{ form_widget(registrationForm.address, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="text" name="your-email" id="your-email" class="input-text" placeholder="Address" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" autocomplete="off"> #}
-				</div>
-				<div class="input-form text-center">
-						<p>You already have an account
-							<a href="{{path("logIn_page")}}">Log In</a>
-						</p>
-					</div>
-				<div class="form-row-last">
-						{{ form_row(registrationForm.save, {'attr': {'class': 'input-text me-2'}}) }}
-
-					{# <input type="submit" name="register" class="register" value="Register"> #}
-				</div>
-				    {{ form_end(registrationForm) }}
-
-			{# </form> #}
+				<input type="submit" name="register" class="register" value="Register">
+			</div>
+			{{ form_end(registrationForm) }}
 		</div>
 	</div>
 
