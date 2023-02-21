@@ -38,7 +38,7 @@ class ProductType extends AbstractType
                         'Sold Out' => '1'
                     ),
                     'multiple' => false,
-                    'expanded' => true
+                    'expanded' => true  
                 )
             )
             ->add('price', NumberType::class)
@@ -66,7 +66,7 @@ class ProductType extends AbstractType
                 'placeholder' => 'Choose an option'
             ])
             ->add('save', SubmitType::class, [
-                'label' => "Add"
+                'label' => "Next"
             ]);
     }
 }

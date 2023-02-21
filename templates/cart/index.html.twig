@@ -10,7 +10,7 @@
 		// Function to check if the user wants to delete or not.
 function deleteConfirm($id) {
 if (confirm("Are you sure to delete!")) {
-delete_row($id);
+delete_row($id)
 } else {
 return false;
 }
@@ -39,7 +39,7 @@ return false;
 
 									{# Display cart start #}
 									{% for c in carts %}
-										<div id="row{{c.p_id}}">
+										<div id="row_product{{c.p_id}}">
 											<hr class="my-2">
 											<div class="row mb-4 d-flex justify-content-between align-items-center">
 												<div class="col-md-2 col-lg-2 col-xl-2">
@@ -64,9 +64,9 @@ return false;
 												<h6 class="mb-0">{{c.unitTotal}}</h6>
 											</div>
 											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-												<button onclick="delete_row('{{c.p_id}}')"; class="text-muted">
+												<a onclick="deleteConfirm('{{c.cart_id}}')" name="delete_row" class="text-muted">
 													<i class="fas fa-times"></i>
-												</button>
+												</a>
 											</div>
 										</div>
 									</div>
@@ -141,10 +141,10 @@ data: {
 id: id
 },
 success: function () {
-var row = document.getElementById("row" + id);
+var row = document.getElementById("row_product" + id);
 row.parentNode.removeChild(row);
 
-// $this -> addFlash('success', 'A product was deleted');
+window.location.href = '/cart';
 
 }
 });

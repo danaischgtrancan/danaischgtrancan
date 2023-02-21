@@ -3,16 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\ProSize;
 use App\Form\ProductType;
+use App\Form\ProSizeType;
 use App\Repository\ProductRepository;
+use App\Repository\SizeRepository;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @Route("/admin/product")
@@ -32,35 +37,15 @@ class ProManageController extends AbstractController
      */
     public function productMangeAction(): Response
     {
-        $p = new Product();
-        // $productForm = $this->createForm(ProductType::class, $p);
-
-        $products = $this->repo->findBy([], [
+        $products = $this->repo->findAllList([], [
             'id' => 'DESC'
         ]);
+        $size = $this->repo->findAllSize();
 
-        // Return many element
-        $data = [];
-        foreach ($products as $p) :
-            // Chỉ định cụ thể supplier để tránh liên kết vòng trong bản CarSup (PK)
-            $data[] = [
-                'id' => $p->getId(),
-                'name' => $p->getName(),
-                'status' => $p->isStatus(),
-                'descriptions' => $p->getDescriptions(),
-                'price' => $p->getPrice(),
-                'forGender' => $p->isForGender(),
-                'category' => $p->getCategory(),
-                'supplier' => $p->getSupplier(),
-                'image' => $p->getImage(),
-
-            ];
-        endforeach;
-
-        // return $this->json($data);
-
+        // return $this->json($size);
         return $this->render('pro_manage/index.html.twig', [
-            'products' => $data
+            'products' => $products,
+            'size' => $size
         ]);
     }
 
@@ -113,11 +98,11 @@ class ProManageController extends AbstractController
             // actually executes the queries (i.e. the INSERT query)
             $entity->flush();
 
-            $this->addFlash(
-                'success',
-                'A products was updated'
-            );
-            return $this->redirectToRoute("pro_page");
+            // $this->addFlash(
+            //     'success',
+            //     'A products was added'
+            // );
+            return $this->redirectToRoute("addSize_page");
         }
 
         return $this->render('pro_manage/new.html.twig', [
@@ -139,6 +124,40 @@ class ProManageController extends AbstractController
             echo $e;
         }
         return $newFilename;
+    }
+    // Add size
+    /**
+     * @Route("/size", name="addSize_page")
+     */
+    public function addSizeAction(Request $req, ManagerRegistry $reg): Response
+    {
+        $pz = new ProSize();
+        $proSizeForm = $this->createForm(ProSizeType::class, $pz);
+
+        $proSizeForm->handleRequest($req);
+        $entity = $reg->getManager();
+
+        if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
+            $data = $proSizeForm->getData($req);
+            $pz->setProduct($data->getProduct());
+            $pz->setSize($data->getSize());
+            $pz->setQuantity($data->getQuantity());
+
+            // tell Doctrine you want to (eventually) save the Product (no queries yet)
+            $entity->persist($pz);
+            // actually executes the queries (i.e. the INSERT query)
+            $entity->flush();
+
+            $this->addFlash(
+                'success',
+                'A products was added'
+            );
+            return $this->redirectToRoute("pro_page");
+        }
+
+        return $this->render('size/index.html.twig', [
+            'proSizeForm' => $proSizeForm->createView()
+        ]);
     }
 
     // Update 
@@ -185,13 +204,13 @@ class ProManageController extends AbstractController
                 echo $th;
             }
             $p->setImage($newFilename);
-            
+
             $entity->persist($p);
             $entity->flush();
 
             $this->addFlash(
                 'success',
-                'New products was added'
+                'New products was updated'
             );
             return $this->redirectToRoute("pro_page");
         }
@@ -200,30 +219,51 @@ class ProManageController extends AbstractController
             'productForm' => $productForm->createView()
         ]);
     }
+    // Update 
+    /**
+     * @Route("/edit/size/{id}", name="editPro_page")
+     */
 
+    public function editSizeAction(Request $req, ManagerRegistry $reg, int $id): Response
+    {
+        $pz = $this->repo->find($id);
+        $entity = $reg->getManager();
+
+        $proSizeForm = $this->createForm(ProSizeType::class, $pz);
+        $proSizeForm->handleRequest($req);
+        // $entity = $reg->getManager();
+
+        if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
+            $data = $proSizeForm->getData($req);
+            // $pz->setProduct($data->getProduct());
+            // $pz->setSize($data->getSize());
+            // $pz->setQuantity($data->getQuantity());
+
+            
+
+            $entity->persist($pz);
+            $entity->flush();
+
+            $this->addFlash(
+                'success',
+                'New products was updated'
+            );
+            return $this->redirectToRoute("pro_page");
+        }
+
+        return $this->redirectToRoute("pro_page");
+
+        return $this->render('pro_manage/edit.html.twig', [
+            'productForm' => $proSizeForm->createView()
+        ]);
+    }
     // Delete
     /**
-     * @Route("/delete/{id}", name="deletePro_page")
+     * @Route("/delete/{id}", name="deletePro_page", methods={"delete"})
      */
-    public function deleteAction(Product $p, ManagerRegistry $reg)
+    public function deleteAction(Product $p)
     {
-        $entityManager = $reg->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($p);
-
-        $entityManager->remove($product);
-        $entityManager->flush();
-
-        $products = $this->repo->findBy([], [
-            'id' => 'DESC'
-        ]);
-
-        $this->addFlash(
-            'success',
-            'A products was deleted'
-        );
-
-        return $this->render('pro_manage/index.html.twig', [
-            'products' => $products
-        ]);
+        $this->repo->remove($p, true);
+        return new JsonResponse();
     }
 }

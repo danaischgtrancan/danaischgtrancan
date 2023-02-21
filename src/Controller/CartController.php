@@ -31,8 +31,9 @@ class CartController extends AbstractController
      */
     public function addAction(Request $req, ProductRepository $repoPro): Response
     {
-        // Khi up hinh len khong phai la kieu chuoi, do do minh can dung k  ieu mix
-        $s = new Cart();
+        $user = $this->getUser();
+
+        $carts = new Cart();
         // Call function above
         $req = $this->transformJsonBody($req);
 
@@ -40,24 +41,16 @@ class CartController extends AbstractController
         // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
         $id = $req->get('id');
         $product = $repoPro->find($id);
-        $s->setProduct($product);
-        $user = $this->getUser();
-        //$userId = $this->repo->findOneBy(['user'=> $user]);
-        $s->setUser($user);
+        $carts->setProduct($product);
+
         $count = $req->get('count');
-        $s->setCount($count);
+        $carts->setCount($count);
 
-        $this->repo->save($s, true);
+        $carts->setUser($user);
 
-        $this->addFlash(
-            'success',
-            'A product was added'
-        );
-
-        $carts = $this->repo->showCart($user);
-        return $this->render('cart/index.html.twig', [
-            'carts' => $carts
-        ]);
+        $this->repo->save($carts, true);
+        return $this->json($carts);
+        // return new JsonResponse();
     }
 
     public function transformJsonBody(Request $re)
@@ -70,6 +63,24 @@ class CartController extends AbstractController
         return $re;
     }
 
+
+    /**
+     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
+     */
+
+    public function deleteCartAction(Cart $cart): Response
+    {
+        $user = $this->getUser();
+        $c = new Cart($cart->getId());
+        $c->setUser($user);
+
+        // $this->repo->remove($c, true);
+
+        return $this->json($c);
+        // return new JsonResponse();
+        // return $this->redirectToRoute('shoppingCart');
+    }
+
     /**
      * @Route("/", name="shoppingCart")
      */
@@ -77,34 +88,11 @@ class CartController extends AbstractController
     {
         $user = $this->getUser();
         $carts = $this->repo->showCart($user);
+
         return $this->render('cart/index.html.twig', [
             'carts' => $carts
         ]);
     }
-
-    /**
-     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
-     */
-
-    public function deleteCartAction(Cart $c): Response
-    {
-
-        // $entityManager = $reg->getManager();
-
-        // $user = $this->getUser();
-
-        $$this->repo->remove($c, true);
-        // $entityManager->flush();
-
-        // $c = $this->repo->showCart();
-
-        return $this->json($c);
-        // return $this->render('cart/index.html.twig', [
-        //     'carts' => $c
-        // ]);
-    }
-
-
 
 
     /**

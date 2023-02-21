@@ -50,7 +50,7 @@ class CartRepository extends ServiceEntityRepository
         // JOIN `user` u ON u.id = cart.user_id
         // GROUP BY p.name, p.id
         return $this->createQueryBuilder('cart')
-            ->select('p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
+            ->select('cart.id as cart_id', 'p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
             ->andWhere('cart.user = :val')
             ->setParameter('val', $value)
             ->join('cart.product', 'p')
@@ -61,19 +61,19 @@ class CartRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-    /**
-     * @return Cart[] Returns an array of Cart objects
-     */
-    public function removeCart($pro_id, $user): array
-    {
-        return $this->createQueryBuilder('cart')
-            ->andWhere('cart.product.id = :val')
-            ->setParameter('val', $pro_id)
-            ->andWhere('cart.user.username = :val')
-            ->setParameter('val', $user)
-            ->getQuery()
-            ->getArrayResult();
-    }
+    // /**
+    //  * @return Cart[] Returns an array of Cart objects
+    //  */
+    // public function removeCart($pro_id, $user): array
+    // {
+    //     return $this->createQueryBuilder('cart')
+    //         ->andWhere('cart.product = :val')
+    //         ->setParameter('val', $pro_id)
+    //         ->andWhere('cart.user = :val')
+    //         ->setParameter('val', $user)
+    //         ->getQuery()
+    //         ->getArrayResult();
+    // }
     //    /**
     //     * @return Cart[] Returns an array of Cart objects
     //     */
