@@ -8,7 +8,7 @@
 		// Function to check if the user wants to delete or not.
 function changeConfirm($id) {
 if (confirm("Are you sure to confirm this order?")) {
-confirm($id);
+window.location.href = '/admin/order/changeConfirm/'+ $id;
 } else {
 return false;
 }
@@ -68,7 +68,7 @@ return false;
 									<td>{{o.deliveryLocal}}</td>
 									{% if (o.status == 0)%}
 										<td>
-											<button name="no" type="button" class="btn btn-danger fa fa-times" onclick="return changeConfirm({{o.id}})"></button>
+											<button name="no" type="button" class="btn btn-danger fa fa-times" onclick="changeConfirm('{{o.id}}')"></button>
 										</td>
 									{% else %}
 										<td>
@@ -84,21 +84,4 @@ return false;
 			</div>
 		</div>
 	</div>
-</section>
-<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
-
-<script>
-	function confirm(id) {
-$.ajax({
-type: 'put',
-url: '/admin/product/update/' + id,
-data: {
-id: id
-},
-success: function () {
-
-}
-});
-}
-</script>{% endblock %}
+</section>{% endblock %}

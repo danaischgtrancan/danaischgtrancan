@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Repository\OrderRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,20 +58,17 @@ class OrderManageController extends AbstractController
     }
 
     /**
-     * @Route("/changeConfirm", name="change_page", methods={"put"})
+     * @Route("/changeConfirm/{id}", name="change_page")
      */
-    public function changeAction(): Response
+    public function changeAction(int $id, ManagerRegistry $reg): Response
     {
-        
+        $orders = $this->repo->find($id);
+        $orders->setStatus(1);
+        $entity = $reg->getManager();
 
-        $orders = $this->repo->findBy([], [
-            'id' => 'DESC'
-        ]);
-        
-        return $this->render('order_manage/index.html.twig', [
-            'orders' => $orders,
-        ]);
+        $entity->persist($orders);
+        $entity->flush();
+
+        return $this->redirectToRoute('order_page');
     }
-
-    
 }
