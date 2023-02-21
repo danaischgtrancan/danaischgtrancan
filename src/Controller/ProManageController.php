@@ -235,9 +235,9 @@ class ProManageController extends AbstractController
 
         if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
             $data = $proSizeForm->getData($req);
-            // $pz->setProduct($data->getProduct());
-            // $pz->setSize($data->getSize());
-            // $pz->setQuantity($data->getQuantity());
+            $pz->setProduct($data->getProduct());
+            $pz->setSize($data->getSize());
+            $pz->setQuantity($data->getQuantity());
 
             
 
