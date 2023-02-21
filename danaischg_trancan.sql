@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2023 at 11:28 AM
+-- Generation Time: Feb 18, 2023 at 03:31 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.0.23
 
@@ -38,7 +38,13 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `descriptions`) VALUES
-(1, 'shirt', 'shirt black');
+(1, 'shirt', 'shirt black'),
+(2, 'dresses', 'dresses for women\r\n'),
+(3, 'pans', 'pans clothing'),
+(4, 'blazer', 'blazer clothing'),
+(5, 'bomber', 'bomber clothing'),
+(6, 'long tee', 'long tee clothing'),
+(7, 'jacket', 'jacket clothing');
 
 -- --------------------------------------------------------
 
@@ -65,7 +71,13 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20230213132807', '2023-02-13 14:28:11', 66),
 ('DoctrineMigrations\\Version20230213133412', '2023-02-13 14:34:15', 30),
 ('DoctrineMigrations\\Version20230213133700', '2023-02-13 14:37:03', 44),
-('DoctrineMigrations\\Version20230215085750', '2023-02-15 09:57:56', 425);
+('DoctrineMigrations\\Version20230215085750', '2023-02-15 09:57:56', 425),
+('DoctrineMigrations\\Version20230217141047', '2023-02-17 15:10:57', 734),
+('DoctrineMigrations\\Version20230217160203', '2023-02-17 17:02:08', 68),
+('DoctrineMigrations\\Version20230217180003', '2023-02-17 19:00:11', 37),
+('DoctrineMigrations\\Version20230217180242', '2023-02-17 19:02:45', 23),
+('DoctrineMigrations\\Version20230217180638', '2023-02-17 19:06:41', 72),
+('DoctrineMigrations\\Version20230217183851', '2023-02-17 19:38:55', 68);
 
 -- --------------------------------------------------------
 
@@ -76,8 +88,31 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `voucher` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date_discount` datetime NOT NULL,
-  `price_dicount` decimal(10,2) NOT NULL
+  `date` datetime NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `delivery_local` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `percent_discount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `voucher`, `date`, `total`, `delivery_local`, `status`, `percent_discount`) VALUES
+(1, 'MAXdanastore_18022023', '2023-02-17 19:39:07', '80.00', 'Can Tho', 0, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_detail`
+--
+
+CREATE TABLE `order_detail` (
+  `id` int(11) NOT NULL,
+  `orders_id` int(11) NOT NULL,
+  `products_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -94,16 +129,20 @@ CREATE TABLE `product` (
   `descriptions` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `for_gender` tinyint(1) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `supplier_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `category_id`, `name`, `status`, `descriptions`, `price`, `for_gender`, `quantity`, `image`) VALUES
-(1, 1, 'Flower Shirt', 1, 'for women', '30.00', 1, 3, 'Jacket_jeans.jpg');
+INSERT INTO `product` (`id`, `category_id`, `name`, `status`, `descriptions`, `price`, `for_gender`, `image`, `supplier_id`) VALUES
+(1, 1, 'Flower Shirt', 1, 'A Flower Shirt is a shirt clothing for women', '30.00', 1, 'Jacket_jeans.jpg', 1),
+(3, 5, 'Storm Bomber Black', 1, 'Storm Bomber Black is a bomber clothing', '98.00', 0, 'Storm_Bomber_Black_2.png', 2),
+(5, 6, 'Vintage Tee Natural ', 1, 'Vintage Tee Natural is a long tee', '68.00', 0, 'Vintage_Tee_Natural_2.png', 2),
+(6, 7, 'Pleated Short Skirt', 1, 'Pleated Short Skirt is an dresses', '52.00', 1, 'Pleated_Short_Skirt_1.png', 2),
+(7, 7, 'Wool CPO Jacket Khaki Men', 1, 'Wool CPO Jacket Khaki Men is a jacket for men', '85.00', 0, 'Wool_CPO_Jacket_Khaki_Men_1.png', 1);
 
 -- --------------------------------------------------------
 
@@ -114,35 +153,16 @@ INSERT INTO `product` (`id`, `category_id`, `name`, `status`, `descriptions`, `p
 CREATE TABLE `pro_size` (
   `id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
-  `size_id` int(11) DEFAULT NULL
+  `size_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `pro_size`
 --
 
-INSERT INTO `pro_size` (`id`, `product_id`, `size_id`) VALUES
-(1, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pro_sup`
---
-
-CREATE TABLE `pro_sup` (
-  `id` int(11) NOT NULL,
-  `date_to_deliver` date NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `supplier_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `pro_sup`
---
-
-INSERT INTO `pro_sup` (`id`, `date_to_deliver`, `product_id`, `supplier_id`) VALUES
-(2, '2023-02-22', 1, 1);
+INSERT INTO `pro_size` (`id`, `product_id`, `size_id`, `quantity`) VALUES
+(1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -161,7 +181,9 @@ CREATE TABLE `size` (
 --
 
 INSERT INTO `size` (`id`, `name`, `descriptions`) VALUES
-(1, 'S', 'small size');
+(1, 'S', 'small size'),
+(2, 'M', 'medium size'),
+(3, 'L', 'large size');
 
 -- --------------------------------------------------------
 
@@ -182,7 +204,34 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`id`, `name`, `phone`, `email`, `address`) VALUES
-(1, 'dior', 984105896, 'dior.uk.com', 'New York');
+(1, 'dior', 984105896, 'dior.uk.com', 'New York'),
+(2, 'versace', 876543212, 'versace@gmail.com', 'American');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `birthday` date NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` tinyint(1) NOT NULL,
+  `fullname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `roles`, `password`, `birthday`, `address`, `phone`, `gender`, `fullname`) VALUES
+(1, 'tran', '[\"ROLE_USER\"]', '$2y$13$wvVhNsNIkMCcmgJMz9p5q.7w.j.5RCOSidJ1Gz6YFNJx5nZxVx366', '2023-02-02', 'Spain', '916843367', 1, 'tran'),
+(2, 'admin', '[\"ROLE_ADMIN\"]', '$2y$13$9oQU3P0TCJ6T5fhwulLExOqwoRA1lElzG2ZUpvU22byvnRPzearme', '2023-02-01', 'Can Tho', '0987654321', 0, 'Tran Can');
 
 --
 -- Indexes for dumped tables
@@ -207,11 +256,20 @@ ALTER TABLE `order`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_ED896F46CFFE9AD6` (`orders_id`),
+  ADD KEY `IDX_ED896F466C8A81A9` (`products_id`);
+
+--
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_D34A04AD12469DE2` (`category_id`);
+  ADD KEY `IDX_D34A04AD12469DE2` (`category_id`),
+  ADD KEY `IDX_D34A04AD2ADD6D8C` (`supplier_id`);
 
 --
 -- Indexes for table `pro_size`
@@ -220,14 +278,6 @@ ALTER TABLE `pro_size`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_27E091184584665A` (`product_id`),
   ADD KEY `IDX_27E09118498DA827` (`size_id`);
-
---
--- Indexes for table `pro_sup`
---
-ALTER TABLE `pro_sup`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_EB1876714584665A` (`product_id`),
-  ADD KEY `IDX_EB1876712ADD6D8C` (`supplier_id`);
 
 --
 -- Indexes for table `size`
@@ -242,6 +292,13 @@ ALTER TABLE `supplier`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8D93D649F85E0677` (`username`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -249,19 +306,25 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `order_detail`
+--
+ALTER TABLE `order_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pro_size`
@@ -270,32 +333,40 @@ ALTER TABLE `pro_size`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `pro_sup`
---
-ALTER TABLE `pro_sup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `size`
 --
 ALTER TABLE `size`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD CONSTRAINT `FK_ED896F466C8A81A9` FOREIGN KEY (`products_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FK_ED896F46CFFE9AD6` FOREIGN KEY (`orders_id`) REFERENCES `order` (`id`);
+
+--
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `FK_D34A04AD12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `FK_D34A04AD12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  ADD CONSTRAINT `FK_D34A04AD2ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id`);
 
 --
 -- Constraints for table `pro_size`
@@ -303,13 +374,6 @@ ALTER TABLE `product`
 ALTER TABLE `pro_size`
   ADD CONSTRAINT `FK_27E091184584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `FK_27E09118498DA827` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`);
-
---
--- Constraints for table `pro_sup`
---
-ALTER TABLE `pro_sup`
-  ADD CONSTRAINT `FK_EB1876712ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`id`),
-  ADD CONSTRAINT `FK_EB1876714584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

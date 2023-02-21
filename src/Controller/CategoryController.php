@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @Route("/category")
@@ -37,15 +40,15 @@ class CategoryController extends AbstractController
      */
     public function showAction(Category $c): Response
     {
-        return $this->render('detail.html.twig', [
+        return $this->render('category/index.html.twig', [
             'c'=>$c
         ]);
     }
 
-     /**
+    /**
      * @Route("/add", name="category_create")
      */
-    public function createAction(Request $req, SluggerInterface $slugger): Response
+    public function createAction(Request $req, SluggerInterface $slugger, CategoryRepository $repo): Response
     {
         
         $c = new Category();
@@ -55,53 +58,39 @@ class CategoryController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
 
             
-            $this->repo->save($c,true);
+            $repo->save($c,true);
             return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("admin/category.html.twig",[
+        return $this->render("cate_manage/index.html.twig",[
             'form' => $form->createView()
         ]);
     }
 
-         /**
-     * @Route("/edit", name="category_edit",requirements={"id"="\d+"})
+        /**
+     * @Route("/edit/{id}", name="category_edit")
      */
-    public function editAction(Request $req, SluggerInterface $slugger): Response
+    public function editAction(Request $req, SluggerInterface $slugger, CategoryRepository $repo, Category $c): Response
     {
-        $c = new Category();
-        $form = $this->createForm(CategoryType::class, $c);   
+        $form = $this->createForm(CategoryType::class, $c);
 
         $form->handleRequest($req);
         if($form->isSubmitted() && $form->isValid()){
 
-            $this->repo->save($c,true);
+            
+            $repo->save($c,true);
             return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("admin/category.html.twig",[
+        return $this->render("cate_manage/index.html.twig",[
             'form' => $form->createView()
         ]);
     }
 
-
-
-
     /**
-     * @Route("/delete",name="category_delete",requirements={"id"="\d+"})
+     *  @Route("/delete/{id}", name="category_delete", requirements={"id"="\d+"})
      */
-    
-     public function deleteAction(Request $req, Category $c): Response
-     {
-        $c = new Category();
-         $this->repo->remove($c,true);
-         return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
-     }
- 
-
-
-
-
-
-
-
-   
+    public function deleteAction(Request $req, Category $c): Response
+    {
+        $this->repo->remove($c,true);
+        return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
+    }
 }
