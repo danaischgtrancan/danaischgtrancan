@@ -61,17 +61,17 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllList(): array
     {
-        // SELECT 'p.id', 'p.name', 'p.status', 'p.descriptions', 'p.for_gender', 'p.image', 'p.price', 'c.name', 's.name', 'sz.name', 'pz.quantity' FROM `product` p 
+        // SELECT p.id, p.name, p.status, p.descriptions, p.for_gender, p.image, p.price, c.name, s.name, sz.name, pz.quantity FROM `product` p 
         // JOIN `category` c ON p.category_id = c.id
         // JOIN `supplier` s ON p.supplier_id = s.id
-        // JOIN `pro_size` pz ON p.id = pz.product_id
-        // JOIN `size` sz ON pz.size_id = sz.id        
+        // LEFT JOIN `pro_size` pz ON p.id = pz.product_id
+        // LEFT JOIN `size` sz ON pz.size_id = sz.id    
         return $this->createQueryBuilder('p')
             ->select('p.id', 'p.name', 'p.status', 'p.descriptions', 'p.forGender as gender', 'p.image', 'p.price', 'c.name as category', 's.name as supplier', 'sz.name as size', 'SUM(pz.quantity) as quantity')
             ->join('p.category', 'c')
             ->join('p.supplier', 's')
-            ->join('p.proSizes', 'pz')
-            ->join('pz.size', 'sz')
+            ->leftjoin('p.proSizes', 'pz')
+            ->leftjoin('pz.size', 'sz')
             ->orderBy('p.id', 'DESC')
             ->groupBy('p.id', 'p.name')
             ->getQuery()
@@ -203,14 +203,14 @@ class ProductRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-     /**
+    /**
      * @return Product[] Returns an array of Product objects
      */
     public function searchByName($value): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.name like :val')
-            ->setParameter('val', '%'.$value.'%')
+            ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getArrayResult();
     }

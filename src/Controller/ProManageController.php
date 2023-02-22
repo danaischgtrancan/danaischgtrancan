@@ -7,6 +7,7 @@ use App\Entity\ProSize;
 use App\Form\ProductType;
 use App\Form\ProSizeType;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
 use App\Repository\SizeRepository;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\Persistence\ManagerRegistry;
@@ -178,7 +179,7 @@ class ProManageController extends AbstractController
      */
 
     public function editAction(Request $req, SluggerInterface $slugger, ManagerRegistry $reg, int $id): Response
-    {
+    {   
         $p = $this->repo->find($id);
         $entity = $reg->getManager();
 
@@ -220,11 +221,8 @@ class ProManageController extends AbstractController
             $entity->persist($p);
             $entity->flush();
 
-            $this->addFlash(
-                'success',
-                'New products was updated'
-            );
-            return $this->redirectToRoute("pro_page");
+            return $this->redirectToRoute("editSize_page", [
+                'id' => $p->getId()]);
         }
 
         return $this->render('pro_manage/edit.html.twig', [
@@ -237,25 +235,22 @@ class ProManageController extends AbstractController
    ========================================================================== */
 
     /**
-     * @Route("/edit/size/{id}", name="editPro_page")
+     * @Route("/edit/size/{id}", name="editSize_page")
      */
 
-    public function editSizeAction(Request $req, ManagerRegistry $reg, int $id): Response
+    public function editSizeAction(Request $req, ManagerRegistry $reg, int $id, ProSizeRepository $repoSize): Response
     {
-        $pz = $this->repo->find($id);
+        $pz = $repoSize->find($id);
         $entity = $reg->getManager();
 
         $proSizeForm = $this->createForm(ProSizeType::class, $pz);
         $proSizeForm->handleRequest($req);
-        // $entity = $reg->getManager();
 
         if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
             $data = $proSizeForm->getData($req);
-            // $pz->setProduct($data->getProduct());
-            // $pz->setSize($data->getSize());
-            // $pz->setQuantity($data->getQuantity());
-
-
+            $pz->setProduct($data->getProduct());
+            $pz->setSize($data->getSize());
+            $pz->setQuantity($data->getQuantity());
 
             $entity->persist($pz);
             $entity->flush();
@@ -267,10 +262,8 @@ class ProManageController extends AbstractController
             return $this->redirectToRoute("pro_page");
         }
 
-        return $this->redirectToRoute("pro_page");
-
-        return $this->render('pro_manage/edit.html.twig', [
-            'productForm' => $proSizeForm->createView()
+        return $this->render('size/edit.html.twig', [
+            'proSizeForm' => $proSizeForm->createView()
         ]);
     }
 

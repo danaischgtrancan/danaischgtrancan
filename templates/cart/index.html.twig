@@ -18,7 +18,7 @@
 /* make the button call the function */
 function change($id) {
 var count = document.getElementById("quantity").value;
-window.location.href = "/cart/onchange/"$id;
+window.location.href = "/cart/onchange/" .$id;
 }
 	</script>
 	<section class="py-2 h-100">
@@ -60,7 +60,7 @@ window.location.href = "/cart/onchange/"$id;
 												<div class="product-count">
 													<form action="#" class="display-flex">
 														<button class="qtyminus">-</button>
-														<input type="text" name="quantity" id="quantity" value="{{c.num}}" onchange="change('{{c.p_id}}')" class="qty">
+														<input type="text" name="quantity" id="quantity" value="{{c.num}}" onchange="change({{c.p_id}})" class="qty">
 														<button class="qtyplus">+</button>
 													</form>
 												</div>
@@ -69,7 +69,7 @@ window.location.href = "/cart/onchange/"$id;
 												<h6 class="mb-0">{{c.unitTotal}}</h6>
 											</div>
 											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-												<a onclick="delete_row('{{c.p_id}}')" class="text-muted">
+												<a onclick="delete_rowCart({{c.p_id}})" class="text-muted">
 													<i class="fas fa-times"></i>
 												</a>
 											</div>
@@ -137,11 +137,11 @@ window.location.href = "/cart/onchange/"$id;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script>
 
-	function delete_row(pro_id) {
+	function delete_rowCart(pro_id) {
 if (confirm("Are you sure to delete?")) {
 $.ajax({
 type: 'delete',
-url: '/cart/delete/' + pro_id,
+url: '/cart/delete/' .pro_id,
 data: {
 id: pro_id
 },

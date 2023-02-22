@@ -69,8 +69,6 @@ class CartController extends AbstractController
             endif;
         endforeach;
         $carts->setProduct($product);
-
-
         $carts->setUser($user);
 
         $this->repo->save($carts, true);
@@ -90,18 +88,21 @@ class CartController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}/", name="deleteCart", methods={"delete"})
+     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
      */
-    public function deleteCartAction(int $pro_id): Response
+    public function deleteCartAction(int $id, ManagerRegistry $reg): Response
     {
         $user = $this->getUser();
-        $cart = $this->repo->removeCart($pro_id, $user);
+        $cart = $this->repo->removeCart($id, $user);
+        
+        $entity = $reg->getManager();
+        foreach ($cart as $c) :
+            $entity->remove($c, true);
+            $entity->flush();
+        endforeach;
 
-        // $this->repo->remove($cart, true);
-
-
-        // return $this->json($c);
-        return new JsonResponse();
+        return $this->json($cart);
+        // return new JsonResponse();
         // return $this->redirectToRoute('shoppingCart');
     }
 
