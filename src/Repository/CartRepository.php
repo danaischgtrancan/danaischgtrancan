@@ -96,27 +96,27 @@ class CartRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-    /**
-     * @return Cart[] Returns an array of Cart objects
-     */
-    public function findByUser($user): array
-    {
-        // SELECT p.id, p.name, p.image, c.name 'cate_name', SUM(cart.count) as 'quantity', SUM(cart.count) * p.price 'total', u.fullname, u.address, u.phone FROM `product` p
-        // JOIN `cart` ON p.id = cart.product_id
-        // JOIN `category` c ON p.category_id = c.id
-        // JOIN `user` u ON u.id = cart.user_id
-        // GROUP BY p.name, p.id
-        return $this->createQueryBuilder('c')
-            ->select('p.id as pId','c.name as cate_name', 'p.name as pName', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'u.fullname', 'u.address', 'u.phone' )
-            ->join('c.product', 'p')
-            ->join('p.category', 'cate')
-            ->join('c.user', 'u')
-            ->andWhere('u.id = :val')
-            ->setParameter('val', $user)
-            ->groupBy('p.name', 'p.id')
-            ->getQuery()
-            ->getArrayResult();
-    }
+    // /**
+    //  * @return Cart[] Returns an array of Cart objects
+    //  */
+    // public function findProducts($user): array
+    // {
+    //     // SELECT p.id, p.name, p.image, c.name 'cate_name', SUM(cart.count) as 'quantity', SUM(cart.count) * p.price 'total', u.fullname, u.address, u.phone FROM `product` p
+    //     // JOIN `cart` ON p.id = cart.product_id
+    //     // JOIN `category` c ON p.category_id = c.id
+    //     // JOIN `user` u ON u.id = cart.user_id
+    //     // GROUP BY p.name, p.id
+    //     return $this->createQueryBuilder('c')
+    //         ->select('p.id as pId','cate.name as cateName', 'p.name as pName', 'p.price', 'p.image', 'SUM(c.count) as num', 'SUM(c.count) * p.price as price')
+    //         ->join('c.product', 'p')
+    //         ->join('p.category', 'cate')
+    //         ->join('c.user', 'u')
+    //         ->andWhere('u.id = :val')
+    //         ->setParameter('val', $user)
+    //         ->groupBy('p.name', 'p.id')
+    //         ->getQuery()
+    //         ->getArrayResult();
+    // }
 
     // /**
     //  * @return Cart[] Returns an array of Cart objects
