@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Entity\Product;
 use App\Form\CartType;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
@@ -25,6 +26,20 @@ class CartController extends AbstractController
     {
         $this->repo = $repo;
     }
+
+    /**
+     * @Route("/", name="shoppingCart")
+     */
+    public function cartAction(): Response
+    {
+        $user = $this->getUser();
+        $carts = $this->repo->showCart($user);
+
+        return $this->render('cart/index.html.twig', [
+            'carts' => $carts
+        ]);
+    }
+
     // Create a new one
     /**
      * @Route("/add", name="addCart", methods={"POST"})
@@ -41,16 +56,16 @@ class CartController extends AbstractController
         // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
         $id = $req->get('id');
         $product = $repoPro->find($id);
-        
-        
+
+
         $count = $req->get('count');
         $carts->setCount($count);
 
-        
+
         // Check quantity of Stock
-        foreach($product as $p):
-            if($count - $p->getq() < 0):
-                
+        foreach ($product as $p) :
+            if ($count - $p->getq() < 0) :
+
             endif;
         endforeach;
         $carts->setProduct($product);
@@ -75,35 +90,37 @@ class CartController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
+     * @Route("/delete/{id}/", name="deleteCart", methods={"delete"})
      */
     public function deleteCartAction(int $pro_id): Response
     {
         $user = $this->getUser();
         $cart = $this->repo->removeCart($pro_id, $user);
 
-        foreach ($cart as $c) :
-            $this->repo->remove($c, true);
-        endforeach;
+        // $this->repo->remove($cart, true);
+
 
         // return $this->json($c);
         return new JsonResponse();
         // return $this->redirectToRoute('shoppingCart');
     }
 
+
+    // Chang number in Cart
     /**
-     * @Route("/", name="shoppingCart")
+     * @Route("/onchange/{id}", name="onchange_event")
      */
-    public function cartAction(): Response
+    public function upDown(Product $p): Response
     {
         $user = $this->getUser();
-        $carts = $this->repo->showCart($user);
-
-        return $this->render('cart/index.html.twig', [
-            'carts' => $carts
-        ]);
+        $product = $this->repo->findByProId($p->getId(), $user);
+        foreach ($product as $p) :
+            $p->setCount($p->getCount() + 1);
+            break;
+        endforeach;
+        // return $this->json(['product' => $product]);
+        return $this->redirectToRoute('shoppingCart');
     }
-
 
     /**
      * @Route("/edit", name="category_edit",requirements={"id"="\d+"})

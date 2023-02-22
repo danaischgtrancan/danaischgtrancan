@@ -6,7 +6,8 @@
 
 {% block body %}
 
-	<script>// Function to check if the user wants to delete or not.
+	<script>
+		// Function to check if the user wants to delete or not.
 // function deleteConfirm($id) {
 // if (confirm("Are you sure to delete!")) {
 // delete_row($id)
@@ -14,121 +15,130 @@
 // return false;
 // }
 // }
-</script>
-<section class="py-2 h-100">
-	<div class="me-5 d-flex justify-content-center align-items-center">
-		<div class="card card-registration card-registration-2" style="border: none;">
-			<div class="card-body p-0">
-				{% for message in app.flashes('success') %}
-					<div class="alert alert-success mt-2 text-center">
-						{{ message }}
-					</div>
-				{% endfor %}
-				<div class="row g-0">
-					<div class="col-lg-8">
-						<div class="p-5">
-							<div id="class=" d-flex justify-content-between align-items-center pb-5"">
-								<h1 class="title-cart fw-bold mb-0 text-black">Shopping Cart</h1>
-							</div>
-							<div
-								id="row_cart">
-								{# Create local parameter to show unit price and total #}
-								{% set count = 0 %}
-								{% set total = 0 %}
+/* make the button call the function */
+function change($id) {
+var count = document.getElementById("quantity").value;
+window.location.href = "/cart/onchange/"$id;
+}
+	</script>
+	<section class="py-2 h-100">
+		<div class="me-5 d-flex justify-content-center align-items-center">
+			<div class="card card-registration card-registration-2" style="border: none;">
+				<div class="card-body p-0">
+					{% for message in app.flashes('success') %}
+						<div class="alert alert-success mt-2 text-center">
+							{{ message }}
+						</div>
+					{% endfor %}
+					<div class="row g-0">
+						<div class="col-lg-8">
+							<div class="p-5">
+								<div id="class=" d-flex justify-content-between align-items-center pb-5"">
+									<h1 class="title-cart fw-bold mb-0 text-black">Shopping Cart</h1>
+								</div>
+								<div
+									id="row_cart">
+									{# Create local parameter to show unit price and total #}
+									{% set count = 0 %}
+									{% set total = 0 %}
 
-								{# Display cart start #}
-								{% for c in carts %}
-									<div id="row_product{{c.p_id}}">
-										<hr class="my-2">
-										<div class="row mb-4 d-flex justify-content-between align-items-center">
-											<div class="col-md-2 col-lg-2 col-xl-2">
-												{% set img = c.image %}
-												<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
+									{# Display cart start #}
+									{% for c in carts %}
+										<div id="row_product{{c.p_id}}">
+											<hr class="my-2">
+											<div class="row mb-4 d-flex justify-content-between align-items-center">
+												<div class="col-md-2 col-lg-2 col-xl-2">
+													{% set img = c.image %}
+													<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
+												</div>
+												<div class="col-md-3 col-lg-3 col-xl-3">
+													<h6 class="text-muted">{{c.cate_name}}</h6>
+													<h6 class="text-black mb-0"></h6>
+													{{c.p_name}}</h6>
 											</div>
-											<div class="col-md-3 col-lg-3 col-xl-3">
-												<h6 class="text-muted">{{c.cate_name}}</h6>
-												<h6 class="text-black mb-0"></h6>
-												{{c.p_name}}</h6>
-										</div>
-										<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-											<div class="product-count">
-												<form action="#" class="display-flex">
-													<div class="qtyminus">-</div>
-													<input type="text" name="quantity" value="{{c.num}}" class="qty">
-													<div class="qtyplus">+</div>
-												</form>
+											<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+												<div class="product-count">
+													<form action="#" class="display-flex">
+														<button class="qtyminus">-</button>
+														<input type="text" name="quantity" id="quantity" value="{{c.num}}" onchange="change('{{c.p_id}}')" class="qty">
+														<button class="qtyplus">+</button>
+													</form>
+												</div>
 											</div>
-										</div>
-										<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
-											<h6 class="mb-0">{{c.unitTotal}}</h6>
-										</div>
-										<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-											<a onclick="delete_row({{c.p_id}})" class="text-muted">
-												<i class="fas fa-times"></i>
-											</a>
+											<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
+												<h6 class="mb-0">{{c.unitTotal}}</h6>
+											</div>
+											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+												<a onclick="delete_row('{{c.p_id}}')" class="text-muted">
+													<i class="fas fa-times"></i>
+												</a>
+											</div>
 										</div>
 									</div>
-								</div>
 
-								{# Count unit total #}
-								{% set count = loop.length %}
-								{# Total #}
-								{% set total = total + c.unitTotal %}
+									{# Count unit total #}
+									{% set count = loop.length %}
+									{# Total #}
+									{% set total = total + c.unitTotal %}
 
-							{% endfor %}
-							{# Display cart end #}
+								{% endfor %}
+								{# Display cart end #}
+							</div>
+
+							<hr class="my-4">
+
 						</div>
-
-						<hr class="my-4">
-
 					</div>
-				</div>
 
-				<div class="col-lg-4 bg-grey">
-					<div class="p-5">
-						<h3 class="title-cart fw-bold mb-5 mt-2 pt-1">Summary</h3>
-						<hr class="my-4">
-						<div class="d-flex justify-content-between mb-4">
-							<h5 class="text-uppercase">items
-								{{count}}
-							</h5>
+					<div class="col-lg-4 bg-grey">
+						<div class="p-5">
+							<h3 class="title-cart fw-bold mb-5 mt-2 pt-1">Summary</h3>
+							<hr class="my-4">
+							<div class="d-flex justify-content-between mb-4">
+								<h5 class="text-uppercase">items
+									{{count}}
+								</h5>
+							</div>
+
+							<h5 class="text-uppercase mb-3">Shipping</h5>
+
+							<div class="mb-4 pb-2">
+								<select class="button-60">
+									<option value="1">Standard-Delivery- $5.00</option>
+								</select>
+							</div>
+
+							<hr class="my-4">
+
+							<div class="d-flex justify-content-between mb-5">
+								<h5 class="text-uppercase">Total price</h5>
+								<h5>${{total + 5}}.00</h5>
+							</div>
+
+							<form action="?page=payment" method="post">
+								<input type="submit" class="btn btn-dark btn-block btn-lg btnCheckout" name="btnCheckout" value="Checkout">
+							</form>
 						</div>
-
-						<h5 class="text-uppercase mb-3">Shipping</h5>
-
-						<div class="mb-4 pb-2">
-							<select class="button-60">
-								<option value="1">Standard-Delivery- $5.00</option>
-							</select>
-						</div>
-
-						<hr class="my-4">
-
-						<div class="d-flex justify-content-between mb-5">
-							<h5 class="text-uppercase">Total price</h5>
-							<h5>${{total + 5}}.00</h5>
-						</div>
-
-						<form action="?page=payment" method="post">
-							<input type="submit" class="btn btn-dark btn-block btn-lg btnCheckout" name="btnCheckout" value="Checkout">
-						</form>
 					</div>
-				</div>
-				<div class="pt-5">
-					<h6 class="mb-0 back">
-						<a href="{{path('showProduct')}}" class="text-body">
-							<i class="fas fa-long-arrow-alt-left ms-5 me-2"></i>
-							Back to shop
-						</a>
-					</h6>
+					<div class="pt-5">
+						<h6 class="mb-0 back">
+							<a href="{{path('showProduct')}}" class="text-body">
+								<i class="fas fa-long-arrow-alt-left ms-5 me-2"></i>
+								Back to shop
+							</a>
+						</h6>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div></section><script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script><script>
+</section>
+<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+<script>
 
-function delete_row(pro_id) {
-if (confirm("Are you sure to delete!")) {
+	function delete_row(pro_id) {
+if (confirm("Are you sure to delete?")) {
 $.ajax({
 type: 'delete',
 url: '/cart/delete/' + pro_id,
@@ -146,4 +156,5 @@ window.location.href = '/cart';
 }
 
 
-}</script>{% endblock %}
+}
+</script>{% endblock %}

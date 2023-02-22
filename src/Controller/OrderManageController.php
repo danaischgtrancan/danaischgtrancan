@@ -28,8 +28,6 @@ class OrderManageController extends AbstractController
     public function orderAction(): Response
     {
         $p = new Order();
-        // $productForm = $this->createForm(ProductType::class, $p);
-
         $orders = $this->repo->findBy([], [
             'id' => 'DESC'
         ]);

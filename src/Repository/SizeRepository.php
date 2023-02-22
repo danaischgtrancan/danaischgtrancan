@@ -42,10 +42,15 @@ class SizeRepository extends ServiceEntityRepository
     /**
      * @return Size[] Returns an array of Size objects
      */
-    public function findSize(): array
+    public function findSize($value): array
     {
+        //SELECT * FROM `size` as s LEFT JOIN pro_size as ps ON s.id = ps.size_id
         return $this->createQueryBuilder('s')
-            ->leftJoin('s.proSizes', 'pz')
+            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'p.id as productId')
+            ->leftJoin('s.proSizes', 'ps')
+            ->innerJoin('ps.product', 'p')
+            ->andWhere('p.id = :val')
+            ->setParameter('val', $value)
             ->groupBy('s.id')
             ->getQuery()
             ->getArrayResult();

@@ -30,12 +30,18 @@ class ProductController extends AbstractController
 
         $sort_by = $req->query->get('sort_by');
         $order = $req->query->get('order');
-        if (isset($sort_by)) :
+        $btnSearch = $req->query->get('btnSearch');
+        $value = $req->query->get('value');
+
+        if (isset($btnSearch)) :
+            $products = $this->repo->searchByName($value);
+            $title = "Results";
+        elseif(isset($sort_by)) :
             if ($sort_by == 'name') :
                 $products = $this->repo->findByName($order);
                 $title = "Sort by name";
             endif;
-            if ($sort_by == 'price') :  
+            if ($sort_by == 'price') :
                 $products = $this->repo->findByPrice($order);
                 $title = "Sort by price";
             endif;
@@ -76,29 +82,27 @@ class ProductController extends AbstractController
     /**
      * @Route("/detail/{id}", name="proDetail_page")
      */
-    public function productDetailAction(int $id, SizeRepository $repoSize): Response
+    public function productDetailAction(Product $p, SizeRepository $repoSize): Response
     {
-        $product = $this->repo->findOnePro($id);
-        $size = $repoSize->findSize();
+        $size = $repoSize->findSize($p->getId());
 
-
-        // return $this->json(['size' => $size]);
+        // return $this->json(['product' => $product]);
 
         return $this->render('product/detail.html.twig', [
-            'product' => $product,
+            'product' => $p,
             'size' => $size
         ]);
     }
 
-    /**
-     * @Route("/search", name="searchPro_page")
-     */
-    public function searchProductAction(string $search): Response
-    {
-        $products = $this->repo->findByName($search);
+    // /**
+    //  * @Route("/search/{name}", name="searchPro_page")
+    //  */
+    // public function searchProductAction(string $search): Response
+    // {
+    //     $products = $this->repo->findByName($search);
 
-        return $this->render('product/show.html.twig', [
-            'products' => $products
-        ]);
-    }
+    //     return $this->render('product/show.html.twig', [
+    //         'products' => $products
+    //     ]);
+    // }
 }
