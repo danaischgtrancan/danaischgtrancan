@@ -88,20 +88,20 @@ class CartController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
+     * @Route("/delete/{id}", name="deleteCart", methods={"DELETE"})
      */
-    public function deleteCartAction(int $id, ManagerRegistry $reg): Response
+    public function deleteCartAction(int $id, ManagerRegistry $reg, ProductRepository $repoPro): Response
     {
         $user = $this->getUser();
         $cart = $this->repo->removeCart($id, $user);
-        
+
         $entity = $reg->getManager();
         foreach ($cart as $c) :
-            $entity->remove($c, true);
+            $entity->remove($c);
             $entity->flush();
         endforeach;
 
-        return $this->json($cart);
+        return $this->json("Success");
         // return new JsonResponse();
         // return $this->redirectToRoute('shoppingCart');
     }
@@ -109,17 +109,27 @@ class CartController extends AbstractController
 
     // Chang number in Cart
     /**
-     * @Route("/onchange/{id}", name="onchange_event")
+     * @Route("/change", name="change", methods={"POST"})
      */
-    public function upDown(Product $p): Response
+    public function minus(Request $req, ManagerRegistry $reg): Response
     {
+        $pro = $req->request->get('proId');
         $user = $this->getUser();
-        $product = $this->repo->findByProId($p->getId(), $user);
-        foreach ($product as $p) :
-            $p->setCount($p->getCount() + 1);
-            break;
-        endforeach;
-        // return $this->json(['product' => $product]);
+        $qty = $req->request->get('quantity');
+        $action = $req->request->get('action');
+
+        $cart = $this->repo->updateQty($pro, $user);
+
+        $entity = $reg->getManager();
+        if ($action == "minus") :
+            foreach ($cart as $c) :
+                $c->setCount($qty - 1);
+                $entity->persist($c);
+                $entity->flush();
+            endforeach;
+        endif;
+
+        // return $this->json(['cart' => $cart]);
         return $this->redirectToRoute('shoppingCart');
     }
 

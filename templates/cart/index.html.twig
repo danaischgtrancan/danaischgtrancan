@@ -6,21 +6,6 @@
 
 {% block body %}
 
-	<script>
-		// Function to check if the user wants to delete or not.
-// function deleteConfirm($id) {
-// if (confirm("Are you sure to delete!")) {
-// delete_row($id)
-// } else {
-// return false;
-// }
-// }
-/* make the button call the function */
-function change($id) {
-var count = document.getElementById("quantity").value;
-window.location.href = "/cart/onchange/" .$id;
-}
-	</script>
 	<section class="py-2 h-100">
 		<div class="me-5 d-flex justify-content-center align-items-center">
 			<div class="card card-registration card-registration-2" style="border: none;">
@@ -58,10 +43,20 @@ window.location.href = "/cart/onchange/" .$id;
 											</div>
 											<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
 												<div class="product-count">
-													<form action="#" class="display-flex">
-														<button class="qtyminus">-</button>
-														<input type="text" name="quantity" id="quantity" value="{{c.num}}" onchange="change({{c.p_id}})" class="qty">
-														<button class="qtyplus">+</button>
+													<form action="{{path('change')}}" method="POST" class="display-flex">
+														<button class="qtyminus">
+															<input type="hidden" name="action" value="minus">
+															-
+														</button>
+														<input type="text" name="quantity" id="quantity" value="{{c.num}}" class="qty">
+														<button class="qtyplus">
+															<input type="hidden" name="action" value="plus">
+															+
+														</button>
+
+														{# Send value to update quatity in Cart #}
+														<input type="hidden" name="proId" value="{{c.p_id}}">
+
 													</form>
 												</div>
 											</div>
@@ -141,7 +136,7 @@ window.location.href = "/cart/onchange/" .$id;
 if (confirm("Are you sure to delete?")) {
 $.ajax({
 type: 'delete',
-url: '/cart/delete/' .pro_id,
+url: '/cart/delete/' + pro_id,
 data: {
 id: pro_id
 },
@@ -154,7 +149,6 @@ row.parentNode.removeChild(row);
 }
 });
 }
-
 
 }
 </script>{% endblock %}

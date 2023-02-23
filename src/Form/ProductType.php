@@ -38,12 +38,13 @@ class ProductType extends AbstractType
                         'Sold Out' => '1'
                     ),
                     'multiple' => false,
-                    'expanded' => true  
+                    'expanded' => true,
+                    'data' => 0
                 )
             )
             ->add('price', NumberType::class)
             ->add(
-                'for_gender',
+                'forGender',
                 ChoiceType::class,
                 array(
                     'choices' => array(

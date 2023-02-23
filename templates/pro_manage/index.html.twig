@@ -57,8 +57,7 @@ return false;
 					<th scope="col">Category</th>
 					<th scope="col">Supplier</th>
 					<th scope="col">Image</th>
-					<th scope="col">Size Detail</th>
-					<th scope="col">Sum total</th>
+					<th scope="col">Clothing Size Conversion</th>
 
 					{# Edit, Delete #}
 					<th scope="col">Edit</th>
@@ -80,27 +79,24 @@ return false;
 					</td>
 					<td>{{p.descriptions}}</td>
 					<td>{{p.price}}</td>
-					<td>{% if p.gender == 0 %}
+					<td>
+						{% if p.forGender == 0 %}
 							Men's Clothing
 						{% else %}
 							Women's Clothing
-						{% endif %}</td>
+						{% endif %}
+					</td>
 					<td>{{p.name}}</td>
-					<td>{{p.supplier}}</td>
+					<td>{{p.supplier.name}}</td>
 					<td>
 						{% set img = p.image %}
 						<img src="{{asset('images/'~img)}}" width="100" height="auto" alt="" class="mx-3">
 					</td>
 					<td>
-					{% for s in size %}
-						{% if s.proId ==  p.id %}
-							Size: {{s.sizeName}} - {{s.quantitySize}} items
-							<br>
-						{% endif %}
-					{% endfor %}
-					
+						<a href="{{path('size_page', {'id': p.id})}}">
+							<button class="bi bi-arrow-right-square border-0 bg-white "><p class="ms-2">See more</p></button>
+						</a>
 					</td>
-					<td>{{p.quantity}}</td>
 
 					{# Edit, Delete #}
 					<td>
