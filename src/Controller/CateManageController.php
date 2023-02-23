@@ -48,7 +48,7 @@ class CateManageController extends AbstractController
             $repo->save($c, true);
             return $this->redirectToRoute('cate_page', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("cate_manage/index.html.twig", [
+        return $this->render("cate_manage/new.html.twig", [
             'form' => $form->createView()
         ]);
     }

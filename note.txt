@@ -41,3 +41,8 @@ phù hợp với role admi và role user
 password nó băm
 { path: ^/admin, roles: ROLE_ADMIN } => xử lý phân quyền cho admin, quản lý admin thì user hong vào được
 - { path: ^/profile, roles: ROLE_USER }=> xử lý phân quyền cho user, quản lý profile
+
+====editer của profile====
+=> username với password là bị ẩn vì nếu người dùng thêm id trên URL 
+thì nó sẽ xảy ra tình trạng sẽ hiện profile của người khác => edit được profile của người khác luôn
+bonus: password nếu thay đổi thì sẽ phải băm lại, username.....
