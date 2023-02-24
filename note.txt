@@ -46,3 +46,9 @@ password nó băm
 => username với password là bị ẩn vì nếu người dùng thêm id trên URL 
 thì nó sẽ xảy ra tình trạng sẽ hiện profile của người khác => edit được profile của người khác luôn
 bonus: password nếu thay đổi thì sẽ phải băm lại, username.....
+=====register
+<span>Phone</span>
+{{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder':'Phone', 'pattern':'[0]{1}[0-9]{9}'}}) }}
+
+=>>'pattern':'[0]{1}[0-9]{9}' -> pattern là biểu thức 9 quy ([0]{1}[0-9]{9}: nhập 1 số 0, 9 số còn lại)
+Biểu thức chính quy là
