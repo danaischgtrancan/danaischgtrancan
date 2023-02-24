@@ -780,7 +780,7 @@ section .content .form h2 {
     font-size: 1.5em;
     text-transform: uppercase;
     margin-bottom: 20px;
-    border-bottom: 4px solid #dd4b39;
+    border-bottom: 4px solid #0b0b0b;
     display: inline-block;
     letter-spacing: 1px;
 }
@@ -801,7 +801,7 @@ section .content .form .input-form input {
     width: 100%;
     padding: 10px 20px;
     outline: none;
-    border: 1px solid #dd4b39;
+    border: 1px solid #090909;
     font-size: 16px;
     letter-spacing: 1px;
     color: black;
@@ -821,7 +821,7 @@ section .content .form .input-form input[type="submit"] {
 
 section .content .form .input-form input[type="submit"]:hover {
     background: white;
-    color: #dd4b39;
+    color: #0b0b0b;
 }
 
 section .content .form .remember-login {
@@ -831,11 +831,11 @@ section .content .form .remember-login {
 }
 
 section .content .form .input-form p {
-    color: #4cafdd;
+    color: #5c5d5e;
 }
 
 section .content .form .input-form p a {
-    color: #dd4b39;
+    color: #0a0a0a;
     font-weight: bold;
 }
 
@@ -1262,6 +1262,9 @@ section .form-control {
     margin: 0;
     padding: 0
 }
+/* ===============================================================================
+Register
+=================================================================================== */
 
 /* body {
     /* background-color: #1a1a1a */
