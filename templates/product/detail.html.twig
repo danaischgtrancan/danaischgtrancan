@@ -78,111 +78,114 @@
 							<label for="size">Size</label>
 							<select class="form-control w-50">
 								{% set stock = 0 %}
+
 								{% for s in size %}
 									{% if s.productId == product.id %}
 										<option name="size" value="{{s.sizeId}}">{{s.sizeName}}</option>
 									{% endif %}
+
+									{# Display quantity in stock #}
 									{% set stock = stock + s.productQty %}
 								{% endfor %}
 							</select>
 						</div>
 						<div class="mt-3">
 							{% if stock == 0 %}
-								<label for="quantity">Out of stock</label>
-							{% else %}
-								<label for="quantity">In stock:
-									{{stock}}
-									items</label>
-							{% endif %}
-
+								<label for="quantity">Sold out</label>
+							</div>
+							<button class="round-black-btn text-left">Out of Stock</button>
+						{% else %}
+							<label for="quantity">In stock:
+								{{stock}}
+								items</label>
 						</div>
 						<input type="hidden" id="count" value="1"/>
-						<button class="round-black-btn text-left" name="insert_button{{product.id}}" onclick="insert_row({{product.id}})">Add to Cart</button>
+						<button class="round-black-btn text-left" name="insert_button{{product.id}}" onclick="insert_row({{product.id}})">Add to cart</button>
+					{% endif %}
 
-					</div>
 
-					{# Detail #}
-					<div class="product-info-tabs">
-						<ul class="nav nav-tabs" id="myTab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (0)</a>
-							</li>
-						</ul>
-						<div class="tab-content" id="myTabContent">
-							<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-								{{product.descriptions}}
-							</div>
-							<div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-								<div class="review-heading">REVIEWS</div>
-								<p class="mb-20">There are no reviews yet.</p>
-								<form class="review-form">
-									<div class="form-group">
-										<label>Your rating</label>
-										<div class="reviews-counter">
-											<div class="rate">
-												<input type="radio" id="star5" name="rate" value="5"/>
-												<label for="star5" title="text">5 stars</label>
-												<input type="radio" id="star4" name="rate" value="4"/>
-												<label for="star4" title="text">4 stars</label>
-												<input type="radio" id="star3" name="rate" value="3"/>
-												<label for="star3" title="text">3 stars</label>
-												<input type="radio" id="star2" name="rate" value="2"/>
-												<label for="star2" title="text">2 stars</label>
-												<input type="radio" id="star1" name="rate" value="1"/>
-												<label for="star1" title="text">1 star</label>
-											</div>
+				</div>
+
+				{# Detail #}
+				<div class="product-info-tabs">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (0)</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+							{{product.descriptions}}
+						</div>
+						<div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+							<div class="review-heading">REVIEWS</div>
+							<p class="mb-20">There are no reviews yet.</p>
+							<form class="review-form">
+								<div class="form-group">
+									<label>Your rating</label>
+									<div class="reviews-counter">
+										<div class="rate">
+											<input type="radio" id="star5" name="rate" value="5"/>
+											<label for="star5" title="text">5 stars</label>
+											<input type="radio" id="star4" name="rate" value="4"/>
+											<label for="star4" title="text">4 stars</label>
+											<input type="radio" id="star3" name="rate" value="3"/>
+											<label for="star3" title="text">3 stars</label>
+											<input type="radio" id="star2" name="rate" value="2"/>
+											<label for="star2" title="text">2 stars</label>
+											<input type="radio" id="star1" name="rate" value="1"/>
+											<label for="star1" title="text">1 star</label>
 										</div>
 									</div>
-									<div class="form-group">
-										<label>Your message</label>
-										<textarea class="form-control" rows="10"></textarea>
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<input type="text" name="" class="form-control" placeholder="Name*">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<input type="text" name="" class="form-control" placeholder="Email Id*">
-											</div>
+								</div>
+								<div class="form-group">
+									<label>Your message</label>
+									<textarea class="form-control" rows="10"></textarea>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<input type="text" name="" class="form-control" placeholder="Name*">
 										</div>
 									</div>
-									<button class="round-black-btn">Submit Review</button>
-								</form>
-							</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<input type="text" name="" class="form-control" placeholder="Email Id*">
+										</div>
+									</div>
+								</div>
+								<button class="round-black-btn">Submit Review</button>
+							</form>
 						</div>
 					</div>
 				</div>
-				{# end Detail #}
 			</div>
-			{# end Information #}
+			{# end Detail #}
 		</div>
+		{# end Information #}
 	</div>
-	<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+</div>
+<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
-	{# Insert into Cart #}
-	<script>
-		function insert_row(pro_id) {
+{# Insert into Cart #}
+<script>
+	function insert_row(id) {
 var count = document.getElementById("count").value;
 $.ajax({
 type: 'post',
 url: '/cart/add',
 data: {
-id: pro_id,
+id: id,
 count: count
 },
-success: function (response) {
-window.location.href = '/cart';
+success: function (response) { 
+	window.location.href = '/cart';
 // alert("A new product was added");
-
 }
 });
 }
-	</script>
-{% endblock %}
+</script>{% endblock %}

@@ -51,7 +51,6 @@ return false;
 
 				</tr>
 			</thead>
-			{% set pID = 0 %}
 
 			{% for s in sizes %}
 				<tr id="row_pro" class="text-center align-middle">
@@ -61,9 +60,9 @@ return false;
 					<td>{{s.productQty}}</td>
 					{# Edit, Delete #}
 					<td>
-						<a href="{{path('editSize_page', {'id':s.productId})}}">
+						{# <a href="{{path('editSize_page', {'id':s.productId})}}">
 							<button class="bi bi-pencil-square border-0 bg-white"></button>
-						</a>
+						</a> #}
 					</td>
 					<td>
 						<a>
@@ -71,20 +70,13 @@ return false;
 						</a>
 					</td>
 				</tr>
-				{% set pId = s.productId %}
 			{% endfor %}
 
 		</table>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-			<button class="btn btn-dark" type="button" onclick="inseart_row()">
-				<a href="" class="text-decoration-none text-reset">Add new item</a>
+			<button class="btn btn-dark" type="button">
+				<a href="{{path('addSize_page', {'id':proID})}}" class="text-decoration-none text-reset">Add new item</a>
 			</button>
 		</div>
 	</tbody>
-</section>
-<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
-
-<script>
-	function inseart_row() {}
-</script>{% endblock %}
+</section>{% endblock %}

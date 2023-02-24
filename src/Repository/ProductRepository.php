@@ -56,27 +56,17 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    // public function findAllList(): array
-    // {
-    //     // SELECT p.id, p.name, p.status, p.descriptions, p.for_gender, p.image, p.price, c.name, s.name, sz.name, pz.quantity FROM `product` p 
-    //     // JOIN `category` c ON p.category_id = c.id
-    //     // JOIN `supplier` s ON p.supplier_id = s.id
-    //     // LEFT JOIN `pro_size` pz ON p.id = pz.product_id
-    //     // LEFT JOIN `size` sz ON pz.size_id = sz.id    
-    //     return $this->createQueryBuilder('p')
-    //         ->select('p.id', 'p.name', 'p.status', 'p.descriptions', 'p.forGender as gender', 'p.image', 'p.price', 'c.name as category', 's.name as supplier', 'sz.name as size', 'SUM(pz.quantity) as quantity')
-    //         ->join('p.category', 'c')
-    //         ->join('p.supplier', 's')
-    //         ->leftjoin('p.proSizes', 'pz')
-    //         ->leftjoin('pz.size', 'sz')
-    //         ->orderBy('p.id', 'DESC')
-    //         ->groupBy('p.id', 'p.name')
-    //         ->getQuery()
-    //         ->getArrayResult();
-    // }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findPro(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getArrayResult();
+    }
 
     /**
      * @return Product[] Returns an array of Product objects
@@ -115,6 +105,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    // Start sort by
     /**
      * @return Product[] Returns an array of Product objects
      */
@@ -214,6 +205,22 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+    // End sort by
+
+
+    // /**
+    //  * @return Product Returns an array of Product objects
+    //  */
+    // public function findNamePro($value): array
+    // {
+    //     return $this->createQueryBuilder('p')
+    //     ->select('p.name as proName')
+    //         ->orderBy('p.id', $value)
+    //         ->getQuery()
+    //         ->getArrayResult();
+    // }
+
+
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */

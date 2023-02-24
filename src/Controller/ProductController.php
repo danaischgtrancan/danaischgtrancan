@@ -93,16 +93,4 @@ class ProductController extends AbstractController
             'size' => $size
         ]);
     }
-
-    // /**
-    //  * @Route("/search/{name}", name="searchPro_page")
-    //  */
-    // public function searchProductAction(string $search): Response
-    // {
-    //     $products = $this->repo->findByName($search);
-
-    //     return $this->render('product/show.html.twig', [
-    //         'products' => $products
-    //     ]);
-    // }
 }

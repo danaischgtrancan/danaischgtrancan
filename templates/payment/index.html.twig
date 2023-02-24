@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-	{{ form_start(orderForm) }}
+
 	<div class="row ">
 		<div class="col-md-7">
 			<div class="right border">
@@ -35,32 +35,35 @@
 			</div>
 		</div>
 		<div class="col-md-5 p-0">
+			{{ form_start(orderForm, {'action': path('addOrder')}) }}
 			<div class="left border">
 				<div class="row">
 					<span class="header-payment fw-bold text-dark">Payment</span>
 				</div>
 				<span>Name:</span>
-				<input type="text" class="input" name="name" value="{{user.fullname}}">
+				{# <input type="text" class="input" name="name" value="{{user.fullname}}"> #}
+				{{ form_widget(orderForm.cusName, {'attr':{'value': user.fullname, 'class': 'input' }}) }}
+
 				<span>Phone number:</span>
-				<input type="text" class="input" name="phone" value="{{user.phone}}">
+				{# <input type="text" class="input" name="phone" value="{{user.phone}}"> #}
+				{{ form_widget(orderForm.cusPhone, {'attr':{'value': user.phone, 'class': 'input' }}) }}
+
 				<span>Address:</span>
 				{{ form_widget(orderForm.deliveryLocal, {'attr':{'value': user.address, 'class': 'input' }}) }}
+
+
 			</div>
 			<div class="left border">
 				<div class="row">
-					<span class="header-payment fw-bold text-dark">Payment</span>
+					<span class="header-payment fw-bold text-dark">Voucher</span>
 				</div>
 				<span>Voucher:</span>
-				{{ form_widget(orderForm.voucher, {'attr':{'value': user.address, 'class': 'input' }}) }}
-				<span>Percent discount:</span>
-				{{ form_widget(orderForm.percentDiscount, {'attr':{'value': user.address, 'class': 'input' }}) }}
+				{{ form_widget(orderForm.voucher, {'attr':{'value': "", 'class': 'input' }}) }}
+			{# <span>Percent discount:</span> #}
+				{# {{ form_widget(orderForm.percentDiscount, {'attr':{'value': user.address, 'class': 'input' }}) }} #}
 			</div>
 			<hr>
-			<div class="row lower">
-				<div class="col text-left">Date</div>
-				{{ form_widget(orderForm.date, {'attr':{'class': 'border-0 p-0 col text-right' }})  }}
 
-			</div>
 			<div class="row lower">
 				<div class="col text-left">Subtotal</div>
 				<div class="col text-right">${{total}}</div>
@@ -81,12 +84,9 @@
 				</div>
 				{# <input class="input" type="hidden" name="total" value=""> #}
 			</div>
-			<div class="mt-3"></button>
-
-			<form action="{{path('addOrder')}}" method="POST">
+			<div class="mt-3">
 				<button class="btn-payment" name="btnPayment">Payment</button>
-			</form>
-		</div>
+			</div>
+			{{ form_end(orderForm) }}</div>
 	</div>
-
-	{{ form_end(orderForm) }}</div>{% endblock %}
+{% endblock %}

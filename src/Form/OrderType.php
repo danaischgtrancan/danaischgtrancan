@@ -16,31 +16,15 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('voucher', TextType::class)
-            ->add('date', DateType::class, array(
-                "widget" => 'single_text',
-                "format" => 'yyyy-MM-dd',
-                "data" => new \DateTime()
-            ))
+            ->add('voucher', TextType::class, [
+                'required' => false
+            ])
             ->add('deliveryLocal', TextType::class)
             ->add('total', TextType::class)
             ->add('status', HiddenType::class, array(
                 'data' => 0
             ))
-            ->add('percentDiscount', TextType::class)
-            // ->add('orderDetails', EntityType::class, [
-            //     'class' => OrderDetail::class,
-            //     'choice_label' => 'quantity'
-            // ])
-            
-
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            // Configure your form options here
-        ]);
+            ->add('cusName', TextType::class)
+            ->add('cusPhone', TextType::class);
     }
 }

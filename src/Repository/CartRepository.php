@@ -50,14 +50,14 @@ class CartRepository extends ServiceEntityRepository
         // JOIN `user` u ON u.id = cart.user_id
         // GROUP BY p.name, p.id
         return $this->createQueryBuilder('cart')
-            ->select('cart.id as cart_id', 'p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
+            ->select('cart.id as cart_id', 'cart.count as num', 'p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cate_name')
             ->join('cart.product', 'p')
             ->join('p.category', 'c')
             ->andWhere('cart.user = :val')
             ->setParameter('val', $value)
             ->groupBy('p.name', 'p.id')
             ->getQuery()
-            ->getArrayResult();
+            ->execute();
     }
 
     /**
@@ -84,14 +84,13 @@ class CartRepository extends ServiceEntityRepository
         //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
 
         return $this->createQueryBuilder('c')
-            ->select('p.id', 'SUM(c.count) as count + 1', 'c.id as cartId')
+            ->select('c.id')
             ->join('c.product', 'p')
             ->join('c.user', 'u')
-            ->where('p.id = :val')
-            ->setParameter('val', $id)
+            ->where('p.id = :pid')
+            ->setParameter('pid', $id)
             ->andWhere('u.id = :val')
             ->setParameter('val', $user)
-            ->groupBy('p.id')
             ->getQuery()
             ->getArrayResult();
     }

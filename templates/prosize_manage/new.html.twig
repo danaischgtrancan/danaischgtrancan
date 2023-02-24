@@ -22,7 +22,8 @@
 						<div class="col-md-6">
 							<div class="forms-inputs mt-3">
 								{{ form_label(proSizeForm.product) }}
-								{{ form_widget(proSizeForm.product, {'attr':{'autocomplete': 'off'}}) }}
+								<input type="text" value="{{proName}}">
+								{{ form_widget(proSizeForm.product, {'attr':{'autocomplete': 'off', 'value': proId, 'class': 'd-none'}}) }}
 							</div>
 						</div>
 

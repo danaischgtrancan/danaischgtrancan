@@ -32,25 +32,8 @@ class OrderManageController extends AbstractController
             'id' => 'DESC'
         ]);
 
-        // Return many element
-        $data = [];
-        foreach ($orders as $p) :
-            // Chỉ định cụ thể supplier để tránh liên kết vòng trong bản CarSup (PK)
-            $data[] = [
-                'id' => $p->getId(),
-                'voucher' => $p->getVoucher(),
-                'status' => $p->isStatus(),
-                'date' => $p->getDate(),
-                'price' => $p->getTotal(),
-                'percentDiscount' => $p->getPercentDiscount(),
-                'deliveryLocal' => $p->getDeliveryLocal()
-            ];
-        endforeach;
-
-        // return $this->json($data);
-
         return $this->render('order_manage/index.html.twig', [
-            'orders' => $data,
+            'orders' => $orders,
             // 'productForm' => $productForm->createView()
         ]);
     }

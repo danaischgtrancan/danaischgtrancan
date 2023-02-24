@@ -46,34 +46,34 @@ class CartController extends AbstractController
      */
     public function addAction(Request $req, ProductRepository $repoPro): Response
     {
-        $user = $this->getUser();
-
-        $carts = new Cart();
         // Call function above
+        $user = $this->getUser();
         $req = $this->transformJsonBody($req);
-
-        // Defination name and importer
-        // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
         $id = $req->get('id');
         $product = $repoPro->find($id);
-
-
         $count = $req->get('count');
-        $carts->setCount($count);
 
+        // Query to  find $product of this user exists or not
+        //It returns an array with only one line (index: 0)
+        $findCart = $this->repo->findByProId($product, $user);
 
-        // Check quantity of Stock
-        foreach ($product as $p) :
-            if ($count - $p->getq() < 0) :
+        // If its not exists, add new
+        if ($findCart == null) :
+            $newCart = new Cart();
+            $newCart->setProduct($product);
+            $newCart->setUser($user);
+            $newCart->setCount($count);
 
-            endif;
-        endforeach;
-        $carts->setProduct($product);
-        $carts->setUser($user);
+            $this->repo->save($newCart, true);
+        else :
+            // It exists update Count
+            // Create $cart to find product object that match with $product and $user below to update Count
+            $cart = $this->repo->find($findCart[0]);
+            $cart->setCount($cart->getCount() + $count);
 
-        $this->repo->save($carts, true);
-        return $this->json($carts);
-        // return new JsonResponse();
+            $this->repo->save($cart, true);
+        endif;
+        return new JsonResponse();
     }
 
     public function transformJsonBody(Request $re)
@@ -111,45 +111,34 @@ class CartController extends AbstractController
     /**
      * @Route("/change", name="change", methods={"POST"})
      */
-    public function minus(Request $req, ManagerRegistry $reg): Response
+    public function minus(Request $req, ManagerRegistry $reg, ProductRepository $repoPro): Response
     {
-        $pro = $req->request->get('proId');
+        $cartId = $req->request->get('cartId');
         $user = $this->getUser();
-        $qty = $req->request->get('quantity');
         $action = $req->request->get('action');
 
-        $cart = $this->repo->updateQty($pro, $user);
-
         $entity = $reg->getManager();
-        if ($action == "minus") :
-            foreach ($cart as $c) :
-                $c->setCount($qty - 1);
-                $entity->persist($c);
-                $entity->flush();
-            endforeach;
+        $cart = $this->repo->find($cartId);
+
+        if($action == "minus"):
+            $cart->setCount($cart->getCount() - 1);
+        else:
+            $cart->setCount($cart->getCount() + 1);
         endif;
+        
+        $entity->persist($cart);
+        $entity->flush();
+
+        // $entity = $reg->getManager();
+        // if ($action == "minus") :
+        //     foreach ($cart as $c) :
+        //         $c->setCount($qty - 1);
+        //         $entity->persist($c);
+        //         $entity->flush();
+        //     endforeach;
+        // endif;
 
         // return $this->json(['cart' => $cart]);
         return $this->redirectToRoute('shoppingCart');
     }
-
-    /**
-     * @Route("/edit", name="category_edit",requirements={"id"="\d+"})
-     */
-    // public function editAction(Request $req, SluggerInterface $slugger): Response
-    // {
-    //     $c = new Category();
-    //     $form = $this->createForm(CategoryType::class, $c);   
-
-    //     $form->handleRequest($req);
-    //     if($form->isSubmitted() && $form->isValid()){
-
-    //         $this->repo->save($c,true);
-    //         return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
-    //     }
-    //     return $this->render("admin/category.html.twig",[
-    //         'form' => $form->createView()
-    //     ]);
-    // }
-
 }

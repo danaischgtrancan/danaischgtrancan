@@ -21,19 +21,23 @@ class PaymentController extends AbstractController
     public function paymentAction(CartRepository $repoCart, UserRepository $repoUser): Response
     {
         $p = new Order();
-        $orderForm = $this->createForm(OrderType::class, $p);
+        $orderForm = $this->createForm(OrderType::class, $p, [
+            'action' => $this->generateUrl('addOrder')
+        ]);
 
         $u = $this->getUser();
         $products = $repoCart->showCart($u);
         $user = $repoUser->find($u);
 
         return $this->render('payment/index.html.twig', [
+            // Display product and Calculate the total price
             'products' => $products,
+            // Display customer's infomation to set into Order
             'user' => $user,
             'orderForm' => $orderForm->createView()
         ]);
 
-        // return $this->json($products);
+        return $this->json($products);
     }
 
     /**
@@ -41,37 +45,35 @@ class PaymentController extends AbstractController
      */
     public function orderAction(Request $req, ManagerRegistry $reg): Response
     {
-        $p = new Order();
-        $productForm = $this->createForm(ProductType::class, $p);
+        $o = new Order();
+        $orderForm = $this->createForm(OrderType::class, $o);
 
-        $productForm->handleRequest($req);
+        $orderForm->handleRequest($req);
         $entity = $reg->getManager();
 
-        if ($productForm->isSubmitted() && $productForm->isValid()) {
-            $data = $productForm->getData($req);
-            $p->setName($data->getName());
-            $p->setDescriptions($data->getDescriptions());
-            $p->setPrice($data->getPrice());
-            $p->setStatus($data->isStatus());
-            $p->setImage($data->getImage());
-            $p->setForGender($data->isForGender());
-            $p->setCategory($data->getCategory());
-            $p->setSupplier($data->getSupplier());
+        $data = $orderForm->getData($req);
 
-            // tell Doctrine you want to (eventually) save the Product (no queries yet)
-            $entity->persist($p);
-            // actually executes the queries (i.e. the INSERT query)
-            $entity->flush();
+        $user = $this->getUser();
 
-            // $this->addFlash(
-            //     'success',
-            //     'A products was added'
-            // );
-            return $this->redirectToRoute("addSize_page");
-        }
+        $o->setDate(new \DateTime());
+        $o->setTotal($data->getTotal());
+        $o->setDeliveryLocal($data->getDeliveryLocal());
+        $o->setStatus($data->isStatus());
+        $o->setVoucher($data->getVoucher());
+        $o->setUsername($user);
+        $o->setCusName($data->getCusName());
+        $o->setCusPhone($data->getCusPhone());
 
-        return $this->render('pro_manage/new.html.twig', [
-            'productForm' => $productForm->createView()
-        ]);
+        // tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $entity->persist($o);
+        // actually executes the queries (i.e. the INSERT query)
+        $entity->flush();
+
+        $this->addFlash(
+            'success',
+            'Order successully'
+        );
+        return $this->redirectToRoute("shoppingCart");
+        // return $this->json($order);
     }
 }

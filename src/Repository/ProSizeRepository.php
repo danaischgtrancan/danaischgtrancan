@@ -54,6 +54,23 @@ class ProSizeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+    /**
+     * @return ProSize[] Returns an array of ProSize objects
+     */
+    public function findSize($value): array
+    {
+        return $this->createQueryBuilder('ps')
+            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'p.id as productId', 'p.name as productName')
+            ->join('ps.size', 's')
+            ->join('ps.product', 'p')
+            ->andWhere('p.id = :val')
+            ->setParameter('val', $value)
+            ->groupBy('s.id')
+            ->getQuery()
+            ->getArrayResult();
+
+    }
+
     //    /**
     //     * @return ProSize[] Returns an array of ProSize objects
     //     */

@@ -109,7 +109,7 @@ class ProManageController extends AbstractController
             //     'success',
             //     'A products was added'
             // );
-            return $this->redirectToRoute("pro_page");
+            return $this->redirectToRoute("addSize_page");
         }
 
         return $this->render('pro_manage/new.html.twig', [
