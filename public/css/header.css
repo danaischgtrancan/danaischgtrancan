@@ -1333,10 +1333,16 @@ section .form-control {
 
 .text2 span {
     font-weight: 500;
-    color: #7a7778
+    color: #7a7778;
+}
+.radio{
+    color: #7a7778;
+    display: flex;
+    padding-right: 5px;
+    justify-content: space-between;
 }
 
 .text2 .register {
     color: #4f4942;
     font-weight: bold
-/* } */
+}

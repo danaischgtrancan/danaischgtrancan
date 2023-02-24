@@ -42,8 +42,8 @@ class UserType extends AbstractType
             
             ->add('phone', NumberType::class)
             ->add('address', TextType::class)
-            ->add('save',SubmitType::class,[
-                'label' => "save"
+            ->add('Register',SubmitType::class,[
+                'label' => "Register"
             ]);
     }
 
