@@ -7,7 +7,9 @@ use App\Entity\OrderDetail;
 use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\CartRepository;
+use App\Repository\OrderDetailRepository;
 use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
 use App\Repository\ProSizeRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -52,8 +54,13 @@ class PaymentController extends AbstractController
     /**
      * @Route("/order", name="addOrder", methods={"POST"})
      */
-    public function orderAction(Request $req, ManagerRegistry $reg, CartRepository $repoCart, ProSizeRepository $repoPro): Response
-    {
+    public function orderAction(
+        Request $req,
+        ManagerRegistry $reg,
+        CartRepository $repoCart,
+        ProductRepository $repoPro,
+        OrderDetailRepository $repoOd
+    ): Response {
         $o = new Order();
         $orderForm = $this->createForm(OrderType::class, $o);
 
@@ -78,30 +85,43 @@ class PaymentController extends AbstractController
         // actually executes the queries (i.e. the INSERT query)
         $entity->flush();
 
-
-
         // Save Order Detail
+        // It returns two-dimensional array
         $products = $repoCart->getCartOfCurrentUser($user);
-
         // Get newest id
-        $order =  $o->getId();
+        // $orderId =  $o->getId();
+        // Get object Order
+        // $o = $this->repo->find($orderId);
 
         foreach ($products as $product) :
-            $orderDetail = new OrderDetail;
+            $orderDetail = new OrderDetail();
             // Find object Product
-            // $p = $repoPro->find($product->getId());
-            $orderDetail->setOrders($order);
-            $orderDetail->setProducts($product->getId());
-            $orderDetail->setQuantity($product->getCount());
+            $p = $repoPro->find($product['proId']);
+            $orderDetail->setProducts($p);
+            $orderDetail->setQuantity($product['qty']);
+            $orderDetail->setOrders($o);
 
+            $repoOd->save($orderDetail, true);
         endforeach;
 
         // Delete Cart
-        $this->addFlash(
-            'success',
-            'Order successully'
-        );
-        // return $this->redirectToRoute("shoppingCart");
-        return $this->json($products);
+        $cartId = $repoCart->findUser($user);
+
+        $entity = $reg->getManager();
+        foreach ($cartId as $c) :
+            $cart = $repoCart->find($c['cartId']);
+            $entity->remove($cart,true);
+            $entity->flush();
+        endforeach;
+
+        // Update quantity in Stock
+
+
+        // $this->addFlash(
+        //     'success',
+        //     'Order successully'
+        // );
+        return $this->redirectToRoute("shoppingCart");
+        // return $this->json($cart);
     }
 }

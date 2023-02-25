@@ -111,7 +111,7 @@ class CartRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
-    
+
     /**
      * @return Cart[] Returns an array of Cart objects
      */
@@ -126,7 +126,19 @@ class CartRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
-
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function findUser($user): array
+    {
+        // SELECT * FROM `cart` c JOIN `product` p ON c.product_id = p.id WHERE user_id = 1
+        return $this->createQueryBuilder('c')
+            ->select('c.id as cartId')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getArrayResult();
+    }
     // /**
     //  * @return Cart[] Returns an array of Cart objects
     //  */
