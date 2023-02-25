@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Order;
+use App\Entity\OrderDetail;
 use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\CartRepository;
+use App\Repository\OrderRepository;
+use App\Repository\ProSizeRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +18,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentController extends AbstractController
 {
+    private OrderRepository $repo;
+    public function __construct(OrderRepository $repo)
+    {
+        $this->repo = $repo;
+    }
+
     /**
      * @Route("/payment", name="payment_page", methods={"POST"})
      */
@@ -43,7 +52,7 @@ class PaymentController extends AbstractController
     /**
      * @Route("/order", name="addOrder", methods={"POST"})
      */
-    public function orderAction(Request $req, ManagerRegistry $reg): Response
+    public function orderAction(Request $req, ManagerRegistry $reg, CartRepository $repoCart, ProSizeRepository $repoPro): Response
     {
         $o = new Order();
         $orderForm = $this->createForm(OrderType::class, $o);
@@ -69,11 +78,30 @@ class PaymentController extends AbstractController
         // actually executes the queries (i.e. the INSERT query)
         $entity->flush();
 
+
+
+        // Save Order Detail
+        $products = $repoCart->getCartOfCurrentUser($user);
+
+        // Get newest id
+        $order =  $o->getId();
+
+        foreach ($products as $product) :
+            $orderDetail = new OrderDetail;
+            // Find object Product
+            // $p = $repoPro->find($product->getId());
+            $orderDetail->setOrders($order);
+            $orderDetail->setProducts($product->getId());
+            $orderDetail->setQuantity($product->getCount());
+
+        endforeach;
+
+        // Delete Cart
         $this->addFlash(
             'success',
             'Order successully'
         );
-        return $this->redirectToRoute("shoppingCart");
-        // return $this->json($order);
+        // return $this->redirectToRoute("shoppingCart");
+        return $this->json($products);
     }
 }
