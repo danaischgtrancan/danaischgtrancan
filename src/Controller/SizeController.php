@@ -85,6 +85,6 @@ class SizeController extends AbstractController
         return $this->redirectToRoute('size_page', [], Response::HTTP_SEE_OTHER);
     }
 
-
+    
     
 }

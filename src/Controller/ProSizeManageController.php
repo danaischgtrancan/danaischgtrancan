@@ -28,7 +28,7 @@ class ProSizeManageController extends AbstractController
     //  Show size a product
 
     /**
-     * @Route("/{id}", name="size_page")
+     * @Route("/{id}", name="proSize_page")
      */
     public function sizeMangeAction(Product $productId, ProductRepository $repoPro, ManagerRegistry $reg): Response
     {
@@ -46,7 +46,7 @@ class ProSizeManageController extends AbstractController
     // Add new size in Size
 
     /**
-     * @Route("/create/{id}", name="addSize_page")
+     * @Route("/create/{id}", name="addProSize_page")
      */
     public function createAction(Request $req, int $id, ManagerRegistry $reg, ProductRepository $repoPro): Response
     {
@@ -88,7 +88,7 @@ class ProSizeManageController extends AbstractController
         ]);
     }
     /**
-     * @Route("/edit/{id}", name="editSize_page")
+     * @Route("/edit/{id}", name="editProSize_page")
      */
     public function editSizeAction(Request $req, Size $productId, ProductRepository $repoPro, ManagerRegistry $reg): Response
     {

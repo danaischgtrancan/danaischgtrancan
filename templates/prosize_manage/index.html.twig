@@ -59,7 +59,7 @@ return false;
 					<td>{{s.productQty}}</td>
 					{# Edit, Delete #}
 					<td>
-						<a href="{{path('editSize_page', {'id':s.sizeId})}}">
+						<a href="{{path('editProSize_page', {'id':s.sizeId})}}">
 							<button class="bi bi-pencil-square border-0 bg-white"></button>
 						</a>
 					</td>
@@ -74,7 +74,7 @@ return false;
 		</table>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 			<button class="btn btn-dark" type="button">
-				<a href="{{path('addSize_page', {'id':proID})}}" class="text-decoration-none text-reset">Add new item</a>
+				<a href="{{path('addProSize_page', {'id':proID})}}" class="text-decoration-none text-reset">Add new item</a>
 			</button>
 		</div>
 	</tbody>
