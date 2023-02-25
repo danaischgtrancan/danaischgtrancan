@@ -96,10 +96,10 @@
 							<button class="round-black-btn text-left">Out of Stock</button>
 						{% else %}
 							<label for="quantity">In stock:
-								{{stock}}
+								<span id="stock">{{stock}}</span>
 								items</label>
 						</div>
-						<input type="hidden" id="count" value="1"/>
+						{# <input type="hidden" id="count" value="1"/> #}
 						<button class="round-black-btn text-left" name="insert_button{{product.id}}" onclick="insert_row({{product.id}})">Add to cart</button>
 					{% endif %}
 
@@ -182,10 +182,33 @@ data: {
 id: id,
 count: count
 },
-success: function (response) { 
-	window.location.href = '/cart';
+success: function (response) {
+window.location.href = '/cart';
 // alert("A new product was added");
 }
 });
 }
+
+$(document).ready(function () {
+$(".qtyminus").on("click", function () {
+var now = $(".qty").val();
+if ($.isNumeric(now)) {
+if (parseInt(now) - 1 > 0) {
+now--;
+}
+$(".qty").val(now);
+}
+})
+$(".qtyplus").on("click", function () {
+var now = $(".qty").val();
+var stock = document.getElementById('stock').innerHTML;
+// alert(stock);
+if ($.isNumeric(now)) {
+if (parseInt(now) + 1 <= parseInt(stock)) {
+now++;
+}
+$(".qty").val(now);
+}
+});
+});
 </script>{% endblock %}

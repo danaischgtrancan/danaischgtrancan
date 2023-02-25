@@ -207,6 +207,19 @@ class ProductRepository extends ServiceEntityRepository
     }
     // End sort by
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findNameOfPro($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
+            ->andWhere('s.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
 
     // /**
     //  * @return Product Returns an array of Product objects

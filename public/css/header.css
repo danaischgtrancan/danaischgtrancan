@@ -1357,13 +1357,18 @@ section .form-control {
     margin: 0;
     padding: 0
 }
+
+
 /* ===============================================================================
 Register
 =================================================================================== */
 
+
 /* body {
     /* background-color: #1a1a1a */
-/* } */ 
+
+
+/* } */
 
 .card1 {
     height: 750px;
@@ -1384,7 +1389,7 @@ Register
     border: none;
     /* background-color: #000; */
     border-radius: 8px;
-    transition:all 0.5s;
+    transition: all 0.5s;
 }
 
 .card2:hover {
@@ -1414,7 +1419,7 @@ Register
     box-shadow: none
 }
 
-div#user_password{
+div#user_password {
     border-bottom: none;
 }
 
@@ -1437,7 +1442,8 @@ div#user_password{
     font-weight: 500;
     color: #7a7778;
 }
-.radio{
+
+.radio {
     color: #7a7778;
     display: flex;
     padding-right: 5px;

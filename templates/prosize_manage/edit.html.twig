@@ -14,24 +14,27 @@
 			</div>
 		</div>
 
-		<div class="container-boder">
+		<div
+			class="container-boder">
 			{{ form_start(proSizeForm) }}
 			<div class="col-md-12">
 				<div class="row">
 					<div class="row">
 						<div class="col-md-6">
-							<div class="forms-inputs mt-3">
-								{{ form_label(proSizeForm.product) }}
-								<input type="text" value="{{proName}}">
-								{{ form_widget(proSizeForm.product, {'attr':{'autocomplete': 'off', 'value': proId, 'class': 'd-none'}}) }}
+							<div
+								class="forms-inputs mt-3">
+								{# {{ form_label(proSizeForm.product) }} #}
+								<label for="">Product</label>
+								<input type="text" value="{{proName}}" readonly>
+								{# {{ form_widget(proSizeForm.product, {'attr':{'autocomplete': 'off', 'value': proName, 'class': 'd-none'}}) }} #}
 							</div>
 						</div>
 
 						<div class="col-md-6">
 							<div class="forms-inputs mt-3">
-								{{ form_label(proSizeForm.size) }}
-								<input type="text" value="{{proName}}">
-								{{ form_widget(proSizeForm.size, {'attr':{'autocomplete': 'off', 'class': 'd-none'}}) }}
+								<label for="">Size</label>
+								<input type="text" value="{{sizeName}}" readonly>
+								{{ form_widget(proSizeForm.size, {'attr':{'autocomplete': 'off', 'value': sizeName, 'class': 'd-none'}}) }}
 							</div>
 						</div>
 
@@ -44,7 +47,7 @@
 						</div>
 						{# <a href="{{path('addSize_page')}}">Add new size</a> #}
 						<div class="col-md-12">
-							<div class="add mt-3">
+							<div class="add mt-3 text-right">
 								{{form_row(proSizeForm.save, {'attr':{'class': 'btn btn-dark me-4'}})}}
 							</div>
 						</div>
