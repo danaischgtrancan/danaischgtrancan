@@ -32,15 +32,15 @@ return false;
 		{% endfor %}
 
 		<table class="mt-2 table table-bordered" id="inseart_row">
-			<div class="justify-content-md-start">
-				<h5>
-					Size List</h5>
+			<div class="justify-content-md-start d-flex">
+				<h6 class="fw-bold">Product:</h6>
+				<h6 class="ms-2">
+					{{proName}}</h6>
 			</div>
 
 			<thead class="bg-dark text-white text-center">
 				<tr>
 					<th scope="col">Size ID</th>
-					<th scope="col">Product Name</th>
 					<th scope="col">Size Name</th>
 					<th scope="col">Quantity</th>
 
@@ -54,15 +54,14 @@ return false;
 
 			{% for s in sizes %}
 				<tr id="row_pro" class="text-center align-middle">
-					<th scope="row">{{s.productId}}</th>
-					<td>{{s.productName}}</td>
+					<th scope="row">{{s.sizeId}}</th>
 					<td>{{s.sizeName}}</td>
 					<td>{{s.productQty}}</td>
 					{# Edit, Delete #}
 					<td>
-						{# <a href="{{path('editSize_page', {'id':s.productId})}}">
+						<a href="{{path('editSize_page', {'id':s.sizeId})}}">
 							<button class="bi bi-pencil-square border-0 bg-white"></button>
-						</a> #}
+						</a>
 					</td>
 					<td>
 						<a>

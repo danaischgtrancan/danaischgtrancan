@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\ProSize;
+use App\Entity\Size;
 use App\Form\ProSizeType;
 use App\Repository\ProductRepository;
 use App\Repository\ProSizeRepository;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/admin/size")
  */
-class ProSizeController extends AbstractController
+class ProSizeManageController extends AbstractController
 {
     private ProSizeRepository $repo;
     public function __construct(ProSizeRepository $repo)
@@ -29,14 +30,16 @@ class ProSizeController extends AbstractController
     /**
      * @Route("/{id}", name="size_page")
      */
-    public function sizeMangeAction(Product $productId, ProductRepository $repoPro): Response
+    public function sizeMangeAction(Product $productId, ProductRepository $repoPro, ManagerRegistry $reg): Response
     {
         $sizes = $this->repo->findSize([$productId]);
-        $p = $productId->getId();
-        // return $this->json($proID);
+        $pro = $reg->getRepository(Product::class)->find($productId);
+        // return $this->json($pro->getName());
         return $this->render('prosize_manage/index.html.twig', [
             'sizes' => $sizes,
-            'proID' => $p
+            'proName' => $pro->getName(),
+            'proID' => $pro->getId()
+
         ]);
     }
 
@@ -82,6 +85,24 @@ class ProSizeController extends AbstractController
             'proName' => $pro->getName(),
             // Get id to save defalt value into ProSize
             'proId' => $pro->getId()
+        ]);
+    }
+    /**
+     * @Route("/edit/{id}", name="editSize_page")
+     */
+    public function editSizeAction(Request $req, Size $productId, ProductRepository $repoPro, ManagerRegistry $reg): Response
+    {
+        $p = new ProSize();
+        $proSizeForm = $this->createForm(ProSizeType::class, $p);
+
+
+
+        // return $this->json($proID);
+        return $this->render('prosize_manage/new.html.twig', [
+            'proSizeForm' => $proSizeForm->createView(),
+            // Get name to display default value
+            'proName' => $productId->getName(),
+                        
         ]);
     }
 }

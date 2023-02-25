@@ -86,12 +86,9 @@ class PaymentController extends AbstractController
         $entity->flush();
 
         // Save Order Detail
+
         // It returns two-dimensional array
         $products = $repoCart->getCartOfCurrentUser($user);
-        // Get newest id
-        // $orderId =  $o->getId();
-        // Get object Order
-        // $o = $this->repo->find($orderId);
 
         foreach ($products as $product) :
             $orderDetail = new OrderDetail();
@@ -102,7 +99,12 @@ class PaymentController extends AbstractController
             $orderDetail->setOrders($o);
 
             $repoOd->save($orderDetail, true);
+
+            // Update quantity in Stock
+            
+
         endforeach;
+
 
         // Delete Cart
         $cartId = $repoCart->findUser($user);
@@ -110,12 +112,9 @@ class PaymentController extends AbstractController
         $entity = $reg->getManager();
         foreach ($cartId as $c) :
             $cart = $repoCart->find($c['cartId']);
-            $entity->remove($cart,true);
+            $entity->remove($cart, true);
             $entity->flush();
         endforeach;
-
-        // Update quantity in Stock
-
 
         // $this->addFlash(
         //     'success',

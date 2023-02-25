@@ -29,26 +29,27 @@
 
 									{# Display cart start #}
 									{% for c in carts %}
-										<div id="row_product{{c.p_id}}">
+										<div id="row_product{{c.pId}}">
 											<hr class="my-2">
 											<div class="row mb-4 d-flex justify-content-between align-items-center">
 												<div class="col-md-2 col-lg-2 col-xl-2">
 													{% set img = c.image %}
-													<a href="{{path('proDetail_page', {'id': c.p_id})}}">
+													<a href="{{path('proDetail_page', {'id': c.pId})}}">
 														<img src="{{asset('images/'~img)}}" class="img-fluid rounded-3" alt="">
 													</a>
 												</div>
 												<div class="col-md-3 col-lg-3 col-xl-3">
-													<h6 class="text-muted">{{c.cate_name}}</h6>
+													<h6 class="text-muted">{{c.cateName}}</h6>
 													<h6 class="text-black mb-0"></h6>
-													{{c.p_name}}</h6>
+													{{c.pName}}</h6>
+												<h6 class="text-muted mt-1">{{c.sizeName}}</h6>
 											</div>
 											<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
 												<div class="product-count">
 													<div class="display-flex">
 														<form action="{{path('change')}}" method="POST" class="p-0">
 															<button class="qtyminus">
-																<input type="hidden" name="cartId" value="{{c.cart_id}}">
+																<input type="hidden" name="cartId" value="{{c.cartId}}">
 																<input type="hidden" name="action" value="minus">
 																-
 															</button>
@@ -56,7 +57,7 @@
 														<input type="text" name="quantity" id="quantity" value="{{c.num}}" class="qty">
 														<form action="{{path('change')}}" method="POST" class="p-0">
 															<button class="qtyplus">
-																<input type="hidden" name="cartId" value="{{c.cart_id}}">
+																<input type="hidden" name="cartId" value="{{c.cartId}}">
 																<input type="hidden" name="action" value="plus">
 																+
 															</button>
@@ -68,7 +69,7 @@
 												<h6 class="mb-0">{{c.unitTotal}}</h6>
 											</div>
 											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-												<a onclick="delete_rowCart({{c.p_id}})" class="text-muted">
+												<a onclick="delete_rowCart({{c.pId}})" class="text-muted">
 													<i class="fas fa-times"></i>
 												</a>
 											</div>
@@ -143,7 +144,6 @@
 <script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script>
-
 	function delete_rowCart(pro_id) {
 if (confirm("Are you sure to delete?")) {
 $.ajax({

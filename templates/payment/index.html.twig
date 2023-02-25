@@ -21,11 +21,11 @@
 							<div class="pb-2">
 								<b>${{p.unitTotal}}</b>
 							</div>
-							<div class=" text-muted">{{p.p_name}}</div>
+							<div class=" text-muted">{{p.pName}}</div>
 							<div class="">Quantity:
 								{{p.num}}</div>
 							{# {{ form_widget(orderForm.orderDetails.quantity) }} #}
-
+							<div class=" text-muted">{{p.sizeName}}</div>
 						</div>
 					</div>
 					{% set total = total + p.unitTotal %}

@@ -50,8 +50,10 @@ class CartRepository extends ServiceEntityRepository
         // JOIN `user` u ON u.id = cart.user_id
         // GROUP BY p.name, p.id
         return $this->createQueryBuilder('cart')
-            ->select('cart.id as cart_id', 'cart.count as num', 'p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cate_name')
+            ->select('cart.id as cartId', 'cart.count as num', 'p.id as pId', 'p.name as pName', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cateName', 's.name as sizeName')
             ->join('cart.product', 'p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
             ->join('p.category', 'c')
             ->andWhere('cart.user = :val')
             ->setParameter('val', $value)
