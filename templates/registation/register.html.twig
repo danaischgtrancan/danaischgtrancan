@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{# {{ encore_entry_link_tags('app') }} #}
+	<link href="{{asset('css/header.css')}}" rel="stylesheet" media="all">
+{% endblock %}
+{% block body %}
+	<body>
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet' type='text/css'>
+
+		<div class="container mt-5 mb-5">
+			<div class="d-flex flex row g-0">
+				<div class="col-md-6 mt-3">
+					<div class="card card1 p-3">
+						<div class="d-flex flex-column">
+							<img src="{{asset('images/logo_store.png')}}" height="50" width="50"/>
+							<span class="login mt-3">Register</span>
+						</div>
+						{{ form_start(registrationForm) }}
+						<div class="input-field d-flex flex-column mt-3">
+							<span>Username</span>
+							{{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder':'Username'}}) }}
+						
+							<span>Fullname</span>
+							{{ form_widget(registrationForm.fullname, {'attr': {'class': 'form-control', 'placeholder':'Fullname'}}) }}
+
+							<span>Birthday</span>
+							{{ form_widget(registrationForm.birthday, {'attr': {'class': 'form-control', 'placeholder':'Birthday'}}) }}
+
+							<span>Address</span>
+							{{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder':'Address'}}) }}
+
+							<span>Phone</span>
+							{# bắt lỗi số điệnthoại, bắt buộc 10 số số đầu tiên phải là 0 và nhpa65 9 số ngẫu nhiên còn lại => dùng biểu thức chính quy #}
+							{{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder':'Phone', 'pattern':'[0]{1}[0-9]{9}'}}) }}
+					
+							<span>Gender</span>
+							<div class="radio">
+								{{ form_widget(registrationForm.gender, {'attr': {'class': 'radio'}})}}
+							</div>
+
+							<span>{{ form_widget(registrationForm.password, {'attr': {'class': 'form-control', 'placeholder':'Enter Your Password'}}) }}</span>
+
+                            {{ form_widget(registrationForm.Register, {'attr': {'class': 'Register'}}) }}
+							<div class="text2 mt-4 d-flex flex-row align-items-center">
+								<span>Do you have an account?<span class="register" href="{{path("logIn_page")}}">Login here</span>
+								</span>
+							</div>
+						</div>
+						{{ form_end(registrationForm) }}
+					</div>
+				</div>
+				<div class="col-md-6 mt-3">
+					<div class="card card2 p-3">
+						<div class="image">
+							<img src="{{asset('images/Signin.png')}}" style="width:100%;height:670px;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+{% endblock %}

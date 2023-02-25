@@ -14,7 +14,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 /**
  * @Route("/admin/category")
  */
-class CategoryController extends AbstractController
+class CateManageController extends AbstractController
 {
     private CategoryRepository $repo;
     public function __construct(CategoryRepository $repo)
@@ -22,30 +22,20 @@ class CategoryController extends AbstractController
         $this->repo = $repo;
     }
     /**
-     * @Route("/list", name="cate_page")
+     * @Route("/", name="cate_page")
      */
     public function readAllAction(): Response
     {
         $c = $this->repo->findAll();
-        return $this->render('category/index.html.twig', [
+        return $this->render('cate_manage/index.html.twig', [
             'category' => $c
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="category_read",requirements={"id"="\d+"})
-     */
-    public function showAction(Category $c): Response
-    {
-        return $this->render('detail.html.twig', [
-            'c' => $c
         ]);
     }
 
     /**
      * @Route("/add", name="category_create")
      */
-    public function createAction(Request $req, SluggerInterface $slugger): Response
+    public function createAction(Request $req, CategoryRepository $repo): Response
     {
 
         $c = new Category();
@@ -55,41 +45,39 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-            $this->repo->save($c, true);
-            return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
+            $repo->save($c, true);
+            return $this->redirectToRoute('cate_page', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("admin/category.html.twig", [
+        return $this->render("cate_manage/new.html.twig", [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/edit", name="category_edit",requirements={"id"="\d+"})
+     * @Route("/edit/{id}", name="category_edit")
      */
-    public function editAction(Request $req, SluggerInterface $slugger): Response
+    public function editAction(Request $req, CategoryRepository $repo, Category $c): Response
     {
-        $c = new Category();
-        $form = $this->createForm(CategoryType::class, $c);
+        $formCate = $this->createform(CategoryType::class, $c);
 
-        $form->handleRequest($req);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formCate->handleRequest($req);
+        if ($formCate->isSubmitted() && $formCate->isValid()) {
 
-            $this->repo->save($c, true);
-            return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
+
+            $repo->save($c, true);
+            return $this->redirectToRoute('cate_page', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render("admin/category.html.twig", [
-            'form' => $form->createView()
+        return $this->render("cate_manage/edit.html.twig", [
+            'formCate' => $formCate->createView()
         ]);
     }
 
     /**
-     * @Route("/delete",name="category_delete",requirements={"id"="\d+"})
+     *  @Route("/delete/{id}", name="category_delete", requirements={"id"="\d+"})
      */
-
     public function deleteAction(Request $req, Category $c): Response
     {
-        $c = new Category();
         $this->repo->remove($c, true);
-        return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('cate_page', [], Response::HTTP_SEE_OTHER);
     }
 }

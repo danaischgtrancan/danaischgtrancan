@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -14,21 +15,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class UserType extends AbstractType
+class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('username', TextType::class)
+        ->add('username', HiddenType::class)
         ->add('fullname', TextType::class)
-            ->add('password', RepeatedType::class,[
-                'type'=> PasswordType::class,
-                'first_options'=> ['label'=>'Password', 'attr' => ['placeholder' => 'Password']],
-                'second_options'=> ['label'=> 'Confirm Password', 'attr' => ['placeholder' => 'Confirm Password']]])
             ->add('birthday',DateType::class,[
                 'widget'=>'single_text'
             ])
@@ -41,24 +36,12 @@ class UserType extends AbstractType
                 'multiple' => false,
                 'expanded' => true
             ))
-                // ->add('gender')
+
             
             ->add('phone', NumberType::class)
-            // ->add('phone', NumberType::class, [
-            //     'constraints' => [
-            //         new Callback([
-            //             'callback' => function ($phone, ExecutionContextInterface $context) {
-            //                 if (!preg_match('/^0\d{9}$/', $phone)) {
-            //                     $context->buildViolation('Số điện thoại không hợp lệ, số điện thoại phải bắt đầu từ số 0 và có đúng 10 chữ số.')
-            //                         ->addViolation();
-            //                 }
-            //             },
-            //         ]),
-            //     ],
-            // ])
             ->add('address', TextType::class)
-            ->add('Register',SubmitType::class,[
-                'label' => "Register"
+            ->add('save',SubmitType::class,[
+                'label' => "save"
             ]);
     }
 
