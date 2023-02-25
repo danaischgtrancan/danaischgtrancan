@@ -52,9 +52,9 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<!-- Search -->
-				<form action="{{path('searchPro_page')}}" class="d-flex ms-4 mb-2">
-					<input type="text" class="form-control rounded search" name="searchValue" placeholder="Search..." aria-label="search" aria-describedby="search-addon"/>
-					<button type="submit" name="btnSearch" class="input-group-text border-0 fas fa-search"></button>
+				<form action="/product" class="d-flex ms-4 mb-2">
+					<input type="text" class="form-control rounded search" name="value" placeholder="Search..." aria-label="search" aria-describedby="search-addon"/>
+					<button type="submit" name="btnSearch" value="search" class="input-group-text border-0 fas fa-search"></button>
 				</form>
 				<!-- collapse: thu ra thu vào -->
 				<div
@@ -65,7 +65,7 @@
 						<!-- active: highline -->
 						<a class="nav-link" href="{{path('home_page')}}">Home</a>
 						<a class="nav-link" href="{{path('showProduct')}}">Product</a>
-						<a class="nav-link" href="{{path('showProduct')}}">Sale</a>
+						{# <a class="nav-link" href="{{path('showProduct')}}">Sale</a> #}
 						<a class="nav-link" href="{{path('aboutUs')}}">About</a>
 
 					</div>
@@ -142,9 +142,9 @@
 								<p>
 									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Product</a>
 								</p>
-								<p>
+								{# <p>
 									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Sale</a>
-								</p>
+								</p> #}
 								<p>
 									<a href="{{path('aboutUs')}}" class="text-dark text-decoration-none">About</a>
 								</p>

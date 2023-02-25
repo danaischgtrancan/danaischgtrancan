@@ -86,15 +86,14 @@
 
 						<div class="col-md-2 mb-3">
 							<div class="ms-3 mt-3 ">
-								{{ form_label(productForm.for_gender) }}
-								{{ form_widget(productForm.for_gender) }}
+								{{ form_label(productForm.forGender) }}
+								{{ form_widget(productForm.forGender) }}
 							</div>
 						</div>
 
 						<div class="col-md-2 mb-3">
 							<div class="ms-3 mt-3">
-								{{ form_label(productForm.status) }}
-								{{ form_widget(productForm.status, ) }}
+								{{ form_widget(productForm.status, {'attr':{'class': 'd-none'}}) }}
 							</div>
 						</div>
 

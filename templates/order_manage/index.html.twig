@@ -8,7 +8,7 @@
 		// Function to check if the user wants to delete or not.
 function changeConfirm($id) {
 if (confirm("Are you sure to confirm this order?")) {
-window.location.href = '/admin/order/changeConfirm/'+ $id;
+window.location.href = '/admin/order/changeConfirm/' + $id;
 } else {
 return false;
 }
@@ -28,7 +28,7 @@ return false;
 		<div class=" mb-5 mx-5">
 			<div class="col-md-12">
 				<div class="row">
-					<div class="row">
+					{# <div class="row">
 						<div class="col-md-6">
 							<div>
 								<span class="fw-bolder">Last Update:
@@ -44,7 +44,7 @@ return false;
 								</button>
 							</form>
 						</div>
-					</div>
+					</div> #}
 
 					{# TABLE #}
 					<table class="mt-4 table table-bordered text-center	">
@@ -52,8 +52,10 @@ return false;
 							<tr>
 								<th scope="col">Id</th>
 								<th scope="col">Date</th>
+								<th scope="col">Total</th>
 								<th scope="col">Voucher</th>
-								<th scope="col">Percent Discount</th>
+								<th scope="col">Customer Name</th>
+								<th scope="col">Phone number</th>
 								<th scope="col">Delivery Local</th>
 								<th scope="col">Status</th>
 							</tr>
@@ -63,8 +65,17 @@ return false;
 								<tr>
 									<th scope="row">{{o.id}}</th>
 									<td>{{o.date|date("m/d/Y")}}</td>
-									<td>{{o.voucher}}</td>
-									<td>{{o.percentDiscount}}</td>
+									<td>{{o.total}}</td>
+
+									{% if o.voucher == null %}
+										<td>0</td>
+									{% else %}
+										<td>{{o.voucher}} percent</td>
+
+									{% endif %}
+
+									<td>{{o.cusName}}</td>
+									<td>{{o.cusPhone}}</td>
 									<td>{{o.deliveryLocal}}</td>
 									{% if (o.status == 0)%}
 										<td>

@@ -12,7 +12,8 @@ class CustomerController extends AbstractController
      * @Route("/customer", name="cus_profile")
      */
     public function cusAction(): Response
-    {
+    { 
+        $user = $this->getUser();
         return $this->render('customer/index.html.twig', [
             'username' => 'Your username',
             'email' => 'Your email',

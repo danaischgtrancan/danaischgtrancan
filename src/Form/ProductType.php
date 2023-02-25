@@ -34,13 +34,14 @@ class ProductType extends AbstractType
 
                     // Cho chon nhieu hay khong
                     'multiple' => false,
-                    'expanded' => true  
+                    'expanded' => true,
+                    'data' => 0
                 )
             )
             ->add('descriptions', TextType::class)
             ->add('price', TextType::class)
             ->add(
-                'for_gender',
+                'forGender',
                 ChoiceType::class,
                 array(
                     'choices' => array(

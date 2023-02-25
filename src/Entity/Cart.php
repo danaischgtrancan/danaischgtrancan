@@ -19,7 +19,7 @@ class Cart
     #[ORM\ManyToOne(inversedBy: 'carts')]
     private ?Product $product = null;
 
-    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\ManyToOne(inversedBy: 'carts')]   
     private ?User $user = null;
 
     public function getId(): ?int

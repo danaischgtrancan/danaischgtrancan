@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Entity\Product;
 use App\Form\CartType;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
@@ -25,71 +26,6 @@ class CartController extends AbstractController
     {
         $this->repo = $repo;
     }
-    // Create a new one
-    /**
-     * @Route("/add", name="addCart", methods={"POST"})
-     */
-    public function addAction(Request $req, ProductRepository $repoPro): Response
-    {
-        $user = $this->getUser();
-
-        $carts = new Cart();
-        // Call function above
-        $req = $this->transformJsonBody($req);
-
-        // Defination name and importer
-        // Luu y rang neu parameter giua clien va server khong khop nhau, chuong trinh se ngung hoat dong
-        $id = $req->get('id');
-        $product = $repoPro->find($id);
-        
-        
-        $count = $req->get('count');
-        $carts->setCount($count);
-
-        
-        // Check quantity of Stock
-        foreach($product as $p):
-            if($count - $p->getq() < 0):
-                
-            endif;
-        endforeach;
-        $carts->setProduct($product);
-
-
-        $carts->setUser($user);
-
-        $this->repo->save($carts, true);
-        return $this->json($carts);
-        // return new JsonResponse();
-    }
-
-    public function transformJsonBody(Request $re)
-    {
-        $data = json_decode($re->getContent(), true);
-        if ($data === null) {
-            return $re;
-        }
-        $re->request->replace($data);
-        return $re;
-    }
-
-
-    /**
-     * @Route("/delete/{id}", name="deleteCart", methods={"delete"})
-     */
-    public function deleteCartAction(int $pro_id): Response
-    {
-        $user = $this->getUser();
-        $cart = $this->repo->removeCart($pro_id, $user);
-
-        foreach ($cart as $c) :
-            $this->repo->remove($c, true);
-        endforeach;
-
-        // return $this->json($c);
-        return new JsonResponse();
-        // return $this->redirectToRoute('shoppingCart');
-    }
 
     /**
      * @Route("/", name="shoppingCart")
@@ -104,24 +40,105 @@ class CartController extends AbstractController
         ]);
     }
 
+    // Create a new one
+    /**
+     * @Route("/add", name="addCart", methods={"POST"})
+     */
+    public function addAction(Request $req, ProductRepository $repoPro): Response
+    {
+        // Call function above
+        $user = $this->getUser();
+        $req = $this->transformJsonBody($req);
+        $id = $req->get('id');
+        $product = $repoPro->find($id);
+        $count = $req->get('count');
+
+        // Query to  find $product of this user exists or not
+        //It returns an array with only one line (index: 0)
+        $findCart = $this->repo->findByProId($product, $user);
+
+        // If its not exists, add new
+        if ($findCart == null) :
+            $newCart = new Cart();
+            $newCart->setProduct($product);
+            $newCart->setUser($user);
+            $newCart->setCount($count);
+
+            $this->repo->save($newCart, true);
+        else :
+            // It exists update Count
+            // Create $cart to find product object that match with $product and $user below to update Count
+            $cart = $this->repo->find($findCart[0]);
+            $cart->setCount($cart->getCount() + $count);
+
+            $this->repo->save($cart, true);
+        endif;
+        return new JsonResponse();
+    }
+
+    public function transformJsonBody(Request $re)
+    {
+        $data = json_decode($re->getContent(), true);
+        if ($data === null) {
+            return $re;
+        }
+        $re->request->replace($data);
+        return $re;
+    }
+
 
     /**
-     * @Route("/edit", name="category_edit",requirements={"id"="\d+"})
+     * @Route("/delete/{id}", name="deleteCart", methods={"DELETE"})
      */
-    // public function editAction(Request $req, SluggerInterface $slugger): Response
-    // {
-    //     $c = new Category();
-    //     $form = $this->createForm(CategoryType::class, $c);   
+    public function deleteCartAction(int $id, ManagerRegistry $reg, ProductRepository $repoPro): Response
+    {
+        $user = $this->getUser();
+        $cart = $this->repo->removeCart($id, $user);
 
-    //     $form->handleRequest($req);
-    //     if($form->isSubmitted() && $form->isValid()){
+        $entity = $reg->getManager();
+        foreach ($cart as $c) :
+            $entity->remove($c);
+            $entity->flush();
+        endforeach;
 
-    //         $this->repo->save($c,true);
-    //         return $this->redirectToRoute('category_show', [], Response::HTTP_SEE_OTHER);
-    //     }
-    //     return $this->render("admin/category.html.twig",[
-    //         'form' => $form->createView()
-    //     ]);
-    // }
+        return $this->json("Success");
+        // return new JsonResponse();
+        // return $this->redirectToRoute('shoppingCart');
+    }
 
+
+    // Chang number in Cart
+    /**
+     * @Route("/change", name="change", methods={"POST"})
+     */
+    public function minus(Request $req, ManagerRegistry $reg, ProductRepository $repoPro): Response
+    {
+        $cartId = $req->request->get('cartId');
+        $user = $this->getUser();
+        $action = $req->request->get('action');
+
+        $entity = $reg->getManager();
+        $cart = $this->repo->find($cartId);
+
+        if($action == "minus"):
+            $cart->setCount($cart->getCount() - 1);
+        else:
+            $cart->setCount($cart->getCount() + 1);
+        endif;
+        
+        $entity->persist($cart);
+        $entity->flush();
+
+        // $entity = $reg->getManager();
+        // if ($action == "minus") :
+        //     foreach ($cart as $c) :
+        //         $c->setCount($qty - 1);
+        //         $entity->persist($c);
+        //         $entity->flush();
+        //     endforeach;
+        // endif;
+
+        // return $this->json(['cart' => $cart]);
+        return $this->redirectToRoute('shoppingCart');
+    }
 }

@@ -7,6 +7,7 @@ use App\Entity\ProSize;
 use App\Form\ProductType;
 use App\Form\ProSizeType;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
 use App\Repository\SizeRepository;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,7 +33,7 @@ class ProManageController extends AbstractController
     }
 
     /* ==========================================================================
-   Show Admin Product Page
+   Show Product Page
    ========================================================================== */
 
     /**
@@ -40,15 +41,15 @@ class ProManageController extends AbstractController
      */
     public function productMangeAction(): Response
     {
-        $products = $this->repo->findAllList([], [
+        $products = $this->repo->findAll([], [
             'id' => 'DESC'
         ]);
-        $size = $this->repo->findAllSize();
+        // $size = $this->repo->findAllSize();
 
         // return $this->json($size);
         return $this->render('pro_manage/index.html.twig', [
             'products' => $products,
-            'size' => $size
+            // 'size' => $size
         ]);
     }
 
@@ -131,43 +132,7 @@ class ProManageController extends AbstractController
         }
         return $newFilename;
     }
-    /* ==========================================================================
-   Add Admin Product Size Page
-   ========================================================================== */
-
-    /**
-     * @Route("/size", name="addSize_page")
-     */
-    public function addSizeAction(Request $req, ManagerRegistry $reg): Response
-    {
-        $pz = new ProSize();
-        $proSizeForm = $this->createForm(ProSizeType::class, $pz);
-
-        $proSizeForm->handleRequest($req);
-        $entity = $reg->getManager();
-
-        if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
-            $data = $proSizeForm->getData($req);
-            $pz->setProduct($data->getProduct());
-            $pz->setSize($data->getSize());
-            $pz->setQuantity($data->getQuantity());
-
-            // tell Doctrine you want to (eventually) save the Product (no queries yet)
-            $entity->persist($pz);
-            // actually executes the queries (i.e. the INSERT query)
-            $entity->flush();
-
-            $this->addFlash(
-                'success',
-                'A products was added'
-            );
-            return $this->redirectToRoute("pro_page");
-        }
-
-        return $this->render('size/index.html.twig', [
-            'proSizeForm' => $proSizeForm->createView()
-        ]);
-    }
+   
 
     /* ==========================================================================
    Update Admin Product Page
@@ -220,57 +185,11 @@ class ProManageController extends AbstractController
             $entity->persist($p);
             $entity->flush();
 
-            $this->addFlash(
-                'success',
-                'New products was updated'
-            );
             return $this->redirectToRoute("pro_page");
         }
 
         return $this->render('pro_manage/edit.html.twig', [
             'productForm' => $productForm->createView()
-        ]);
-    }
-
-    /* ==========================================================================
-   Update Admin Product Size Page
-   ========================================================================== */
-
-    /**
-     * @Route("/edit/size/{id}", name="editPro_page")
-     */
-
-    public function editSizeAction(Request $req, ManagerRegistry $reg, int $id): Response
-    {
-        $pz = $this->repo->find($id);
-        $entity = $reg->getManager();
-
-        $proSizeForm = $this->createForm(ProSizeType::class, $pz);
-        $proSizeForm->handleRequest($req);
-        // $entity = $reg->getManager();
-
-        if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
-            $data = $proSizeForm->getData($req);
-            // $pz->setProduct($data->getProduct());
-            // $pz->setSize($data->getSize());
-            // $pz->setQuantity($data->getQuantity());
-
-
-
-            $entity->persist($pz);
-            $entity->flush();
-
-            $this->addFlash(
-                'success',
-                'New products was updated'
-            );
-            return $this->redirectToRoute("pro_page");
-        }
-
-        return $this->redirectToRoute("pro_page");
-
-        return $this->render('pro_manage/edit.html.twig', [
-            'productForm' => $proSizeForm->createView()
         ]);
     }
 

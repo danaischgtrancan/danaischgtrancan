@@ -50,15 +50,16 @@ class CartRepository extends ServiceEntityRepository
         // JOIN `user` u ON u.id = cart.user_id
         // GROUP BY p.name, p.id
         return $this->createQueryBuilder('cart')
-            ->select('cart.id as cart_id', 'p.id as p_id', 'p.name as p_name', 'p.price', 'p.image', 'SUM(cart.count) as num', 'SUM(cart.count) * p.price as unitTotal', 'c.name as cate_name')
+            ->select('cart.id as cartId', 'cart.count as num', 'p.id as pId', 'p.name as pName', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cateName', 's.name as sizeName')
+            ->join('cart.product', 'p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
+            ->join('p.category', 'c')
             ->andWhere('cart.user = :val')
             ->setParameter('val', $value)
-            ->join('cart.product', 'p')
-            ->join('p.category', 'c')
-            // ->join('cart.user', 'u')
             ->groupBy('p.name', 'p.id')
             ->getQuery()
-            ->getArrayResult();
+            ->execute();
     }
 
     /**
@@ -66,13 +67,76 @@ class CartRepository extends ServiceEntityRepository
      */
     public function removeCart($id, $user): array
     {
-        //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
+        //SELECT * FROM `cart` WHERE c.product_id = 1 AND c.user_id = 1
 
         return $this->createQueryBuilder('cart')
-            ->join('cart.product', 'p')
-            ->andWhere('cart.product_id = :val')
+            ->andWhere('cart.product = :val')
             ->setParameter('val', $id)
-            ->andWhere('cart.user_id = :val')
+            ->andWhere('cart.user = :i')
+            ->setParameter('i', $user)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function findByProId($id, $user): array
+    {
+        //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
+
+        return $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->join('c.product', 'p')
+            ->join('c.user', 'u')
+            ->where('p.id = :pid')
+            ->setParameter('pid', $id)
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function updateQty($pro, $user): array
+    {
+
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.count) as total')
+            ->where('c.product = :val')
+            ->setParameter('val', $pro)
+            ->andWhere('c.user = :vul')
+            ->setParameter('vul', $user)
+            ->groupBy('c.count')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function getCartOfCurrentUser($user): array
+    {
+        // SELECT * FROM `cart` c JOIN `product` p ON c.product_id = p.id WHERE user_id = 1
+        return $this->createQueryBuilder('c')
+            ->select('p.id as proId', 'c.count as qty')
+            ->join('c.product', 'p')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * @return Cart[] Returns an array of Cart objects
+     */
+    public function findUser($user): array
+    {
+        // SELECT * FROM `cart` c JOIN `product` p ON c.product_id = p.id WHERE user_id = 1
+        return $this->createQueryBuilder('c')
+            ->select('c.id as cartId')
+            ->andWhere('c.user = :val')
             ->setParameter('val', $user)
             ->getQuery()
             ->getArrayResult();

@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,25 +19,23 @@ class ProSizeType extends AbstractType
         $builder
             ->add('product', EntityType::class, [
                 'class' => Product::class,
-                'choice_label' => 'id',
-                'placeholder' => 'Choose an option'
+                'choice_label' => 'name'
             ])
             
             ->add('size', EntityType::class, [
                 'class' => Size::class,
-                'choice_label' => 'name',
-                'placeholder' => 'Choose an option'
+                'choice_label' => 'name'
             ])
             ->add('quantity', NumberType::class)
             ->add('save', SubmitType::class, [
-                'label' => "Save"
-            ]);
+                'label' => "Add"
+            ]); 
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            // Configure your form options here
-        ]);
-    }
+    // public function configureOptions(OptionsResolver $resolver): void
+    // {
+    //     $resolver->setDefaults([
+    //         // Configure your form options here
+    //     ]);
+    // }
 }

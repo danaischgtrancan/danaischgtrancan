@@ -68,11 +68,8 @@
 										</a>
 									</li>
 								</ul>
-								<form action="{{path('shoppingCart', {'id': b.id})}}" method="POST">
-									<input type="hidden" name="pro_id" value="{{b.name}}">
-									<input type="hidden" name="pro_quantity" value="1"/>
-									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
-								</form>
+								<input type="hidden" id="count" value="1"/>
+								<button class="add-to-cart fw-bold" name="insert_button{{b.id}}" onclick="insert_row({{b.id}})">Add to Cart</button>
 							</div>
 							<div class="product-content">
 								<h3 class="title">
@@ -125,11 +122,8 @@
 										</a>
 									</li>
 								</ul>
-								<form action="{{path('shoppingCart', {'id': n.id})}}" method="POST">
-									<input type="hidden" name="pro_id" value="{{n.id}}">
-									<input type="hidden" name="pro_quantity" value="1"/>
-									<input type="submit" class="add-to-cart fw-bold" name="btn_AddtoCart" value="Add to Cart"/>
-								</form>
+								<input type="hidden" id="count" value="1"/>
+								<button class="add-to-cart fw-bold" name="insert_button{{n.id}}" onclick="insert_row({{n.id}})">Add to Cart</button>
 							</div>
 							<div class="product-content">
 								<h3 class="title">
@@ -150,4 +144,27 @@
 				See More</a>
 		</div>
 	</div>
+
+	<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+	{# Insert into Cart #}
+	<script>
+		function insert_row(pro_id) {
+var count = document.getElementById("count").value;
+$.ajax({
+type: 'post',
+url: '/cart/add',
+data: {
+id: pro_id,
+count: count
+},
+success: function (response) {
+window.location.href = '/cart';
+// alert("A new product was added");
+
+}
+});
+}
+	</script>
 {% endblock %}

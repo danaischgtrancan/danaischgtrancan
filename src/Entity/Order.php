@@ -17,9 +17,6 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $voucher = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -35,8 +32,18 @@ class Order
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderDetail::class)]
     private Collection $orderDetails;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Voucher $voucher = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $cusName = null;
+
     #[ORM\Column]
-    private ?int $percentDiscount = null;
+    private ?int $cusPhone = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $username = null;
 
     public function __construct()
     {
@@ -46,18 +53,6 @@ class Order
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getVoucher(): ?string
-    {
-        return $this->voucher;
-    }
-
-    public function setVoucher(string $voucher): self
-    {
-        $this->voucher = $voucher;
-
-        return $this;
     }
 
 
@@ -139,14 +134,50 @@ class Order
         return $this;
     }
 
-    public function getPercentDiscount(): ?int
+    public function getVoucher(): ?Voucher
     {
-        return $this->percentDiscount;
+        return $this->voucher;
     }
 
-    public function setPercentDiscount(int $percentDiscount): self
+    public function setVoucher(?Voucher $voucher): self
     {
-        $this->percentDiscount = $percentDiscount;
+        $this->voucher = $voucher;
+
+        return $this;
+    }
+
+    public function getCusName(): ?string
+    {
+        return $this->cusName;
+    }
+
+    public function setCusName(string $cusName): self
+    {
+        $this->cusName = $cusName;
+
+        return $this;
+    }
+
+    public function getCusPhone(): ?int
+    {
+        return $this->cusPhone;
+    }
+
+    public function setCusPhone(int $cusPhone): self
+    {
+        $this->cusPhone = $cusPhone;
+
+        return $this;
+    }
+
+    public function getUsername(): ?User
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?User $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
