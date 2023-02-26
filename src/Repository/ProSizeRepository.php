@@ -57,10 +57,26 @@ class ProSizeRepository extends ServiceEntityRepository
     /**
      * @return ProSize[] Returns an array of ProSize objects
      */
+    public function findNameSize(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT s.id as sizeId, s.name as sizeName, ps.quantity as productQty, ps.product_id as proId FROM size as s INNER JOIN pro_size as ps ON ps.size_id = s.id';
+
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    /**
+     * @return ProSize[] Returns an array of ProSize objects
+     */
     public function findSize($value): array
     {
         return $this->createQueryBuilder('ps')
-            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty','ps.id as proSizeId', 'p.id as productId', 'p.name as productName')
+            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'ps.id as proSizeId')
             ->join('ps.size', 's')
             ->join('ps.product', 'p')
             ->andWhere('p.id = :val')
@@ -68,8 +84,8 @@ class ProSizeRepository extends ServiceEntityRepository
             ->groupBy('s.id')
             ->getQuery()
             ->getArrayResult();
-
     }
+
 
     //    /**
     //     * @return ProSize[] Returns an array of ProSize objects

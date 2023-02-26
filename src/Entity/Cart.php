@@ -22,6 +22,9 @@ class Cart
     #[ORM\ManyToOne(inversedBy: 'carts')]   
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    private ?ProSize $proSize = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Cart
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProSize(): ?ProSize
+    {
+        return $this->proSize;
+    }
+
+    public function setProSize(?ProSize $proSize): self
+    {
+        $this->proSize = $proSize;
 
         return $this;
     }

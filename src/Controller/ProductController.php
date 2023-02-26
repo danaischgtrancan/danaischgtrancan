@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
 use App\Repository\SizeRepository;
+use App\Repository\SupplierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +27,16 @@ class ProductController extends AbstractController
     /**
      * @Route("/", name="showProduct")
      */
-    public function showProductAction(Request $req): Response
+    public function showProductAction(Request $req, SupplierRepository $repoSupp, CategoryRepository $repoCate, ProSizeRepository $repoPs): Response
     {
         $title = "Not Found";
+        $catefories = $repoCate->findAll();
+        $suppliers = $repoSupp->findAll();
+        $proSizes = $repoPs->findNameSize([], [
+            'id' => 'DESC'
+        ]);
+
+        // return $this->json($proSizes);
 
         $sort_by = $req->query->get('sort_by');
         $order = $req->query->get('order');
@@ -36,7 +46,7 @@ class ProductController extends AbstractController
         if (isset($btnSearch)) :
             $products = $this->repo->searchByName($value);
             $title = "Results";
-        elseif(isset($sort_by)) :
+        elseif (isset($sort_by)) :
             if ($sort_by == 'name') :
                 $products = $this->repo->findByName($order);
                 $title = "Sort by name";
@@ -67,14 +77,13 @@ class ProductController extends AbstractController
             $title = "All product";
         endif;
 
-        $catefories = $this->repo->findCategory();
-        $suppliers = $this->repo->findSupplier();
 
         // return $this->json(['products' => $products]);
         return $this->render('product/show.html.twig', [
             'products' => $products,
             'catefories' => $catefories,
             'suppliers' => $suppliers,
+            'proSizes' => $proSizes,
             'title' => $title
         ]);
     }

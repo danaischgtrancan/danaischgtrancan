@@ -17,10 +17,10 @@ class ProSizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('product', EntityType::class, [
-            //     'class' => Product::class,
-            //     'choice_label' => 'name'               
-            // ])
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'choice_label' => 'name'
+            ])
 
             ->add('size', EntityType::class, [
                 'class' => Size::class,

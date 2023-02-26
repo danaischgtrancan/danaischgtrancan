@@ -7,6 +7,8 @@ use App\Entity\Product;
 use App\Form\CartType;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
+use App\Repository\SizeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,7 +46,7 @@ class CartController extends AbstractController
     /**
      * @Route("/add", name="addCart", methods={"POST"})
      */
-    public function addAction(Request $req, ProductRepository $repoPro): Response
+    public function addAction(Request $req, ProductRepository $repoPro, ProSizeRepository $repoProSize): Response
     {
         // Call function above
         $user = $this->getUser();
@@ -52,10 +54,12 @@ class CartController extends AbstractController
         $id = $req->get('id');
         $product = $repoPro->find($id);
         $count = $req->get('count');
+        $size = $req->get('size');
+        $proSizes = $repoProSize->findOneBy(['size' => $size]);
 
         // Query to  find $product of this user exists or not
         //It returns an array with only one line (index: 0)
-        $findCart = $this->repo->findByProId($product, $user);
+        $findCart = $this->repo->findByProId($product, $user, $proSizes);
 
         // If its not exists, add new
         if ($findCart == null) :
@@ -63,6 +67,7 @@ class CartController extends AbstractController
             $newCart->setProduct($product);
             $newCart->setUser($user);
             $newCart->setCount($count);
+            $newCart->setProSize($proSizes);
 
             $this->repo->save($newCart, true);
         else :

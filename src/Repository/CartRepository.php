@@ -44,11 +44,14 @@ class CartRepository extends ServiceEntityRepository
      */
     public function showCart($value): array
     {
-        // SELECT p.id, p.name, c.name 'cate_name', SUM(cart.count), SUM(cart.count) * p.price 'total' FROM `product` p
+        // SELECT p.id, p.name, c.name 'cateName', s.name 'sizeName', SUM(cart.count), SUM(cart.count) * p.price 'total' 
+        // FROM `product` p
         // JOIN `cart` ON p.id = cart.product_id
         // JOIN `category` c ON p.category_id = c.id
         // JOIN `user` u ON u.id = cart.user_id
-        // GROUP BY p.name, p.id
+        // JOIN `pro_size` ps ON ps.product_id = p.id
+        // JOIN `size` s ON ps.size_id = s.id
+        // GROUP BY p.name, p.id, ps.id
         return $this->createQueryBuilder('cart')
             ->select('cart.id as cartId', 'cart.count as num', 'p.id as pId', 'p.name as pName', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cateName', 's.name as sizeName')
             ->join('cart.product', 'p')
@@ -57,7 +60,7 @@ class CartRepository extends ServiceEntityRepository
             ->join('p.category', 'c')
             ->andWhere('cart.user = :val')
             ->setParameter('val', $value)
-            ->groupBy('p.name', 'p.id')
+            ->groupBy('p.name', 'p.id', 'ps.id')
             ->getQuery()
             ->execute();
     }
@@ -81,7 +84,7 @@ class CartRepository extends ServiceEntityRepository
     /**
      * @return Cart[] Returns an array of Cart objects
      */
-    public function findByProId($id, $user): array
+    public function findByProId($id, $user, $size): array
     {
         //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
 
@@ -89,8 +92,11 @@ class CartRepository extends ServiceEntityRepository
             ->select('c.id')
             ->join('c.product', 'p')
             ->join('c.user', 'u')
+            ->join('p.proSize', 'ps')
             ->where('p.id = :pid')
             ->setParameter('pid', $id)
+            ->andWhere('ps.size = :sId')
+            ->setParameter('sId', $size)
             ->andWhere('u.id = :val')
             ->setParameter('val', $user)
             ->getQuery()

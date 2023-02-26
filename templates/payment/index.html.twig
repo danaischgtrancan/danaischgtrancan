@@ -7,10 +7,9 @@
 {% block body %}
 
 	<div class="row ">
-		<div class="col-md-7">
+		<div class="col-md-7 mt-3">
 			<div class="right border">
 				<div class="header-payment fw-bold">Order Summary</div>
-				<p>8 items</p>
 				{% set total = 0 %}
 				{% for p in products %}
 					<hr>
@@ -28,7 +27,7 @@
 							<div class=" text-muted">{{p.sizeName}}</div>
 						</div>
 					</div>
-					{% set total = total + p.unitTotal %}
+					{% set total = (total + p.unitTotal) %}
 				{% endfor %}
 
 
@@ -66,7 +65,7 @@
 
 			<div class="row lower">
 				<div class="col text-left">Subtotal</div>
-				<div class="col text-right">${{total}}</div>
+				<div class="col text-right">${{total}}.00</div>
 			</div>
 			<div class="row lower">
 				<div class="col text-left">Delivery Standar</div>
@@ -80,7 +79,9 @@
 					class="col text-right">
 					{# <b>${{total + 5 }}</b> #}
 					<div class="d-flex">
-						${{ form_widget(orderForm.total, {'attr':{'value': total + 5, 'class': 'border-0 p-0' }})  }}</div>
+						${{total + 5}}.00
+						
+						{{ form_widget(orderForm.total, {'attr':{'value': (total + 5), 'class': 'border-0 p-0 text-dark d-none' }})  }}</div>
 				</div>
 				{# <input class="input" type="hidden" name="total" value=""> #}
 			</div>

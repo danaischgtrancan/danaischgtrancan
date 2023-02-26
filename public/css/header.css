@@ -30,6 +30,7 @@ a {
     text-decoration: none;
     color: #0d0d0d;
     font-family: "Noto Serif", serif;
+    font-size: 17px;
 }
 
 a:hover {
@@ -63,9 +64,12 @@ ul li a:hover {
     color: black;
 }
 
+.nav-link {
+    font-size: 17px;
+}
+
 .nav-link:hover {
     color: black;
-    /* font-weight: bolder; */
 }
 
 .imageCenter {
@@ -263,7 +267,7 @@ select option {
 
 .form-control {
     appearance: revert;
-    width: 120%;
+    width: 100%;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil&display=swap");
@@ -386,6 +390,10 @@ select option {
 .product-grid .title a {
     color: #777;
     transition: all 0.3s ease 0s;
+}
+
+.size {
+    background-color: white;
 }
 
 .product-grid .title a:hover {
@@ -709,6 +717,7 @@ section .content .form h2 {
     border-bottom: 4px solid black;
     display: inline-block;
     letter-spacing: 1px;
+    font-family: "Playfair Display", serif;
 }
 
 section .content .form .input-form {
@@ -1184,12 +1193,12 @@ section .form-control {
     /* Chrome 10-25, Safari 5.1-6 */
     background: -webkit-linear-gradient( to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+    background: linear-gradient( to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
 }
 
 * {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 
@@ -1197,6 +1206,7 @@ section .form-control {
 Register
 =================================================================================== */
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
 
 /* body {
     /* background-color: #1a1a1a */
@@ -1210,11 +1220,11 @@ Register
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.5s
+    transition: all 0.5s;
 }
 
 .card1:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
 }
 
 .card2 {
@@ -1227,13 +1237,14 @@ Register
 }
 
 .card2:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
 }
 
 .login {
     font-size: 20px;
     font-weight: bold;
     margin-left: 10px;
+    font-family: "Playfair Display", serif;
 }
 
 .input-field span {
@@ -1244,14 +1255,14 @@ Register
 }
 
 .form-control {
-    font-size: 13px;
+    font-size: 16px;
     color: #767473;
     font-weight: 500;
     border-left: none;
     border-right: none;
     border-top: none;
     border-bottom: 1px solid #9b9b9b;
-    box-shadow: none
+    box-shadow: none;
 }
 
 div#user_password {
@@ -1263,14 +1274,14 @@ div#user_password {
     width: 100%;
     background-color: #000;
     font-weight: 500;
-    color: #cdcdc4;
+    color: white;
     border: none;
-    font-size: 15px
+    font-size: 15px;
 }
 
 .text1 .forget {
     color: #767676;
-    font-weight: 500
+    font-weight: 500;
 }
 
 .text2 span {
@@ -1287,5 +1298,27 @@ div#user_password {
 
 .text2 .register {
     color: #4f4942;
-    font-weight: bold
+    font-weight: bold;
+}
+
+
+/*  */
+
+form .btn {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    height: auto;
+}
+
+form .btn {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
 }

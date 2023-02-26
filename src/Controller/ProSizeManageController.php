@@ -27,7 +27,7 @@ class ProSizeManageController extends AbstractController
         $this->repo = $repo;
     }
 
-    //  Show size a product
+    //  Show specific size of a product
 
     /**
      * @Route("/{id}", name="proSize_page")
@@ -35,12 +35,10 @@ class ProSizeManageController extends AbstractController
     public function sizeMangeAction(Product $productId, ProductRepository $repoPro, ManagerRegistry $reg): Response
     {
         $sizes = $this->repo->findSize([$productId]);
-        $pro = $reg->getRepository(Product::class)->find($productId);
-        // return $this->json($pro->getName());
         return $this->render('prosize_manage/index.html.twig', [
             'sizes' => $sizes,
-            'proName' => $pro->getName(),
-            'proID' => $pro->getId()
+            'proName' => $productId->getName(),
+            'proID' => $productId->getId()
         ]);
     }
 
@@ -48,7 +46,7 @@ class ProSizeManageController extends AbstractController
     /**
      * @Route("/create/{id}", name="addProSize_page")
      */
-    public function createAction(Request $req, Product $pro, ManagerRegistry $reg, ProductRepository $repoPro): Response
+    public function createAction(Product $pro, Request $req, ManagerRegistry $reg, ProductRepository $repoPro): Response
     {
         $p = new ProSize();
         $proSizeForm = $this->createForm(ProSizeType::class, $p);
@@ -56,28 +54,30 @@ class ProSizeManageController extends AbstractController
         $proSizeForm->handleRequest($req);
         $entity = $reg->getManager();
 
-        // choose the newest product
-
         if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
             $data = $proSizeForm->getData($req);
-
-            $p->setProduct($pro);
-            $p->setSize($data->getSize());
-            $p->setQuantity($data->getQuantity());
-
-            // tell Doctrine you want to (eventually) save the Product (no queries yet)
-            $entity->persist($p);
+            $pro_id = $req->request->get("proId");
+            $obj = $repoPro->find($pro_id);
+            // return $this->json($data);
+            $sizeAlreadyExistsOrNot = $this->repo->findOneBy(['size' => $data->getSize()]);
+            if ($sizeAlreadyExistsOrNot == null) :
+                $p->setProduct($obj);
+                $p->setSize($data->getSize());
+                $p->setQuantity($data->getQuantity());
+                $entity->persist($p);
+            else :
+                $sizeAlreadyExistsOrNot->setQuantity($sizeAlreadyExistsOrNot->getQuantity() + $data->getQuantity());
+                $entity->persist($sizeAlreadyExistsOrNot);
+            endif;
             // actually executes the queries (i.e. the INSERT query)
             $entity->flush();
 
             $this->addFlash(
                 'success',
-                'A products was added'
+                'Added successfully'
             );
-            return $this->redirectToRoute("pro_page");
+            return $this->redirectToRoute("proSize_page", ['id' => $pro->getId()]);
         }
-
-        // return $this->json($id);
 
         return $this->render('prosize_manage/new.html.twig', [
             'proSizeForm' => $proSizeForm->createView(),
