@@ -6,9 +6,9 @@
 
 {% block body %}
 
-	<div class="row ">
+	<div class="row mx-3">
 		<div class="col-md-7 mt-3">
-			<div class="right border">
+			<div class="right border p-3">
 				<div class="header-payment fw-bold">Order Summary</div>
 				{% set total = 0 %}
 				{% for p in products %}
@@ -35,13 +35,13 @@
 		</div>
 		<div class="col-md-5 p-0">
 			{{ form_start(orderForm, {'action': path('addOrder')}) }}
-			<div class="left border">
+			<div class="left border p-3">
 				<div class="row">
-					<span class="header-payment fw-bold text-dark">Payment</span>
+					<span class="header-payment fw-bold text-dark pb-2">Payment</span>
 				</div>
 				<span>Name:</span>
 				{# <input type="text" class="input" name="name" value="{{user.fullname}}"> #}
-				{{ form_widget(orderForm.cusName, {'attr':{'value': user.fullname, 'class': 'input' }}) }}
+				{{ form_widget(orderForm.cusName, {'attr':{'value': user.fullname, 'class': 'input color-light' }}) }}
 
 				<span>Phone number:</span>
 				{# <input type="text" class="input" name="phone" value="{{user.phone}}"> #}
@@ -52,18 +52,7 @@
 
 
 			</div>
-			<div class="left border">
-				<div class="row">
-					<span class="header-payment fw-bold text-dark">Voucher</span>
-				</div>
-				<span>Voucher:</span>
-				{{ form_widget(orderForm.voucher, {'attr':{'value': "", 'class': 'input' }}) }}
-			{# <span>Percent discount:</span> #}
-				{# {{ form_widget(orderForm.percentDiscount, {'attr':{'value': user.address, 'class': 'input' }}) }} #}
-			</div>
-			<hr>
-
-			<div class="row lower">
+			<div class="row lower mt-3">
 				<div class="col text-left">Subtotal</div>
 				<div class="col text-right">${{total}}.00</div>
 			</div>
@@ -80,8 +69,8 @@
 					{# <b>${{total + 5 }}</b> #}
 					<div class="d-flex">
 						${{total + 5}}.00
-						
-						{{ form_widget(orderForm.total, {'attr':{'value': (total + 5), 'class': 'border-0 p-0 text-dark d-none' }})  }}</div>
+
+						{{ form_widget(orderForm.total, {'attr':{'value': (total + 5), 'class': 'border-0 p-0 text-dark d-none'  }})  }}</div>
 				</div>
 				{# <input class="input" type="hidden" name="total" value=""> #}
 			</div>

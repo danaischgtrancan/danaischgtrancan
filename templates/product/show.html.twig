@@ -112,7 +112,7 @@
 												</li>
 											</ul>
 											<input type="hidden" id="count" value="1"/>
-											<input type="hidden" name="size" value="" id="proSize{{p.id}}">
+											<input type="hidden" name="size" value="" id="proSizeId{{p.id}}">
 											<button class="add-to-cart fw-bold" name="insert_button{{p.id}}" onclick="insert_row({{p.id}})">Add to Cart</button>
 										</div>
 
@@ -124,7 +124,7 @@
 													{% set status = 0 %}
 													{% for ps in proSizes %}
 														{% if ps.proId == p.id %}
-															<input type="radio" name="size" id="size{{ps.sizeId}}" onchange="getSize({{ps.sizeId}}, {{p.id}})"/>
+															<input type="radio" name="size" id="size{{ps.sizeId}}" onchange="getSize({{ps.psId}}, {{p.id}})"/>
 															<label for="size{{ps.sizeId}}" class="me-1">{{ps.sizeName}}</label>
 															{% set status = 1 %}
 														{% endif %}
@@ -147,28 +147,28 @@
 
 						</div>
 						{# <ul class="pagination justify-content-center mb-3">
-																																																																																											<li class="page-item disabled">
-																																																																																												<a class="page-link" href="#" aria-label="Previous">
-																																																																																													<span aria-hidden="true">&laquo;</span>
-																																																																																													<span class="sr-only">Previous</span>
-																																																																																												</a>
-																																																																																											</li>
-																																																																																											<li class="page-item active">
-																																																																																												<a class="page-link" href="#">1</a>
-																																																																																											</li>
-																																																																																											<li class="page-item">
-																																																																																												<a class="page-link" href="#">2</a>
-																																																																																											</li>
-																																																																																											<li class="page-item">
-																																																																																												<a class="page-link" href="#">3</a>
-																																																																																											</li>
-																																																																																											<li class="page-item">
-																																																																																												<a class="page-link" href="#" aria-label="Next">
-																																																																																													<span aria-hidden="true">&raquo;</span>
-																																																																																													<span class="sr-only">Next</span>
-																																																																																												</a>
-																																																																																											</li>
-																																																																																										</ul> #}
+																																																																																																	<li class="page-item disabled">
+																																																																																																		<a class="page-link" href="#" aria-label="Previous">
+																																																																																																			<span aria-hidden="true">&laquo;</span>
+																																																																																																			<span class="sr-only">Previous</span>
+																																																																																																		</a>
+																																																																																																	</li>
+																																																																																																	<li class="page-item active">
+																																																																																																		<a class="page-link" href="#">1</a>
+																																																																																																	</li>
+																																																																																																	<li class="page-item">
+																																																																																																		<a class="page-link" href="#">2</a>
+																																																																																																	</li>
+																																																																																																	<li class="page-item">
+																																																																																																		<a class="page-link" href="#">3</a>
+																																																																																																	</li>
+																																																																																																	<li class="page-item">
+																																																																																																		<a class="page-link" href="#" aria-label="Next">
+																																																																																																			<span aria-hidden="true">&raquo;</span>
+																																																																																																			<span class="sr-only">Next</span>
+																																																																																																		</a>
+																																																																																																	</li>
+																																																																																																</ul> #}
 					</nav>
 				</div>
 			</div>
@@ -183,22 +183,22 @@
 
 {# Insert into Cart #}
 <script>
-	function getSize(sizeId, proId) {
-var getSize = document.getElementById("proSize" + proId);
-getSize.value = sizeId;
+	function getSize(proSizeId, proId) {
+var getProSize = document.getElementById("proSizeId" + proId);
+getProSize.value = proSizeId;
 }
 
 function insert_row(id) {
-var size = document.getElementById("proSize" + id).value;
-if (size != "") {
+var proSizeId = document.getElementById("proSizeId" + id).value;
+if (proSizeId != "") {
 var count = document.getElementById("count").value;
 $.ajax({
 type: 'post',
 url: '/cart/add',
 data: {
-id: id,
-count: count,
-size: size
+proId: id,
+proSizeId: proSizeId,
+count: count
 },
 success: function (response) {
 window.location.href = '/cart';
@@ -209,8 +209,8 @@ error: function (xhr, status, error) {
 console.log(xhr);
 }
 });
-}else{
-	Swal.fire('Please choose your size!');
+} else {
+Swal.fire('Please choose your size!');
 }
 
 }

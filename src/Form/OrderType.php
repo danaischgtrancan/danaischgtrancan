@@ -17,9 +17,6 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('voucher', TextType::class, [
-                'required' => false
-            ])
             ->add('deliveryLocal', TextType::class)
             ->add('total', NumberType::class)
             ->add('status', HiddenType::class, array(
@@ -27,5 +24,6 @@ class OrderType extends AbstractType
             ))
             ->add('cusName', TextType::class)
             ->add('cusPhone', TextType::class);
+            
     }
 }

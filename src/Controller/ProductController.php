@@ -24,6 +24,7 @@ class ProductController extends AbstractController
     {
         $this->repo = $repo;
     }
+
     /**
      * @Route("/", name="showProduct")
      */
@@ -91,15 +92,17 @@ class ProductController extends AbstractController
     /**
      * @Route("/detail/{id}", name="proDetail_page")
      */
-    public function productDetailAction(Product $p, SizeRepository $repoSize): Response
+    public function productDetailAction(Product $p, SizeRepository $repoSize, ProSizeRepository $repoPs): Response
     {
-        $size = $repoSize->findSize($p->getId());
-
+        // $size = $repoSize->findSize($p->getId());
+        $proSizes = $repoPs->findNameSize([], [
+            'id' => 'DESC'
+        ]);
         // return $this->json(['product' => $product]);
 
         return $this->render('product/detail.html.twig', [
             'product' => $p,
-            'size' => $size
+            'proSizes' => $proSizes
         ]);
     }
 }

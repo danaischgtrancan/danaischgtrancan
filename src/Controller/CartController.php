@@ -51,20 +51,22 @@ class CartController extends AbstractController
         // Call function above
         $user = $this->getUser();
         $req = $this->transformJsonBody($req);
-        $id = $req->get('id');
-        $product = $repoPro->find($id);
+        // $id = $req->get('proId');
+        // $product = $repoPro->find($id);
+        $pro_size_id = $req->get('proSizeId');
+        
+        $proSizes = $repoProSize->find($pro_size_id);
+
         $count = $req->get('count');
-        $size = $req->get('size');
-        $proSizes = $repoProSize->findOneBy(['size' => $size]);
 
         // Query to  find $product of this user exists or not
         //It returns an array with only one line (index: 0)
-        $findCart = $this->repo->findByProId($product, $user, $proSizes);
+        $findCart = $this->repo->findCartById($user, $proSizes);
 
         // If its not exists, add new
         if ($findCart == null) :
             $newCart = new Cart();
-            $newCart->setProduct($product);
+            // $newCart->setProduct($product);
             $newCart->setUser($user);
             $newCart->setCount($count);
             $newCart->setProSize($proSizes);

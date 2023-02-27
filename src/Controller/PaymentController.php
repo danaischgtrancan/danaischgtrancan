@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderDetail;
+use App\Entity\ProSize;
 use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\CartRepository;
@@ -26,13 +27,14 @@ class PaymentController extends AbstractController
         $this->repo = $repo;
     }
 
+    // Show payment page
     /**
      * @Route("/payment", name="payment_page", methods={"POST"})
      */
     public function paymentAction(CartRepository $repoCart, UserRepository $repoUser): Response
     {
-        $p = new Order();
-        $orderForm = $this->createForm(OrderType::class, $p, [
+        $o = new Order();
+        $orderForm = $this->createForm(OrderType::class, $o, [
             'action' => $this->generateUrl('addOrder')
         ]);
 
@@ -48,7 +50,7 @@ class PaymentController extends AbstractController
             'orderForm' => $orderForm->createView()
         ]);
 
-        return $this->json($products);
+        // return $this->json($products);
     }
 
     /**
@@ -58,7 +60,7 @@ class PaymentController extends AbstractController
         Request $req,
         ManagerRegistry $reg,
         CartRepository $repoCart,
-        ProductRepository $repoPro,
+        ProSizeRepository $repoProSize,
         OrderDetailRepository $repoOd
     ): Response {
         $o = new Order();
@@ -67,15 +69,13 @@ class PaymentController extends AbstractController
         $orderForm->handleRequest($req);
         $entity = $reg->getManager();
 
-        $data = $orderForm->getData($req);
-
         $user = $this->getUser();
+        $data = $orderForm->getData($req);
 
         $o->setDate(new \DateTime());
         $o->setTotal($data->getTotal());
         $o->setDeliveryLocal($data->getDeliveryLocal());
         $o->setStatus($data->isStatus());
-        $o->setVoucher($data->getVoucher());
         $o->setUsername($user);
         $o->setCusName($data->getCusName());
         $o->setCusPhone($data->getCusPhone());
@@ -86,41 +86,39 @@ class PaymentController extends AbstractController
         $entity->flush();
 
         // Save Order Detail
-
         // It returns two-dimensional array
-        $products = $repoCart->getCartOfCurrentUser($user);
+        $carts = $repoCart->getCartOfCurrentUser($user);
 
-        foreach ($products as $product) :
+        foreach ($carts as $c) :
             $orderDetail = new OrderDetail();
-            // Find object Product
-            $p = $repoPro->find($product['proId']);
-            $orderDetail->setProducts($p);
-            $orderDetail->setQuantity($product['qty']);
+            // Find object ProSize pof this proSizeId
+            $p = $repoProSize->find($c['proSizeId']);
+            $orderDetail->setProSize($p);
+            $orderDetail->setQuantity($c['qty']);
             $orderDetail->setOrders($o);
 
             $repoOd->save($orderDetail, true);
 
             // Update quantity in Stock
-            
-
+            $p->setQuantity($p->getQuantity() - $c['qty']);
         endforeach;
 
 
         // Delete Cart
-        $cartId = $repoCart->findUser($user);
-
         $entity = $reg->getManager();
-        foreach ($cartId as $c) :
+        foreach ($carts as $c) :
+            // Find object Cart based on two-dimensional array $carts
             $cart = $repoCart->find($c['cartId']);
             $entity->remove($cart, true);
             $entity->flush();
         endforeach;
 
-        // $this->addFlash(
-        //     'success',
-        //     'Order successully'
-        // );
+        // Notification success
+        $this->addFlash(
+            'success',
+            'Order successully'
+        );
+        
         return $this->redirectToRoute("shoppingCart");
-        // return $this->json($cart);
     }
 }

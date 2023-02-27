@@ -27,9 +27,13 @@ class ProSize
     #[ORM\OneToMany(mappedBy: 'proSize', targetEntity: Cart::class)]
     private Collection $carts;
 
+    #[ORM\OneToMany(mappedBy: 'proSize', targetEntity: OrderDetail::class)]
+    private Collection $orderDetails;
+
     public function __construct()
     {
         $this->carts = new ArrayCollection();
+        $this->orderDetails = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -96,6 +100,36 @@ class ProSize
             // set the owning side to null (unless already changed)
             if ($cart->getProSize() === $this) {
                 $cart->setProSize(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderDetail>
+     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetail $orderDetail): self
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setProSize($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetail $orderDetail): self
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getProSize() === $this) {
+                $orderDetail->setProSize(null);
             }
         }
 

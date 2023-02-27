@@ -31,10 +31,7 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderDetail::class)]
     private Collection $orderDetails;
-
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    private ?Voucher $voucher = null;
-
+    
     #[ORM\Column(length: 255)]
     private ?string $cusName = null;
 
@@ -130,18 +127,6 @@ class Order
                 $orderDetail->setOrders(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getVoucher(): ?Voucher
-    {
-        return $this->voucher;
-    }
-
-    public function setVoucher(?Voucher $voucher): self
-    {
-        $this->voucher = $voucher;
 
         return $this;
     }

@@ -58,16 +58,20 @@ class ProSizeManageController extends AbstractController
             $data = $proSizeForm->getData($req);
             $pro_id = $req->request->get("proId");
             $obj = $repoPro->find($pro_id);
-            // return $this->json($data);
-            $sizeAlreadyExistsOrNot = $this->repo->findOneBy(['size' => $data->getSize()]);
+            $sizeAlreadyExistsOrNot = $this->repo->findAlreadySize($obj, $data->getSize());
+
             if ($sizeAlreadyExistsOrNot == null) :
                 $p->setProduct($obj);
                 $p->setSize($data->getSize());
                 $p->setQuantity($data->getQuantity());
-                $entity->persist($p);
+                $entity->persist($p, true);
             else :
-                $sizeAlreadyExistsOrNot->setQuantity($sizeAlreadyExistsOrNot->getQuantity() + $data->getQuantity());
-                $entity->persist($sizeAlreadyExistsOrNot);
+                foreach ($sizeAlreadyExistsOrNot as $s) {
+                    $updateCount = $this->repo->find($s['proSizeId']);
+                    $updateCount->setQuantity($updateCount->getQuantity() + $data->getQuantity());
+                    $entity->persist($updateCount, true);
+                }
+
             endif;
             // actually executes the queries (i.e. the INSERT query)
             $entity->flush();
@@ -87,10 +91,11 @@ class ProSizeManageController extends AbstractController
             'proId' => $pro->getId()
         ]);
     }
+
     /**
      * @Route("/edit/{id}", name="editProSize_page")
      */
-    public function editSizeAction(Request $req, ProSize $ps, ManagerRegistry $reg): Response
+    public function editSizeAction(Request $req, ProSize $ps, ManagerRegistry $reg, ProductRepository $repoPro): Response
     {
         $p = new ProSize();
         $proSizeForm = $this->createForm(ProSizeType::class, $p);
@@ -100,19 +105,21 @@ class ProSizeManageController extends AbstractController
 
         if ($proSizeForm->isSubmitted() && $proSizeForm->isValid()) {
             $data = $proSizeForm->getData($req);
+            $pro_id = $req->request->get("proId");
+            $obj = $repoPro->find($pro_id);
+            $sizeAlreadyExistsOrNot = $this->repo->findAlreadySize($obj, $data->getSize());
 
-            // $ps = $this->repo->findOneBy(['product' => $pro, 'size' => $data->getSize()]);
-
-            $ps->setQuantity($data->getQuantity());
-
-            // tell Doctrine you want to (eventually) save the Product (no queries yet)
-            $entity->persist($p);
-            // actually executes the queries (i.e. the INSERT query)
-            $entity->flush();
+            foreach ($sizeAlreadyExistsOrNot as $s) {
+                $updateCount = $this->repo->find($s['proSizeId']);
+                $updateCount->setQuantity($data->getQuantity());
+                
+                $entity->persist($updateCount, true);
+                $entity->flush();
+            }
 
             $this->addFlash(
                 'success',
-                'A size was updated'
+                'Updated successfully'
             );
             return $this->redirectToRoute("proSize_page", [
                 'id' => $ps->getProduct()->getId()
@@ -120,12 +127,12 @@ class ProSizeManageController extends AbstractController
             // return $this->json($data);
         }
 
-        // return $this->json($sizeId);
         return $this->render('prosize_manage/edit.html.twig', [
             'proSizeForm' => $proSizeForm->createView(),
             // Get name to display default value
             'sizeName' => $ps->getSize()->getName(),
-            'proName' => $ps->getProduct()->getName()
+            'proName' => $ps->getProduct()->getName(),
+            'proId' => $ps->getProduct()->getId()
         ]);
     }
 
@@ -135,7 +142,7 @@ class ProSizeManageController extends AbstractController
    ========================================================================== */
 
     /**
-     * @Route("/delete/{id}", name="deletePro_page", methods={"delete"})
+     * @Route("/delete/{id}", name="deleteProSize_page", methods={"delete"})
      */
     public function deleteProSizeAction(ProSize $ps)
     {
