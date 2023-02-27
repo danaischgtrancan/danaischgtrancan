@@ -116,7 +116,11 @@ class ProductRepository extends ServiceEntityRepository
     public function findNewItem(): array
     {
         return $this->createQueryBuilder('p')
-            ->orderBy('p.name', 'ASC')
+            ->join('p.proSizes', 'ps')
+            ->andWhere('ps.quantity > :val')
+            ->setParameter('val', 0)
+            ->orderBy('p.id', 'DESC')
+            ->groupBy('p.id')
             ->setMaxResults(4)
             ->getQuery()
             ->getArrayResult();
@@ -172,6 +176,20 @@ class ProductRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findBySize($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
+            ->andWhere('s.name = :val')
+            ->setParameter('val', $value)
+            ->orderBy('ps.quantity', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+    }
     /**
      * @return Product[] Returns an array of Product objects
      */

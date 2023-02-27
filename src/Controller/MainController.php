@@ -38,22 +38,6 @@ class MainController extends AbstractController
         );
     }
 
-    // /**
-    //  * @Route("/product", name="showProduct")
-    //  */
-    // public function sortByProductAction(): Response
-    // {
-    //     $products = $this->repo->findAll();
-    //     return $this->render(
-    //         'main/index.html.twig',
-    //         [
-    //             'products' => $products
-    //         ]
-    //     );
-    // }
-
-
-
     /**
      * @Route("/danaischgStore", name="aboutUs")
      */

@@ -39,28 +39,52 @@ class OrderDetailRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return OrderDetail[] Returns an array of OrderDetail objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return OrderDetail[] Returns an array of OrderDetail objects
+     */
+    public function findOrderDetail($value): array
+    {
+        //  SELECT od.id as id, p.name as product, s.name as size, od.quantity as quantity
+        // FROM `order_detail` od 
+        // JOIN `pro_size` ps ON od.pro_size_id = ps.id
+        // JOIN `product` p ON p.id = ps.product_id
+        // JOIN `size` s ON s.id = ps.size_id
+        // WHERE od.orders_id = 93
 
-//    public function findOneBySomeField($value): ?OrderDetail
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder('od')
+            ->select('od.id as id', 'o.id as orderId','p.name as product', 's.name as size', 'od.quantity as quantity', 'od.quantity * p.price as unitPrice')
+            ->join('od.proSize', 'ps')
+            ->join('ps.product', 'p')
+            ->join('ps.size', 's')
+            ->join('od.orders', 'o')
+            ->andWhere('o.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    //    /**
+    //     * @return OrderDetail[] Returns an array of OrderDetail objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('o.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?OrderDetail
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

@@ -27,14 +27,12 @@ class OrderManageController extends AbstractController
      */
     public function orderAction(): Response
     {
-        $p = new Order();
         $orders = $this->repo->findBy([], [
             'id' => 'DESC'
         ]);
 
         return $this->render('order_manage/index.html.twig', [
-            'orders' => $orders,
-            // 'productForm' => $productForm->createView()
+            'orders' => $orders
         ]);
     }
 

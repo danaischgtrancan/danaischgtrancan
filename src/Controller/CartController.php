@@ -108,9 +108,7 @@ class CartController extends AbstractController
             $entity->flush();
         endforeach;
 
-        return $this->json("Success");
-        // return new JsonResponse();
-        // return $this->redirectToRoute('shoppingCart');
+        return new JsonResponse();
     }
 
 

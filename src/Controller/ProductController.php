@@ -28,16 +28,16 @@ class ProductController extends AbstractController
     /**
      * @Route("/", name="showProduct")
      */
-    public function showProductAction(Request $req, SupplierRepository $repoSupp, CategoryRepository $repoCate, ProSizeRepository $repoPs): Response
+    public function showProductAction(Request $req, SupplierRepository $repoSupp, CategoryRepository $repoCate, ProSizeRepository $repoPs, SizeRepository $repoSize): Response
     {
         $title = "Not Found";
         $catefories = $repoCate->findAll();
+        $sizes = $repoSize->findAll();
         $suppliers = $repoSupp->findAll();
+
         $proSizes = $repoPs->findNameSize([], [
             'id' => 'DESC'
         ]);
-
-        // return $this->json($proSizes);
 
         $sort_by = $req->query->get('sort_by');
         $order = $req->query->get('order');
@@ -64,6 +64,10 @@ class ProductController extends AbstractController
                 $products = $this->repo->findBySupp($order);
                 $title = "Sort by supplier";
             endif;
+            if ($sort_by == 'size') :
+                $products = $this->repo->findBySize($order);
+                $title = "Sort by supplier";
+            endif;
             if ($sort_by == 'gender') :
                 if ($order == "men") :
                     $products = $this->repo->findByGender(0);
@@ -84,6 +88,7 @@ class ProductController extends AbstractController
             'products' => $products,
             'catefories' => $catefories,
             'suppliers' => $suppliers,
+            'sizes' => $sizes,
             'proSizes' => $proSizes,
             'title' => $title
         ]);

@@ -1323,3 +1323,7 @@ form .btn {
     color: black;
     border: 2px solid #e7e7e7;
 }
+
+.hidden:focus {
+    border: none;
+}
