@@ -44,20 +44,24 @@ class CartRepository extends ServiceEntityRepository
      */
     public function showCart($value): array
     {
-        // SELECT p.id, p.name, c.name 'cate_name', SUM(cart.count), SUM(cart.count) * p.price 'total' FROM `product` p
-        // JOIN `cart` ON p.id = cart.product_id
-        // JOIN `category` c ON p.category_id = c.id
-        // JOIN `user` u ON u.id = cart.user_id
-        // GROUP BY p.name, p.id
+        // SELECT p.id, p.name, c.name 'cateName', s.name 'sizeName', SUM(cart.count), SUM(cart.count) * p.price 'total' 
+        //  FROM `product` p
+        //  JOIN `category` c ON p.category_id = c.id
+        //  JOIN `pro_size` ps ON ps.product_id = p.id
+        //  JOIN `cart` ON ps.id = cart.pro_size_id
+        //  JOIN `size` s ON ps.size_id = s.id
+        //   JOIN `user` u ON u.id = cart.user_id
+        //  GROUP BY p.name, p.id, ps.id
         return $this->createQueryBuilder('cart')
-            ->select('cart.id as cartId', 'cart.count as num', 'p.id as pId', 'p.name as pName', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cateName', 's.name as sizeName')
-            ->join('cart.product', 'p')
-            ->join('p.proSizes', 'ps')
+            ->select('cart.id as cartId', 'cart.count as num', 'ps.id as psId', 'p.id as pId', 'p.name as pName', 'p.price', 'p.image', 'cart.count * p.price as unitTotal', 'c.name as cateName', 's.name as sizeName')
+            ->join('cart.proSize', 'ps')
+            ->join('ps.product', 'p')
             ->join('ps.size', 's')
             ->join('p.category', 'c')
-            ->andWhere('cart.user = :val')
+            ->join('cart.user', 'u')
+            ->andWhere('u.id = :val')
             ->setParameter('val', $value)
-            ->groupBy('p.name', 'p.id')
+            ->groupBy('p.name', 'p.id', 'ps.id')
             ->getQuery()
             ->execute();
     }
@@ -70,7 +74,7 @@ class CartRepository extends ServiceEntityRepository
         //SELECT * FROM `cart` WHERE c.product_id = 1 AND c.user_id = 1
 
         return $this->createQueryBuilder('cart')
-            ->andWhere('cart.product = :val')
+            ->andWhere('cart.proSize = :val')
             ->setParameter('val', $id)
             ->andWhere('cart.user = :i')
             ->setParameter('i', $user)
@@ -81,38 +85,38 @@ class CartRepository extends ServiceEntityRepository
     /**
      * @return Cart[] Returns an array of Cart objects
      */
-    public function findByProId($id, $user): array
+    public function findCartById($user, $proSize): array
     {
         //SELECT * FROM `cart` as c INNER JOIN product as p ON c.product_id = p.id WHERE c.product_id = 1 AND c.user_id = 1
 
         return $this->createQueryBuilder('c')
             ->select('c.id')
-            ->join('c.product', 'p')
-            ->join('c.user', 'u')
-            ->where('p.id = :pid')
-            ->setParameter('pid', $id)
-            ->andWhere('u.id = :val')
+            // ->join('c.user', 'u')
+            // ->join('c.proSize', 'ps')
+            ->andWhere('c.proSize = :sId')
+            ->setParameter('sId', $proSize)
+            ->andWhere('c.user = :val')
             ->setParameter('val', $user)
             ->getQuery()
             ->getArrayResult();
     }
 
-    /**
-     * @return Cart[] Returns an array of Cart objects
-     */
-    public function updateQty($pro, $user): array
-    {
+    // /**
+    //  * @return Cart[] Returns an array of Cart objects
+    //  */
+    // public function updateQty($pro, $user): array
+    // {
 
-        return $this->createQueryBuilder('c')
-            ->select('COUNT(c.count) as total')
-            ->where('c.product = :val')
-            ->setParameter('val', $pro)
-            ->andWhere('c.user = :vul')
-            ->setParameter('vul', $user)
-            ->groupBy('c.count')
-            ->getQuery()
-            ->getArrayResult();
-    }
+    //     return $this->createQueryBuilder('c')
+    //         ->select('COUNT(c.count) as total')
+    //         ->where('c.proSize = :val')
+    //         ->setParameter('val', $pro)
+    //         ->andWhere('c.user = :vul')
+    //         ->setParameter('vul', $user)
+    //         ->groupBy('c.count')
+    //         ->getQuery()
+    //         ->getArrayResult();
+    // }
 
     /**
      * @return Cart[] Returns an array of Cart objects
@@ -121,11 +125,11 @@ class CartRepository extends ServiceEntityRepository
     {
         // SELECT * FROM `cart` c JOIN `product` p ON c.product_id = p.id WHERE user_id = 1
         return $this->createQueryBuilder('c')
-            ->select('p.id as proId', 'c.count as qty')
-            ->join('c.product', 'p')
+            ->select('ps.id as proSizeId', 'c.count as qty', 'c.id as cartId')
+            ->join('c.proSize', 'ps')
             ->andWhere('c.user = :val')
             ->setParameter('val', $user)
-            ->getQuery()
+            ->getQuery()            
             ->getArrayResult();
     }
     /**

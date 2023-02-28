@@ -16,11 +16,14 @@ class Cart
     #[ORM\Column]
     private ?int $count = null;
 
-    #[ORM\ManyToOne(inversedBy: 'carts')]
-    private ?Product $product = null;
+    // #[ORM\ManyToOne(inversedBy: 'carts')]
+    // private ?Product $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'carts')]   
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    private ?ProSize $proSize = null;
 
     public function getId(): ?int
     {
@@ -39,17 +42,17 @@ class Cart
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+    // public function getProduct(): ?Product
+    // {
+    //     return $this->product;
+    // }
 
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
+    // public function setProduct(?Product $product): self
+    // {
+    //     $this->product = $product;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getUser(): ?User
     {
@@ -59,6 +62,18 @@ class Cart
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProSize(): ?ProSize
+    {
+        return $this->proSize;
+    }
+
+    public function setProSize(?ProSize $proSize): self
+    {
+        $this->proSize = $proSize;
 
         return $this;
     }

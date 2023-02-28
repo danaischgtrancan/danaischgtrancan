@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Order;
 use App\Entity\Product;
+use App\Entity\ProSize;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,9 +16,9 @@ class OrderDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('products', EntityType::class,[
-                'class' => Product::class,
-                'choice_label' => 'name'
+            ->add('prosize', EntityType::class,[
+                'class' => ProSize::class,
+                'choice_label' => 'id'
             ])
             ->add('quantity', TextType::class)            
         ;

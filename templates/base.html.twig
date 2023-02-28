@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Danaischg{% endblock %}
+			{% block title %}Danaischg
+			{% endblock %}
 		</title>
 
 		<!-- Writing by Vietnamese -->
@@ -80,7 +81,11 @@
 							<div class="dropdown">
 								<div class="d-flex">
 									<a class="hidden-arrow" href="{{path('cus_profile')}}" id="navbarDropdownMenuAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<img src="{{asset('images/account2.jpg')}}" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
+										{% if app.user.gender == 0 %}
+											<img src="{{asset('images/male.gif')}}" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
+										{% else %}
+											<img src="{{asset('images/female.gif')}}" class="rounded-circle" height="36" alt="My account" loading="lazy"/>
+										{% endif %}
 										<label for="account" class="ms-2 link-dark" style="font-size: 1rem;"></label>
 									</a>
 									<p class="mt-1 ">
@@ -142,8 +147,8 @@
 									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Product</a>
 								</p>
 								{# <p>
-									<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Sale</a>
-								</p> #}
+																																	<a href="{{path('showProduct')}}" class="text-dark text-decoration-none">Sale</a>
+																																</p> #}
 								<p>
 									<a href="{{path('aboutUs')}}" class="text-dark text-decoration-none">About</a>
 								</p>

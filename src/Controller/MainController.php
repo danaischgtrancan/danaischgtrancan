@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,35 +19,24 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="home_page")
      */
-    public function homeAction(): Response
+    public function homeAction(ProSizeRepository $repoPs): Response
     {
         $bestseller = $this->repo->findBestSeller();
 
         $newItems = $this->repo->findNewItem();
+        $proSizes = $repoPs->findNameSize([], [
+            'id' => 'DESC'
+        ]);
+
         return $this->render(
             'main/index.html.twig',
             [
                 'newItems' => $newItems,
-                'bestseller' => $bestseller
+                'bestseller' => $bestseller,
+                'proSizes' => $proSizes
             ]
         );
     }
-
-    // /**
-    //  * @Route("/product", name="showProduct")
-    //  */
-    // public function sortByProductAction(): Response
-    // {
-    //     $products = $this->repo->findAll();
-    //     return $this->render(
-    //         'main/index.html.twig',
-    //         [
-    //             'products' => $products
-    //         ]
-    //     );
-    // }
-
-
 
     /**
      * @Route("/danaischgStore", name="aboutUs")

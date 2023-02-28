@@ -50,7 +50,6 @@ class CustomerController extends AbstractController
         $userForm->handleRequest($req);
         
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-
             $repo->save($user, true);
             return $this->redirectToRoute('cus_profile', [], Response::HTTP_SEE_OTHER);
         }
@@ -58,6 +57,5 @@ class CustomerController extends AbstractController
             'userForm' => $userForm->createView()
         ]);
     }
-
     
 }

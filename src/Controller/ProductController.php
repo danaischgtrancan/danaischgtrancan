@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
 use App\Repository\SizeRepository;
+use App\Repository\SupplierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +24,20 @@ class ProductController extends AbstractController
     {
         $this->repo = $repo;
     }
+
     /**
      * @Route("/", name="showProduct")
      */
-    public function showProductAction(Request $req): Response
+    public function showProductAction(Request $req, SupplierRepository $repoSupp, CategoryRepository $repoCate, ProSizeRepository $repoPs, SizeRepository $repoSize): Response
     {
         $title = "Not Found";
+        $catefories = $repoCate->findAll();
+        $sizes = $repoSize->findAll();
+        $suppliers = $repoSupp->findAll();
+
+        $proSizes = $repoPs->findNameSize([], [
+            'id' => 'DESC'
+        ]);
 
         $sort_by = $req->query->get('sort_by');
         $order = $req->query->get('order');
@@ -36,7 +47,7 @@ class ProductController extends AbstractController
         if (isset($btnSearch)) :
             $products = $this->repo->searchByName($value);
             $title = "Results";
-        elseif(isset($sort_by)) :
+        elseif (isset($sort_by)) :
             if ($sort_by == 'name') :
                 $products = $this->repo->findByName($order);
                 $title = "Sort by name";
@@ -53,6 +64,10 @@ class ProductController extends AbstractController
                 $products = $this->repo->findBySupp($order);
                 $title = "Sort by supplier";
             endif;
+            if ($sort_by == 'size') :
+                $products = $this->repo->findBySize($order);
+                $title = "Sort by supplier";
+            endif;
             if ($sort_by == 'gender') :
                 if ($order == "men") :
                     $products = $this->repo->findByGender(0);
@@ -67,14 +82,14 @@ class ProductController extends AbstractController
             $title = "All product";
         endif;
 
-        $catefories = $this->repo->findCategory();
-        $suppliers = $this->repo->findSupplier();
 
         // return $this->json(['products' => $products]);
         return $this->render('product/show.html.twig', [
             'products' => $products,
             'catefories' => $catefories,
             'suppliers' => $suppliers,
+            'sizes' => $sizes,
+            'proSizes' => $proSizes,
             'title' => $title
         ]);
     }
@@ -82,15 +97,17 @@ class ProductController extends AbstractController
     /**
      * @Route("/detail/{id}", name="proDetail_page")
      */
-    public function productDetailAction(Product $p, SizeRepository $repoSize): Response
+    public function productDetailAction(Product $p, SizeRepository $repoSize, ProSizeRepository $repoPs): Response
     {
-        $size = $repoSize->findSize($p->getId());
-
+        // $size = $repoSize->findSize($p->getId());
+        $proSizes = $repoPs->findNameSize([], [
+            'id' => 'DESC'
+        ]);
         // return $this->json(['product' => $product]);
 
         return $this->render('product/detail.html.twig', [
             'product' => $p,
-            'size' => $size
+            'proSizes' => $proSizes
         ]);
     }
 }

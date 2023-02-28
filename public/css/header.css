@@ -30,6 +30,7 @@ a {
     text-decoration: none;
     color: #0d0d0d;
     font-family: "Noto Serif", serif;
+    font-size: 17px;
 }
 
 a:hover {
@@ -63,9 +64,12 @@ ul li a:hover {
     color: black;
 }
 
+.nav-link {
+    font-size: 17px;
+}
+
 .nav-link:hover {
     color: black;
-    /* font-weight: bolder; */
 }
 
 .imageCenter {
@@ -92,10 +96,11 @@ ul li a:hover {
 .btn {
     padding-left: 1.3rem;
     padding-right: 1.3rem;
+    font-family: "Noto Serif", serif;
 }
 
 .search {
-    font-family: "Playfair Display", serif;
+    font-family: "Noto Serif", serif;
 }
 
 .fa-shopping-cart:hover {
@@ -387,6 +392,10 @@ select option {
     transition: all 0.3s ease 0s;
 }
 
+.size {
+    background-color: white;
+}
+
 .product-grid .title a:hover {
     color: black;
 }
@@ -661,13 +670,13 @@ input:-moz-placeholder {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
+    font-family: "Noto Serif", serif;
 }
 
 section {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 77vh;
     display: flex;
 }
 
@@ -675,13 +684,14 @@ section .img-bg {
     position: relative;
     width: 50%;
     height: 100%;
+    /* margin-right: 10%; */
 }
 
 section .img-bg img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     object-fit: cover;
 }
@@ -690,12 +700,12 @@ section .content {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
+    width: 40%;
+    height: 105%;
 }
 
-section .content .form {
-    width: 50%;
+section .content .form .login {
+    width: 80%;
 }
 
 section .content .form h2 {
@@ -704,9 +714,10 @@ section .content .form h2 {
     font-size: 1.5em;
     text-transform: uppercase;
     margin-bottom: 20px;
-    border-bottom: 4px solid #974141;
+    border-bottom: 4px solid black;
     display: inline-block;
     letter-spacing: 1px;
+    font-family: "Playfair Display", serif;
 }
 
 section .content .form .input-form {
@@ -725,17 +736,17 @@ section .content .form .input-form input {
     /* width: 100%; */
     padding: 10px 20px;
     outline: none;
-    border: 1px solid #974141;
+    border: 1px solid black;
     font-size: 16px;
     letter-spacing: 1px;
-    color: #974141;
+    color: black;
     background: transparent;
     border-radius: 30px;
 }
 
 section .content .form .input-form input[type="submit"] {
     background: black;
-    color: rgb(30, 27, 27);
+    color: white;
     outline: none;
     border: none;
     font-weight: 500;
@@ -744,21 +755,26 @@ section .content .form .input-form input[type="submit"] {
 }
 
 section .content .form .input-form input[type="submit"]:hover {
-    background: #c44f4f;
+    background: white;
+    color: #000;
 }
 
 section .content .form .remember-login {
     margin-bottom: 10px;
     color: #000000;
     font-size: 14px;
+    font-weight: lighter;
 }
 
 section .content .form .input-form p {
-    color: #4cafdd;
+    color: black;
+    font-size: 14px;
+    font-weight: lighter;
 }
 
 section .content .form .input-form p a {
-    color: #974141;
+    color: blue;
+    font-weight: bold;
 }
 
 section .content .form h3 {
@@ -794,179 +810,6 @@ section .content .form .login-icon li:nth-child(2) {
 
 section .content .form .login-icon li:nth-child(3) {
     color: #55acee;
-}
-
-section .content .form .login-icon li i {
-    font-size: 24px;
-}
-
-@media (max-width: 768px) {
-    section .img-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    section .content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-    section .content .form {
-        width: 100%;
-        padding: 40px;
-        background: rgba(255 255 255 / 0.9);
-        margin: 50px;
-    }
-    section .content .form h3 {
-        color: #607d8b;
-        text-align: center;
-        margin: 30px 0 10px;
-        font-weight: 500;
-    }
-}
-
-
-/* ==========================================================================
-   Login
-   ========================================================================== */
-
-section {
-    position: relative;
-    width: 100%;
-    height: 80vh;
-    display: flex;
-}
-
-section .img-bg {
-    position: relative;
-    width: 50%;
-    height: 100%;
-}
-
-section .img-bg img {
-    position: absolute;
-    margin-left: 20%;
-    width: 70%;
-    height: 100%;
-    object-fit: cover;
-}
-
-section .content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-right: 8%;
-    width: 50%;
-    height: 100%;
-}
-
-section .content .form {
-    width: 50%;
-}
-
-section .content .form h2 {
-    color: #000000;
-    font-weight: 500;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    border-bottom: 4px solid #0b0b0b;
-    display: inline-block;
-    letter-spacing: 1px;
-}
-
-section .content .form .input-form {
-    margin-bottom: 20px;
-}
-
-section .content .form .input-form span {
-    font-size: 16px;
-    margin-bottom: 5px;
-    display: inline-block;
-    color: #000000;
-    letter-spacing: 1px;
-}
-
-section .content .form .input-form input {
-    width: 100%;
-    padding: 10px 20px;
-    outline: none;
-    border: 1px solid #090909;
-    font-size: 16px;
-    letter-spacing: 1px;
-    color: black;
-    background: transparent;
-    border-radius: 30px;
-}
-
-section .content .form .input-form input[type="submit"] {
-    background: dd4b39;
-    color: white;
-    outline: none;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    /* box-shadow: 0 1px 1px rgba(107, 51, 51, 0.12), 0 2px 2px rgba(74, 3, 3, 0.12), 0 4px 4px rgba(50, 27, 27, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12), 0 16px 16px rgba(0, 0, 0, 0.12); */
-}
-
-section .content .form .input-form input[type="submit"]:hover {
-    background: white;
-    color: #0b0b0b;
-}
-
-section .content .form .remember-login {
-    margin-bottom: 10px;
-    color: #000000;
-    font-size: 14px;
-}
-
-section .content .form .input-form p {
-    color: #5c5d5e;
-}
-
-section .content .form .input-form p a {
-    color: #0a0a0a;
-    font-weight: bold;
-}
-
-section .content .form h3 {
-    color: #4cafdd;
-    text-align: center;
-    margin: 80px 0 10px;
-    font-weight: 500;
-}
-
-section .content .form .login-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-section .content .form .login-icon li {
-    list-style: none;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-section .content .form .login-icon li:nth-child(1) {
-    color: #353536;
-}
-
-section .content .form .login-icon li:nth-child(2) {
-    color: #0a0a0a;
-}
-
-section .content .form .login-icon li:nth-child(3) {
-    color: #4d4e4f;
 }
 
 section .content .form .login-icon li i {
@@ -1179,6 +1022,7 @@ section .form-control {
 .form-control:focus {
     outline: none;
     box-shadow: none;
+    border-color: rgb(0, 0, 0);
 }
 
 .product-count {
@@ -1350,20 +1194,26 @@ section .form-control {
     /* Chrome 10-25, Safari 5.1-6 */
     background: -webkit-linear-gradient( to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+    background: linear-gradient( to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
 }
 
 * {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
+
+
 /* ===============================================================================
 Register
 =================================================================================== */
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+
 /* body {
     /* background-color: #1a1a1a */
-/* } */ 
+
+
+/* } */
 
 .card1 {
     height: 750px;
@@ -1371,11 +1221,11 @@ Register
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.5s
+    transition: all 0.5s;
 }
 
 .card1:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
 }
 
 .card2 {
@@ -1384,37 +1234,39 @@ Register
     border: none;
     /* background-color: #000; */
     border-radius: 8px;
-    transition:all 0.5s;
+    transition: all 0.5s;
 }
 
 .card2:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
 }
 
 .login {
     font-size: 20px;
     font-weight: bold;
-    margin-left: 10px
+    margin-left: 10px;
+    font-family: "Playfair Display", serif;
 }
 
 .input-field span {
     font-size: 12px;
     color: #cecdcd;
-    margin-left: 10px
+    margin-left: 10px;
+    font-family: "Noto Serif", serif;
 }
 
 .form-control {
-    font-size: 13px;
+    font-size: 16px;
     color: #767473;
     font-weight: 500;
     border-left: none;
     border-right: none;
     border-top: none;
     border-bottom: 1px solid #9b9b9b;
-    box-shadow: none
+    box-shadow: none;
 }
 
-div#user_password{
+div#user_password {
     border-bottom: none;
 }
 
@@ -1423,21 +1275,22 @@ div#user_password{
     width: 100%;
     background-color: #000;
     font-weight: 500;
-    color: #cdcdc4;
+    color: white;
     border: none;
-    font-size: 15px
+    font-size: 15px;
 }
 
 .text1 .forget {
     color: #767676;
-    font-weight: 500
+    font-weight: 500;
 }
 
 .text2 span {
     font-weight: 500;
     color: #7a7778;
 }
-.radio{
+
+.radio {
     color: #7a7778;
     display: flex;
     padding-right: 5px;
@@ -1446,5 +1299,31 @@ div#user_password{
 
 .text2 .register {
     color: #4f4942;
-    font-weight: bold
+    font-weight: bold;
+}
+
+
+/*  */
+
+form .btn {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    height: auto;
+}
+
+form .btn {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+}
+
+.hidden:focus {
+    border: none;
 }

@@ -27,24 +27,8 @@ return false;
 		</div>
 		<div class=" mb-5 mx-5">
 			<div class="col-md-12">
-				<div class="row">
-					{# <div class="row">
-						<div class="col-md-6">
-							<div>
-								<span class="fw-bolder">Last Update:
-								</span>
-								<small class="ms-3">February, 2023</small>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<form action="?page=product" class="d-flex ms-4 mb-2">
-								<input type="text" class="form-control rounded" name="searchValue" placeholder="Search..." aria-label="search" aria-describedby="search-addon"/>
-								<button type="submit" name="btnSearch" class="input-group-text border-0 ms-2 bg-dark">
-									<i class="fas fa-search"></i>
-								</button>
-							</form>
-						</div>
-					</div> #}
+				<div
+					class="row">
 
 					{# TABLE #}
 					<table class="mt-4 table table-bordered text-center	">
@@ -53,10 +37,10 @@ return false;
 								<th scope="col">Id</th>
 								<th scope="col">Date</th>
 								<th scope="col">Total</th>
-								<th scope="col">Voucher</th>
 								<th scope="col">Customer Name</th>
 								<th scope="col">Phone number</th>
 								<th scope="col">Delivery Local</th>
+								<th scope="col">ỎderDetail</th>
 								<th scope="col">Status</th>
 							</tr>
 						</thead>
@@ -66,17 +50,16 @@ return false;
 									<th scope="row">{{o.id}}</th>
 									<td>{{o.date|date("m/d/Y")}}</td>
 									<td>{{o.total}}</td>
-
-									{% if o.voucher == null %}
-										<td>0</td>
-									{% else %}
-										<td>{{o.voucher}} percent</td>
-
-									{% endif %}
-
 									<td>{{o.cusName}}</td>
 									<td>{{o.cusPhone}}</td>
 									<td>{{o.deliveryLocal}}</td>
+									<td>
+										<a href="{{path('orderdetail_page', {'id': o.id})}}">
+											<button class="bi bi-arrow-right-square border-0 bg-white ">
+												<p class="ms-2">See more</p>
+											</button>
+										</a>
+									</td>
 									{% if (o.status == 0)%}
 										<td>
 											<button name="no" type="button" class="btn btn-danger fa fa-times" onclick="changeConfirm('{{o.id}}')"></button>

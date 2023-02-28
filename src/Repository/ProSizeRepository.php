@@ -55,12 +55,43 @@ class ProSizeRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
     /**
+     * @return ProSize[] Returns an array of Cart objects
+     */
+    public function findProSizeById($proId, $sizeId): array
+    {
+        //SELECT * FROM `size` as s JOIN `pro_size` as ps ON s.id = ps.size_id WHERE ps.product_id = 1 AND s.id = 2
+
+        return $this->createQueryBuilder('ps')
+            // ->innerJoin('ps.size', 's')
+            ->andWhere('ps.size = :val')
+            ->setParameter('val', $sizeId)
+            ->andWhere('ps.product = :i')
+            ->setParameter('i', $proId)
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * @return ProSize[] Returns an array of ProSize objects
+     */
+    public function findNameSize(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT s.id as sizeId, s.name as sizeName, ps.quantity as productQty, ps.product_id as proId, ps.id as psId FROM size as s INNER JOIN pro_size as ps ON ps.size_id = s.id GROUP BY ps.id ORDER BY s.id ASC';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    /**
      * @return ProSize[] Returns an array of ProSize objects
      */
     public function findSize($value): array
     {
         return $this->createQueryBuilder('ps')
-            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'p.id as productId', 'p.name as productName')
+            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'ps.id as proSizeId')
             ->join('ps.size', 's')
             ->join('ps.product', 'p')
             ->andWhere('p.id = :val')
@@ -68,9 +99,23 @@ class ProSizeRepository extends ServiceEntityRepository
             ->groupBy('s.id')
             ->getQuery()
             ->getArrayResult();
-
     }
 
+
+    /**
+     * @return ProSize[] Returns an array of ProSize objects
+     */
+    public function findAlreadySize($proId, $sizeId): array
+    {
+        return $this->createQueryBuilder('ps')
+            ->select('ps.id as proSizeId')
+            ->andWhere('ps.product = :p')
+            ->setParameter('p', $proId)
+            ->andWhere('ps.size = :s')
+            ->setParameter('s', $sizeId)
+            ->getQuery()
+            ->getArrayResult();
+    }
     //    /**
     //     * @return ProSize[] Returns an array of ProSize objects
     //     */

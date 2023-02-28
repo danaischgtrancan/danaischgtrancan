@@ -67,7 +67,7 @@
 									<label for="size">Quantity</label>
 									<div class="display-flex">
 										<div class="qtyminus">-</div>
-										<input type="text" name="quantity" value="1" class="qty">
+										<input type="text" name="quantity" id="count" value="1" class="qty">
 										<div class="qtyplus">+</div>
 									</div>
 								</div>
@@ -75,19 +75,21 @@
 
 						</div>
 						<div class="mt-3">
-							<label for="size">Size</label>
-							<select class="form-control w-50">
-								{% set stock = 0 %}
+							<h6>Choose Size:
+							</h6>
+							{% set stock = 0 %}
+							{% set status = 0 %}
 
-								{% for s in size %}
-									{% if s.productId == product.id %}
-										<option name="size" value="{{s.sizeId}}">{{s.sizeName}}</option>
-									{% endif %}
+							{% for ps in proSizes %}
+								{% if ps.proId == product.id %}
+									<input type="radio" name="size" id="size{{ps.sizeId}}" onchange="getSize({{ps.psId}}, {{product.id}})"/>
+									<label for="size{{ps.sizeId}}" class="me-3">{{ps.sizeName}}</label>
 
+									{% set status = 1 %}
 									{# Display quantity in stock #}
-									{% set stock = stock + s.productQty %}
-								{% endfor %}
-							</select>
+									{% set stock = stock + ps.productQty %}
+								{% endif %}
+							{% endfor %}
 						</div>
 						<div class="mt-3">
 							{% if stock == 0 %}
@@ -96,10 +98,10 @@
 							<button class="round-black-btn text-left">Out of Stock</button>
 						{% else %}
 							<label for="quantity">In stock:
-								{{stock}}
+								<span id="stock">{{stock}}</span>
 								items</label>
 						</div>
-						<input type="hidden" id="count" value="1"/>
+						<input type="hidden" name="size" value="" id="proSizeId{{product.id}}">
 						<button class="round-black-btn text-left" name="insert_button{{product.id}}" onclick="insert_row({{product.id}})">Add to cart</button>
 					{% endif %}
 
@@ -169,23 +171,59 @@
 	</div>
 </div>
 <script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>{# Insert into Cart #}<script>
+	function getSize(proSizeId, proId) {
+var getProSize = document.getElementById("proSizeId" + proId);
+getProSize.value = proSizeId;
+}
 
-{# Insert into Cart #}
-<script>
-	function insert_row(id) {
+function insert_row(id) {
+var proSizeId = document.getElementById("proSizeId" + id).value;
+if (proSizeId != "") {
 var count = document.getElementById("count").value;
 $.ajax({
 type: 'post',
 url: '/cart/add',
 data: {
-id: id,
+proId: id,
+proSizeId: proSizeId,
 count: count
 },
-success: function (response) { 
-	window.location.href = '/cart';
+success: function (response) {
+window.location.href = '/cart';
 // alert("A new product was added");
+
+},
+error: function (xhr, status, error) {
+console.log(xhr);
 }
 });
+} else {
+Swal.fire('Please choose your size!');
 }
+
+}
+
+$(document).ready(function () {
+$(".qtyminus").on("click", function () {
+var now = $(".qty").val();
+if ($.isNumeric(now)) {
+if (parseInt(now) - 1 > 0) {
+now--;
+}
+$(".qty").val(now);
+}
+})
+$(".qtyplus").on("click", function () {
+var now = $(".qty").val();
+var stock = document.getElementById('stock').innerHTML;
+// alert(stock);
+if ($.isNumeric(now)) {
+if (parseInt(now) + 1 <= parseInt(stock)) {
+now++;
+}
+$(".qty").val(now);
+}
+});
+});
 </script>{% endblock %}

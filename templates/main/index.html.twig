@@ -69,9 +69,28 @@
 									</li>
 								</ul>
 								<input type="hidden" id="count" value="1"/>
+								<input type="hidden" name="size" value="" id="proSizeId{{b.id}}">
 								<button class="add-to-cart fw-bold" name="insert_button{{b.id}}" onclick="insert_row({{b.id}})">Add to Cart</button>
 							</div>
+
 							<div class="product-content">
+								<div
+									class="mb-1">
+									{# <span>Select Size</span> #}
+									<div class="form text-center">
+										{% set status = 0 %}
+										{% for ps in proSizes %}
+											{% if ps.proId == b.id %}
+												<input type="radio" name="size" id="size{{ps.sizeId}}" onchange="getSize({{ps.psId}}, {{b.id}})"/>
+												<label for="size{{ps.sizeId}}" class="me-1">{{ps.sizeName}}</label>
+												{% set status = 1 %}
+											{% endif %}
+										{% endfor %}
+										{% if status == 0 %}
+											<p class="mb-0">Out Of Stock</p>
+										{% endif %}
+									</div>
+								</div>
 								<h3 class="title">
 									<a href="{{path('proDetail_page', {'id': b.id})}}">{{b.name}}</a>
 								</h3>
@@ -90,7 +109,7 @@
 		<a href="{{path('showProduct')}}" class="btn-home btn-radius text-center">
 			See More</a>
 	</div>
-	<video src="{{asset('video/introduction.mp4')}}" style="width:100%;position-relative:top;height:700px;" loop autoplay muted></video>
+	<video src="{{asset('video/introduction.mp4')}}" style="width:100%;position-relative:top;height:100%;" loop autoplay muted></video>
 
 	<hr/>
 	<div>=
@@ -123,9 +142,28 @@
 									</li>
 								</ul>
 								<input type="hidden" id="count" value="1"/>
+								<input type="hidden" name="size" value="" id="proSizeId{{n.id}}">
 								<button class="add-to-cart fw-bold" name="insert_button{{n.id}}" onclick="insert_row({{n.id}})">Add to Cart</button>
 							</div>
+
 							<div class="product-content">
+								<div
+									class="mb-1">
+									{# <span>Select Size</span> #}
+									<div class="form text-center">
+										{% set status = 0 %}
+										{% for ps in proSizes %}
+											{% if ps.proId == n.id %}
+												<input type="radio" name="size" id="size{{ps.sizeId}}" onchange="getSize({{ps.psId}}, {{n.id}})"/>
+												<label for="size{{ps.sizeId}}" class="me-1">{{ps.sizeName}}</label>
+												{% set status = 1 %}
+											{% endif %}
+										{% endfor %}
+										{% if status == 0 %}
+											<p class="mb-0">Out Of Stock</p>
+										{% endif %}
+									</div>
+								</div>
 								<h3 class="title">
 									<a href="{{path('proDetail_page', {'id': n.id})}}">{{n.name}}</a>
 								</h3>
@@ -147,24 +185,43 @@
 
 	<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	{# Insert into Cart #}
 	<script>
-		function insert_row(pro_id) {
+		// Get proSize id into event onclick at button Add to cart
+function getSize(sizeId, proId) {
+var getSize = document.getElementById("proSizeId" + proId);
+getSize.value = sizeId;
+}
+
+function insert_row(id) {
+var proSizeId = document.getElementById("proSizeId" + id).value;
+if (proSizeId != "") {
 var count = document.getElementById("count").value;
+// Ajax to call to API in CartController
 $.ajax({
 type: 'post',
 url: '/cart/add',
 data: {
-id: pro_id,
+proId: id,
+proSizeId: proSizeId,
 count: count
 },
 success: function (response) {
 window.location.href = '/cart';
 // alert("A new product was added");
 
+},
+// Display notification error
+error: function (xhr, status, error) {
+console.log(xhr);
 }
 });
+} else {
+Swal.fire('Please choose your size!');
+}
+
 }
 	</script>
 {% endblock %}

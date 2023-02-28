@@ -6,11 +6,16 @@
 
 {% block body %}
 
+<<<<<<< HEAD
 	<div class="row">
 		<div class="col-6">
 			<div class="right border">
+=======
+	<div class="row mx-3">
+		<div class="col-md-7 mt-3">
+			<div class="right border p-3">
+>>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="header-payment fw-bold">Order Summary</div>
-				<p>8 items</p>
 				{% set total = 0 %}
 				{% for p in products %}
 					<hr>
@@ -28,20 +33,24 @@
 							<div class=" text-muted">{{p.sizeName}}</div>
 						</div>
 					</div>
-					{% set total = total + p.unitTotal %}
+					{% set total = (total + p.unitTotal) %}
 				{% endfor %}
 			</div>
 		</div>
 
 		<div class="col-6">
 			{{ form_start(orderForm, {'action': path('addOrder')}) }}
+<<<<<<< HEAD
 			<div class="right border">
+=======
+			<div class="left border p-3">
+>>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="row">
-					<span class="header-payment fw-bold text-dark">Payment</span>
+					<span class="header-payment fw-bold text-dark pb-2">Payment</span>
 				</div>
 				<span>Name:</span>
 				{# <input type="text" class="input" name="name" value="{{user.fullname}}"> #}
-				{{ form_widget(orderForm.cusName, {'attr':{'value': user.fullname, 'class': 'input' }}) }}
+				{{ form_widget(orderForm.cusName, {'attr':{'value': user.fullname, 'class': 'input color-light' }}) }}
 
 				<span>Phone number:</span>
 				{# <input type="text" class="input" name="phone" value="{{user.phone}}"> #}
@@ -50,6 +59,7 @@
 				<span>Address:</span>
 				{{ form_widget(orderForm.deliveryLocal, {'attr':{'value': user.address, 'class': 'input' }}) }}
 			</div>
+<<<<<<< HEAD
 
 			<div class="left border">
 				<div class="row">
@@ -63,8 +73,11 @@
 				<hr>
 
 			<div class="row lower">
+=======
+			<div class="row lower mt-3">
+>>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="col text-left">Subtotal</div>
-				<div class="col text-right">${{total}}</div>
+				<div class="col text-right">${{total}}.00</div>
 			</div>
 			<div class="row lower">
 				<div class="col text-left">Delivery Standar</div>
@@ -78,7 +91,9 @@
 					class="col text-right">
 					{# <b>${{total + 5 }}</b> #}
 					<div class="d-flex">
-						${{ form_widget(orderForm.total, {'attr':{'value': total + 5, 'class': 'border-0 p-0' }})  }}</div>
+						${{total + 5}}.00
+
+						{{ form_widget(orderForm.total, {'attr':{'value': (total + 5), 'class': 'border-0 p-0 text-dark d-none'  }})  }}</div>
 				</div>
 				{# <input class="input" type="hidden" name="total" value=""> #}
 			</div>

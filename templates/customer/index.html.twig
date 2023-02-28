@@ -7,7 +7,15 @@
 		<div class="col-lg-4">
 			<div class="card mb-4">
 				<div class="card-body text-center">
+<<<<<<< HEAD
 					<img src="{{asset('images/account2.jpg')}}" alt="avatar" class="rounded-circle img-fluid" style="width: 182px;">
+=======
+					{% if user.gender == 0 %}
+						<img src="{{asset('images/male.gif')}}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+					{% else %}
+						<img src="{{asset('images/female.gif')}}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+					{% endif %}
+>>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 					<h5 class="my-3">{{user.username}}</h5>
 					{# <p class="text-muted mb-1">Full Stack Developer</p> #}
 					<div class="d-flex justify-content-center mb-2">

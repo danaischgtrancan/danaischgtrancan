@@ -4,17 +4,6 @@
 {% endblock %}
 
 {% block body %}
-	<script>
-		// Function to check if the user wants to delete or not.
-function deleteConfirm($id) {
-if (confirm("Are you sure to delete!")) {
-delete_row($id)
-} else {
-return false;
-}
-}
-	</script>
-
 	<section class="header mx-5">
 		<div class="container mt-4 mb-3">
 			<div class="text-center lh-1 mb-2">
@@ -93,8 +82,10 @@ return false;
 						<img src="{{asset('images/'~img)}}" width="100" height="auto" alt="" class="mx-3">
 					</td>
 					<td>
-						<a href="{{path('size_page', {'id': p.id})}}">
-							<button class="bi bi-arrow-right-square border-0 bg-white "><p class="ms-2">See more</p></button>
+						<a href="{{path('proSize_page', {'id': p.id})}}">
+							<button class="bi bi-arrow-right-square border-0 bg-white ">
+								<p class="ms-2">See more</p>
+							</button>
 						</a>
 					</td>
 
@@ -106,32 +97,34 @@ return false;
 					</td>
 					<td>
 						<a>
-							<button class="bi bi-trash3 border-0 bg-white" onclick="deleteConfirm('{{p.id}}');"></button>
+							<button class="bi bi-trash3 border-0 bg-white" onclick="delete_pro('{{p.id}}');"></button>
 						</a>
 					</td>
-				</tr>	
+				</tr>
 			{% endfor %}
 		</table>
 	</tbody>
 </section>
-<script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
 <script>
-	function delete_row(id) {
+	function delete_pro(id) {
+if (confirm("Are you sure to delete!")) {
 $.ajax({
 type: 'delete',
 url: '/admin/product/delete/' + id,
+// url: '{{path('deletePro_page', { 'id': 'id'}) }}',
 data: {
 id: id
 },
 success: function () {
 var row = document.getElementById("row_pro" + id);
 row.parentNode.removeChild(row);
-
-window.location.href = '/admin/product/';
-
 }
 });
+} else {
+return false;
+}
 }
 </script>{% endblock %}

@@ -46,7 +46,7 @@ class SizeRepository extends ServiceEntityRepository
     {
         //SELECT * FROM `size` as s LEFT JOIN pro_size as ps ON s.id = ps.size_id
         return $this->createQueryBuilder('s')
-            ->select('s.id as sizeId', 's.name as sizeName', 'ps.quantity as productQty', 'p.id as productId', 'p.name as productName')
+            ->select('s.id as sizeId', 's.name as sizeName', 'ps.id as psId', 'ps.quantity as productQty', 'p.id as productId', 'p.name as productName')
             ->join('s.proSizes', 'ps')
             ->join('ps.product', 'p')
             ->andWhere('p.id = :val')

@@ -17,11 +17,11 @@ class ProSizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('product', EntityType::class, [
-                'class' => Product::class,
-                'choice_label' => 'name'
-            ])
-            
+            // ->add('product', EntityType::class, [
+            //     'class' => Product::class,
+            //     'choice_label' => 'name'
+            // ])
+
             ->add('size', EntityType::class, [
                 'class' => Size::class,
                 'choice_label' => 'name'
@@ -29,13 +29,6 @@ class ProSizeType extends AbstractType
             ->add('quantity', NumberType::class)
             ->add('save', SubmitType::class, [
                 'label' => "Add"
-            ]); 
+            ]);
     }
-
-    // public function configureOptions(OptionsResolver $resolver): void
-    // {
-    //     $resolver->setDefaults([
-    //         // Configure your form options here
-    //     ]);
-    // }
 }

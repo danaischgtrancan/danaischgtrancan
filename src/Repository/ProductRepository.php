@@ -39,6 +39,23 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    // /**
+    //  * @return Product[] Returns an array of Product objects
+    //  */
+    // public function findProduct(): array
+    // {
+    //     // SELECT * FROM `product` p 
+    //     // JOIN `pro_size` ps ON p.id = ps.product_id
+    //     // JOIN `size` s ON ps.size_id = s.id
+
+    //     return $this->createQueryBuilder('p')
+    //         ->select('p.id as proId', 'p.name as proName', 'p.image as proImage', 'p.price as proPrice', 's.name as sizeName')
+    //         ->join('p.proSizes', 'ps')  
+    //         ->join('ps.size', 's')
+    //         ->getQuery()
+    //         ->getArrayResult();
+    // }
+
     /**
      * @return Product[] Returns an array of Product objects
      */
@@ -99,40 +116,17 @@ class ProductRepository extends ServiceEntityRepository
     public function findNewItem(): array
     {
         return $this->createQueryBuilder('p')
-            ->orderBy('p.name', 'ASC')
+            ->join('p.proSizes', 'ps')
+            ->andWhere('ps.quantity > :val')
+            ->setParameter('val', 0)
+            ->orderBy('p.id', 'DESC')
+            ->groupBy('p.id')
             ->setMaxResults(4)
             ->getQuery()
             ->getArrayResult();
     }
 
     // Start sort by
-    /**
-     * @return Product[] Returns an array of Product objects
-     */
-    public function findCategory(): array
-    {
-        // SELECT DISTINCT category.name FROM `product` JOIN category ON category_id = category.id
-
-        return $this->createQueryBuilder('p')
-            ->select('DISTINCT c.name as cate_name')
-            ->innerJoin('p.category', 'c')
-            ->getQuery()
-            ->getArrayResult();
-    }
-
-    /**
-     * @return Product[] Returns an array of Product objects
-     */
-    public function findSupplier(): array
-    {
-        // SELECT DISTINCT category.name FROM `product` JOIN category ON category_id = category.id
-
-        return $this->createQueryBuilder('p')
-            ->select('DISTINCT s.name as supp_name')
-            ->innerJoin('p.supplier', 's')
-            ->getQuery()
-            ->getArrayResult();
-    }
 
     /**
      * @return Product[] Returns an array of Product objects
@@ -185,6 +179,20 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Product[] Returns an array of Product objects
      */
+    public function findBySize($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
+            ->andWhere('s.name = :val')
+            ->setParameter('val', $value)
+            ->orderBy('ps.quantity', 'DESC')
+            ->getQuery()
+            ->getArrayResult();
+    }
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
     public function findByGender($value): array
     {
         return $this->createQueryBuilder('p')
@@ -207,6 +215,19 @@ class ProductRepository extends ServiceEntityRepository
     }
     // End sort by
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findNameOfPro($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.proSizes', 'ps')
+            ->join('ps.size', 's')
+            ->andWhere('s.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getArrayResult();
+    }
 
     // /**
     //  * @return Product Returns an array of Product objects

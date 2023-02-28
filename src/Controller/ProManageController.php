@@ -104,12 +104,11 @@ class ProManageController extends AbstractController
             $entity->persist($p);
             // actually executes the queries (i.e. the INSERT query)
             $entity->flush();
+            
 
-            // $this->addFlash(
-            //     'success',
-            //     'A products was added'
-            // );
-            return $this->redirectToRoute("addSize_page");
+            return $this->redirectToRoute("addProSize_page", [
+                'id' => $p->getId()
+            ]);
         }
 
         return $this->render('pro_manage/new.html.twig', [
@@ -200,7 +199,7 @@ class ProManageController extends AbstractController
     /**
      * @Route("/delete/{id}", name="deletePro_page", methods={"delete"})
      */
-    public function deleteAction(Product $p)
+    public function deleteProductAction(Product $p)
     {
         $this->repo->remove($p, true);
         return new JsonResponse();

@@ -7,7 +7,7 @@
 {% block body %}
 
 	<section class="py-2 h-100">
-		<div class="me-5 d-flex justify-content-center align-items-center">
+		<div class="d-flex justify-content-center align-items-center">
 			<div class="card card-registration card-registration-2" style="border: none;">
 				<div class="card-body p-0">
 					{% for message in app.flashes('success') %}
@@ -29,7 +29,7 @@
 
 									{# Display cart start #}
 									{% for c in carts %}
-										<div id="row_product{{c.pId}}">
+										<div id="row_product{{c.psId}}">
 											<hr class="my-2">
 											<div class="row mb-4 d-flex justify-content-between align-items-center">
 												<div class="col-md-2 col-lg-2 col-xl-2">
@@ -69,7 +69,7 @@
 												<h6 class="mb-0">{{c.unitTotal}}</h6>
 											</div>
 											<div class="col-md-1 col-lg-1 col-xl-1 text-end">
-												<a onclick="delete_rowCart({{c.pId}})" class="text-muted">
+												<a onclick="delete_rowCart({{c.psId}})" class="text-muted">
 													<i class="fas fa-times"></i>
 												</a>
 											</div>
@@ -77,6 +77,7 @@
 									</div>
 
 									{# Count unit total #}
+									<input type="hidden" name="">
 									{% set count = loop.length %}
 									{# Total #}
 									{% set total = total + c.unitTotal %}
@@ -85,14 +86,15 @@
 								{# Display cart end #}
 							</div>
 
-							<hr class="my-4">
+							<hr
+							class="my-4">
 
-
+							{# Check Cart emty #}
 							<div>
 								{% if carts|length == 0 %}
 									<img src="{{asset('images/empty.gif')}}" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;" alt="">
-									<button class="text-center btn" style=" display: block; margin-left: auto; margin-right: auto; ">
-										Product Cart is empty</button>
+									<p class="text-center" style=" display: block; margin-left: auto; margin-right: auto; ">
+										Product Cart is empty</p>
 								{% endif %}
 							</div>
 						</div>
@@ -118,9 +120,14 @@
 
 							<hr class="my-4">
 
+
 							<div class="d-flex justify-content-between mb-5">
 								<h5 class="text-uppercase">Total price</h5>
-								<h5>${{total + 5}}.00</h5>
+								{% if total == 0 %}
+									<h5>$00.00</h5>
+								{% else %}
+									<h5>${{total + 5}}.00</h5>
+								{% endif %}
 							</div>
 
 							<form action="{{path('payment_page')}}" method="post">
@@ -144,19 +151,19 @@
 <script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script>
-	function delete_rowCart(pro_id) {
+	function delete_rowCart(proSize_id) {
 if (confirm("Are you sure to delete?")) {
 $.ajax({
 type: 'delete',
-url: '/cart/delete/' + pro_id,
+url: '/cart/delete/' + proSize_id,
 data: {
-id: pro_id
+id: proSize_id
 },
 success: function () {
-var row = document.getElementById("row_product" + pro_id);
+var row = document.getElementById("row_product" + proSize_id);
 row.parentNode.removeChild(row);
 
-// window.location.href = '/cart';
+window.location.href = '/cart';
 
 }
 });

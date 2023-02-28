@@ -7,6 +7,8 @@ use App\Entity\Product;
 use App\Form\CartType;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ProSizeRepository;
+use App\Repository\SizeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,25 +46,30 @@ class CartController extends AbstractController
     /**
      * @Route("/add", name="addCart", methods={"POST"})
      */
-    public function addAction(Request $req, ProductRepository $repoPro): Response
+    public function addAction(Request $req, ProductRepository $repoPro, ProSizeRepository $repoProSize): Response
     {
         // Call function above
         $user = $this->getUser();
         $req = $this->transformJsonBody($req);
-        $id = $req->get('id');
-        $product = $repoPro->find($id);
+        // $id = $req->get('proId');
+        // $product = $repoPro->find($id);
+        $pro_size_id = $req->get('proSizeId');
+        
+        $proSizes = $repoProSize->find($pro_size_id);
+
         $count = $req->get('count');
 
         // Query to  find $product of this user exists or not
         //It returns an array with only one line (index: 0)
-        $findCart = $this->repo->findByProId($product, $user);
+        $findCart = $this->repo->findCartById($user, $proSizes);
 
         // If its not exists, add new
         if ($findCart == null) :
             $newCart = new Cart();
-            $newCart->setProduct($product);
+            // $newCart->setProduct($product);
             $newCart->setUser($user);
             $newCart->setCount($count);
+            $newCart->setProSize($proSizes);
 
             $this->repo->save($newCart, true);
         else :
@@ -101,9 +108,7 @@ class CartController extends AbstractController
             $entity->flush();
         endforeach;
 
-        return $this->json("Success");
-        // return new JsonResponse();
-        // return $this->redirectToRoute('shoppingCart');
+        return new JsonResponse();
     }
 
 
