@@ -38,7 +38,7 @@ class UserEditType extends AbstractType
             ))
 
             
-            ->add('phone', NumberType::class)
+            ->add('phone', TextType::class)
             ->add('address', TextType::class)
             ->add('save',SubmitType::class,[
                 'label' => "save"

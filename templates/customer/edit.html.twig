@@ -41,7 +41,7 @@
 								<p class="mb-0">{{ form_label(userForm.phone) }}</p>
 							</div>
 							<div class="col-sm-9">
-								<p class="text-muted mb-0">{{ form_widget(userForm.phone, {'attr':{'autocomplete': 'off'}}) }}</p>
+								<p class="text-muted mb-0">{{ form_widget(userForm.phone, {'attr':{'autocomplete': 'off','pattern':'[0]{1}[0-9]{9}'}}) }}</p>
 							</div>
 						</div>
 						<hr>

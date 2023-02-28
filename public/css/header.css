@@ -150,12 +150,12 @@ form {
 }
 
 .right .item {
-    padding: 0.3rem 0;
+    /* padding: 0.3rem 0; */
 }
 
 .right {
     background-color: #ffffff;
-    padding: 2vh;
+    padding: 0vh;
 }
 
 .col-8 {
@@ -262,7 +262,7 @@ select option {
 
 .form-control {
     appearance: revert;
-    width: 120%;
+    width: 100%;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil&display=swap");
@@ -722,7 +722,7 @@ section .content .form .input-form span {
 }
 
 section .content .form .input-form input {
-    width: 100%;
+    /* width: 100%; */
     padding: 10px 20px;
     outline: none;
     border: 1px solid #974141;
@@ -1030,7 +1030,7 @@ section .content .form .login-icon li i {
 }
 
 section .form-control {
-    width: 300%;
+    width: 100%;
 }
 
 .back:hover {

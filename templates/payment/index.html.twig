@@ -6,15 +6,15 @@
 
 {% block body %}
 
-	<div class="row ">
-		<div class="col-md-7">
+	<div class="row">
+		<div class="col-6">
 			<div class="right border">
 				<div class="header-payment fw-bold">Order Summary</div>
 				<p>8 items</p>
 				{% set total = 0 %}
 				{% for p in products %}
 					<hr>
-					<div class="row item d-flex align-items-center">
+					<div class="item d-flex align-items-center">
 						{% set img = p.image %}
 						<div class="col-4 align-self-center" style="width: 15%"><img class="img-fluid" src="{{asset('images/'~img)}}"></div>
 						<div class="col-8">
@@ -30,13 +30,12 @@
 					</div>
 					{% set total = total + p.unitTotal %}
 				{% endfor %}
-
-
 			</div>
 		</div>
-		<div class="col-md-5 p-0">
+
+		<div class="col-6">
 			{{ form_start(orderForm, {'action': path('addOrder')}) }}
-			<div class="left border">
+			<div class="right border">
 				<div class="row">
 					<span class="header-payment fw-bold text-dark">Payment</span>
 				</div>
@@ -50,9 +49,8 @@
 
 				<span>Address:</span>
 				{{ form_widget(orderForm.deliveryLocal, {'attr':{'value': user.address, 'class': 'input' }}) }}
-
-
 			</div>
+
 			<div class="left border">
 				<div class="row">
 					<span class="header-payment fw-bold text-dark">Voucher</span>
@@ -62,7 +60,7 @@
 			{# <span>Percent discount:</span> #}
 				{# {{ form_widget(orderForm.percentDiscount, {'attr':{'value': user.address, 'class': 'input' }}) }} #}
 			</div>
-			<hr>
+				<hr>
 
 			<div class="row lower">
 				<div class="col text-left">Subtotal</div>
@@ -87,6 +85,6 @@
 			<div class="mt-3">
 				<button class="btn-payment" name="btnPayment">Payment</button>
 			</div>
-			{{ form_end(orderForm) }}</div>
+				{{ form_end(orderForm) }}
 	</div>
 {% endblock %}

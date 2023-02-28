@@ -31,7 +31,7 @@
 							{{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder':'Address'}}) }}
 
 							<span>Phone</span>
-							{# bắt lỗi số điệnthoại, bắt buộc 10 số số đầu tiên phải là 0 và nhpa65 9 số ngẫu nhiên còn lại => dùng biểu thức chính quy #}
+							{# bắt lỗi số điệnthoại, bắt buộc 10 số số đầu tiên phải là 0 và nhpa65 9 số ngẫu nhiên còn lại => dùng biểu thức chính quy (regex #}
 							{{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder':'Phone', 'pattern':'[0]{1}[0-9]{9}'}}) }}
 					
 							<span>Gender</span>
