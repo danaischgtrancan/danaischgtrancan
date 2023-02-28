@@ -6,15 +6,9 @@
 
 {% block body %}
 
-<<<<<<< HEAD
-	<div class="row">
-		<div class="col-6">
-			<div class="right border">
-=======
 	<div class="row mx-3">
-		<div class="col-md-7 mt-3">
+		<div class="col-md-6 mt-3">
 			<div class="right border p-3">
->>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="header-payment fw-bold">Order Summary</div>
 				{% set total = 0 %}
 				{% for p in products %}
@@ -40,11 +34,7 @@
 
 		<div class="col-6">
 			{{ form_start(orderForm, {'action': path('addOrder')}) }}
-<<<<<<< HEAD
-			<div class="right border">
-=======
 			<div class="left border p-3">
->>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="row">
 					<span class="header-payment fw-bold text-dark pb-2">Payment</span>
 				</div>
@@ -59,23 +49,7 @@
 				<span>Address:</span>
 				{{ form_widget(orderForm.deliveryLocal, {'attr':{'value': user.address, 'class': 'input' }}) }}
 			</div>
-<<<<<<< HEAD
-
-			<div class="left border">
-				<div class="row">
-					<span class="header-payment fw-bold text-dark">Voucher</span>
-				</div>
-				<span>Voucher:</span>
-				{{ form_widget(orderForm.voucher, {'attr':{'value': "", 'class': 'input' }}) }}
-			{# <span>Percent discount:</span> #}
-				{# {{ form_widget(orderForm.percentDiscount, {'attr':{'value': user.address, 'class': 'input' }}) }} #}
-			</div>
-				<hr>
-
-			<div class="row lower">
-=======
 			<div class="row lower mt-3">
->>>>>>> 4f49cbf3f2e0d8cc131e3c5f0f17c1e1acad0186
 				<div class="col text-left">Subtotal</div>
 				<div class="col text-right">${{total}}.00</div>
 			</div>
