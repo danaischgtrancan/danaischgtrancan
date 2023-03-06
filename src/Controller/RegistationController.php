@@ -33,6 +33,7 @@ class RegistationController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+            
             $user->setRoles(['ROLE_USER']);
 
             // THe purposr use insert and update

@@ -38,19 +38,16 @@ class PaymentController extends AbstractController
             'action' => $this->generateUrl('addOrder')
         ]);
 
-        $u = $this->getUser();
-        $products = $repoCart->showCart($u);
-        $user = $repoUser->find($u);
+        $user = $this->getUser();
+        $products = $repoCart->showCart($user);
 
         return $this->render('payment/index.html.twig', [
             // Display product and Calculate the total price
             'products' => $products,
             // Display customer's infomation to set into Order
             'user' => $user,
-            'orderForm' => $orderForm->createView()
+            'orderForm' => $orderForm->createView(  )
         ]);
-
-        // return $this->json($products);
     }
 
     /**
@@ -102,7 +99,6 @@ class PaymentController extends AbstractController
             // Update quantity in Stock
             $p->setQuantity($p->getQuantity() - $c['qty']);
         endforeach;
-
 
         // Delete Cart
         $entity = $reg->getManager();

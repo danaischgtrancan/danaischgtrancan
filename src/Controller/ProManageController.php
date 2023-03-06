@@ -73,7 +73,7 @@ class ProManageController extends AbstractController
             $p->setName($data->getName());
             $p->setDescriptions($data->getDescriptions());
             $p->setPrice($data->getPrice());
-            $p->setStatus($data->isStatus());
+            $p->setStatus(1);
             $p->setImage($data->getImage());
             $p->setForGender($data->isForGender());
             $p->setCategory($data->getCategory());
@@ -199,7 +199,7 @@ class ProManageController extends AbstractController
     /**
      * @Route("/delete/{id}", name="deletePro_page", methods={"delete"})
      */
-    public function deleteProductAction(Product $p)
+    public function Action(Product $p)
     {
         $this->repo->remove($p, true);
         return new JsonResponse();

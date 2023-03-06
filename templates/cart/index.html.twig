@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<section class="py-2 h-100">
 		<div class="d-flex justify-content-center align-items-center">
 			<div class="card card-registration card-registration-2" style="border: none;">
@@ -18,11 +17,13 @@
 					<div class="row g-0">
 						<div class="col-lg-8">
 							<div class="p-5">
+
 								<div id="class=" d-flex justify-content-between align-items-center pb-5"">
 									<h1 class="title-cart fw-bold mb-0 text-black">Shopping Cart</h1>
 								</div>
 								<div
 									id="row_cart">
+									
 									{# Create local parameter to show unit price and total #}
 									{% set count = 0 %}
 									{% set total = 0 %}
@@ -44,10 +45,12 @@
 													{{c.pName}}</h6>
 												<h6 class="text-muted mt-1">{{c.sizeName}}</h6>
 											</div>
+
+											{# Update count #}
 											<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
 												<div class="product-count">
 													<div class="display-flex">
-														<form action="{{path('change')}}" method="POST" class="p-0">
+														<form action="{{path('changeAction')}}" method="POST" class="p-0">
 															<button class="qtyminus">
 																<input type="hidden" name="cartId" value="{{c.cartId}}">
 																<input type="hidden" name="action" value="minus">
@@ -55,7 +58,7 @@
 															</button>
 														</form>
 														<input type="text" name="quantity" id="quantity" value="{{c.num}}" class="qty">
-														<form action="{{path('change')}}" method="POST" class="p-0">
+														<form action="{{path('changeAction')}}" method="POST" class="p-0">
 															<button class="qtyplus">
 																<input type="hidden" name="cartId" value="{{c.cartId}}">
 																<input type="hidden" name="action" value="plus">
@@ -65,6 +68,7 @@
 													</div>
 												</div>
 											</div>
+											
 											<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 mt-4">
 												<h6 class="mb-0">{{c.unitTotal}}</h6>
 											</div>
@@ -76,7 +80,7 @@
 										</div>
 									</div>
 
-									{# Count unit total #}
+									{# Count the total number of items #}
 									<input type="hidden" name="">
 									{% set count = loop.length %}
 									{# Total #}
@@ -84,6 +88,7 @@
 
 								{% endfor %}
 								{# Display cart end #}
+
 							</div>
 
 							<hr
@@ -126,7 +131,7 @@
 								{% if total == 0 %}
 									<h5>$00.00</h5>
 								{% else %}
-									<h5>${{total + 5}}.00</h5>
+									<h5>${{total + 5}}.00</h5>	
 								{% endif %}
 							</div>
 
@@ -134,7 +139,7 @@
 								<input type="submit" class="btn btn-dark btn-block btn-lg btnCheckout" name="btnCheckout" value="Checkout">
 							</form>
 						</div>
-					</div>
+					</div>	
 					<div class="pt-5">
 						<h6 class="mb-0 back">
 							<a href="{{path('showProduct')}}" class="text-body">
@@ -150,24 +155,36 @@
 </section>
 <script script script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 	function delete_rowCart(proSize_id) {
-if (confirm("Are you sure to delete?")) {
-$.ajax({
-type: 'delete',
-url: '/cart/delete/' + proSize_id,
-data: {
-id: proSize_id
-},
-success: function () {
-var row = document.getElementById("row_product" + proSize_id);
-row.parentNode.removeChild(row);
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Delete'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					type: 'delete',
+					url: '/cart/delete/' + proSize_id,
+					data: {
+					id: proSize_id
+				},
+				success: function () {
+					var row = document.getElementById("row_product" + proSize_id);
+					row.parentNode.removeChild(row);
+					Swal.fire('Deleted!', 'A product has been deleted.', 'success')
+				}
+		});
+	}
+	})
+	}
+</script>
 
-window.location.href = '/cart';
 
-}
-});
-}
-
-}
-</script>{% endblock %}
+{% endblock %}

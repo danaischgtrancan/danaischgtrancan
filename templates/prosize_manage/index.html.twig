@@ -72,6 +72,13 @@ return false;
 			{% endfor %}
 
 		</table>
+		<div class="pt-5">
+			<h6 class="mb-0 back">
+				<a href="{{path('showProduct')}}" class="text-body bi bi-arrow-return-left text-decoration-none text-reset">
+					Back to List Product 
+				</a>
+			</h6>
+		</div>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 			<button class="btn btn-dark" type="button">
 				<a href="{{path('addProSize_page', {'id':proID})}}" class="text-decoration-none text-reset">Add new item</a>
@@ -112,4 +119,6 @@ Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
 })
 
 }
-</script>{% endblock %}
+</script>
+
+{% endblock %}

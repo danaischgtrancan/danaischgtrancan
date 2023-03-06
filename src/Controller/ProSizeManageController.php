@@ -119,7 +119,7 @@ class ProSizeManageController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Updated successfully'
+                'Added successfully'
             );
             return $this->redirectToRoute("proSize_page", [
                 'id' => $ps->getProduct()->getId()

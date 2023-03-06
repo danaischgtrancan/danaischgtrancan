@@ -3,20 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
-use App\Entity\Product;
-use App\Form\CartType;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProSizeRepository;
-use App\Repository\SizeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @Route("/cart")
@@ -37,27 +32,22 @@ class CartController extends AbstractController
         $user = $this->getUser();
         $carts = $this->repo->showCart($user);
 
-        return $this->render('cart/index.html.twig', [
-            'carts' => $carts
-        ]);
+        return $this->render('cart/index.html.twig', ['carts' => $carts]);
     }
 
     // Create a new one
     /**
      * @Route("/add", name="addCart", methods={"POST"})
      */
-    public function addAction(Request $req, ProductRepository $repoPro, ProSizeRepository $repoProSize): Response
+    public function addCartAction(Request $req, ProSizeRepository $repoProSize): Response
     {
         // Call function above
-        $user = $this->getUser();
         $req = $this->transformJsonBody($req);
-        // $id = $req->get('proId');
-        // $product = $repoPro->find($id);
-        $pro_size_id = $req->get('proSizeId');
-        
-        $proSizes = $repoProSize->find($pro_size_id);
 
+        $user = $this->getUser();
         $count = $req->get('count');
+        $pro_size_id = $req->get('proSizeId');
+        $proSizes = $repoProSize->find($pro_size_id);
 
         // Query to  find $product of this user exists or not
         //It returns an array with only one line (index: 0)
@@ -66,7 +56,6 @@ class CartController extends AbstractController
         // If its not exists, add new
         if ($findCart == null) :
             $newCart = new Cart();
-            // $newCart->setProduct($product);
             $newCart->setUser($user);
             $newCart->setCount($count);
             $newCart->setProSize($proSizes);
@@ -74,10 +63,13 @@ class CartController extends AbstractController
             $this->repo->save($newCart, true);
         else :
             // It exists update Count
-            // Create $cart to find product object that match with $product and $user below to update Count
             $cart = $this->repo->find($findCart[0]);
-            $cart->setCount($cart->getCount() + $count);
 
+            if ($cart->getCount() + $count > $proSizes->getQuantity()) :
+                $cart->setCount($proSizes->getQuantity());
+            else :
+                $cart->setCount($cart->getCount() + $count);
+            endif;
             $this->repo->save($cart, true);
         endif;
         return new JsonResponse();
@@ -95,9 +87,9 @@ class CartController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}", name="deleteCart", methods={"DELETE"})
+     * @Route("/cart/delete/{id}", name="deleteCart", methods={"DELETE"})
      */
-    public function deleteCartAction(int $id, ManagerRegistry $reg, ProductRepository $repoPro): Response
+    public function deleteCartAction(int $id, ManagerRegistry $reg): Response
     {
         $user = $this->getUser();
         $cart = $this->repo->removeCart($id, $user);
@@ -114,36 +106,31 @@ class CartController extends AbstractController
 
     // Chang number in Cart
     /**
-     * @Route("/change", name="change", methods={"POST"})
+     * @Route("/change", name="changeAction", methods={"POST"})
      */
-    public function minus(Request $req, ManagerRegistry $reg, ProductRepository $repoPro): Response
+    public function minus(Request $req, ManagerRegistry $reg, ProSizeRepository $repoProSize): Response
     {
         $cartId = $req->request->get('cartId');
-        $user = $this->getUser();
         $action = $req->request->get('action');
-
-        $entity = $reg->getManager();
         $cart = $this->repo->find($cartId);
 
-        if($action == "minus"):
-            $cart->setCount($cart->getCount() - 1);
-        else:
-            $cart->setCount($cart->getCount() + 1);
+        $entity = $reg->getManager();
+        if ($action == "minus") :
+            if ($qty = $cart->getCount() - 1 > 0) :
+                $cart->setCount($qty);
+                $entity->persist($cart);
+            endif;
+        else :
+            $qtyInStock = $repoProSize->find($cart->getProSize());
+            if (($qty = $cart->getCount() + 1) <= $qtyInStock->getQuantity()) :
+                $cart->setCount($qty);
+                $entity->persist($cart);
+            endif;
         endif;
-        
-        $entity->persist($cart);
+
         $entity->flush();
 
-        // $entity = $reg->getManager();
-        // if ($action == "minus") :
-        //     foreach ($cart as $c) :
-        //         $c->setCount($qty - 1);
-        //         $entity->persist($c);
-        //         $entity->flush();
-        //     endforeach;
-        // endif;
-
-        // return $this->json(['cart' => $cart]);
         return $this->redirectToRoute('shoppingCart');
     }
+    
 }

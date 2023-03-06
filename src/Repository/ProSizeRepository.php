@@ -70,6 +70,7 @@ class ProSizeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+    
     /**
      * @return ProSize[] Returns an array of ProSize objects
      */
@@ -77,7 +78,8 @@ class ProSizeRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT s.id as sizeId, s.name as sizeName, ps.quantity as productQty, ps.product_id as proId, ps.id as psId FROM size as s INNER JOIN pro_size as ps ON ps.size_id = s.id GROUP BY ps.id ORDER BY s.id ASC';
+        $sql = 'SELECT s.id as sizeId, s.name as sizeName, ps.quantity as productQty, ps.product_id as proId, 
+        ps.id as psId FROM size as s INNER JOIN pro_size as ps ON ps.size_id = s.id GROUP BY ps.id ORDER BY s.id ASC';
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery();
 

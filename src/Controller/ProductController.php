@@ -31,7 +31,7 @@ class ProductController extends AbstractController
     public function showProductAction(Request $req, SupplierRepository $repoSupp, CategoryRepository $repoCate, ProSizeRepository $repoPs, SizeRepository $repoSize): Response
     {
         $title = "Not Found";
-        $catefories = $repoCate->findAll();
+        $categories = $repoCate->findAll();
         $sizes = $repoSize->findAll();
         $suppliers = $repoSupp->findAll();
 
@@ -82,11 +82,9 @@ class ProductController extends AbstractController
             $title = "All product";
         endif;
 
-
-        // return $this->json(['products' => $products]);
         return $this->render('product/show.html.twig', [
             'products' => $products,
-            'catefories' => $catefories,
+            'catefories' => $categories,
             'suppliers' => $suppliers,
             'sizes' => $sizes,
             'proSizes' => $proSizes,
@@ -97,13 +95,11 @@ class ProductController extends AbstractController
     /**
      * @Route("/detail/{id}", name="proDetail_page")
      */
-    public function productDetailAction(Product $p, SizeRepository $repoSize, ProSizeRepository $repoPs): Response
+    public function productDetailAction(Product $p, ProSizeRepository $repoPs): Response
     {
-        // $size = $repoSize->findSize($p->getId());
         $proSizes = $repoPs->findNameSize([], [
             'id' => 'DESC'
         ]);
-        // return $this->json(['product' => $product]);
 
         return $this->render('product/detail.html.twig', [
             'product' => $p,
