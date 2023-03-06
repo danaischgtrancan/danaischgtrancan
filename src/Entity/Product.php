@@ -23,6 +23,7 @@ class Product
     private ?bool $status = null;
 
     #[ORM\Column(length: 255)]
+        
     private ?string $descriptions = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

@@ -23,26 +23,30 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('username', TextType::class)
-        ->add('fullname', TextType::class)
-            ->add('password', RepeatedType::class,[
-                'type'=> PasswordType::class,
-                'first_options'=> ['label'=>'Password', 'attr' => ['placeholder' => 'Password']],
-                'second_options'=> ['label'=> 'Confirm Password', 'attr' => ['placeholder' => 'Confirm Password']]])
-            ->add('birthday',DateType::class,[
-                'widget'=>'single_text'
+            ->add('username', TextType::class)
+            ->add('fullname', TextType::class)
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class
             ])
-            ->add('gender', ChoiceType::class, 
+            ->add('birthday', DateType::class, [
+                'widget' => 'single_text', 
+                'placeholder' => 'Birthday'
+
+            ])
+            ->add(
+                'gender',
+                ChoiceType::class,
                 array(
                     'choices' => array(
-                    'Male' => 0,
-                    'Female' => 1
-                ),
-                'multiple' => false,
-                'expanded' => true
-            ))
-                // ->add('gender')
-            
+                        'Male' => 0,
+                        'Female' => 1
+                    ),
+                    'multiple' => false,
+                    'expanded' => true
+                )
+            )
+            // ->add('gender')
+
             ->add('phone', NumberType::class)
             // ->add('phone', NumberType::class, [
             //     'constraints' => [
@@ -57,7 +61,7 @@ class UserType extends AbstractType
             //     ],
             // ])
             ->add('address', TextType::class)
-            ->add('save',SubmitType::class,[
+            ->add('save', SubmitType::class, [
                 'label' => "Register"
             ]);
     }
